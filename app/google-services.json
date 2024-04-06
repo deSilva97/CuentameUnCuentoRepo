@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "418054314452",
+    "project_id": "cuentameuncuento-4cd43",
+    "storage_bucket": "cuentameuncuento-4cd43.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:418054314452:android:cca55e2f794551d61ade41",
+        "android_client_info": {
+          "package_name": "es.unir.cuentameuncuento"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "418054314452-kflq4tr0vter4kv8s8am8otqak21t3n6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "es.unir.cuentameuncuento",
+            "certificate_hash": "f297ace1d24d342cb6fd9555f0b9f68126a5cff5"
+          }
+        },
+        {
+          "client_id": "418054314452-md3kkd21ruc219hsts47ojecqjj6n68l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA43xwbmUmiaW4snXFqkzewBvT4zA3Bxto"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "418054314452-md3kkd21ruc219hsts47ojecqjj6n68l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

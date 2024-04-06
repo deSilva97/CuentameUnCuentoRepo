@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">CuentameUnCuento</string>
+    <string name="default_web_client_id" />
+    <string name="prefs_file">PREFERENCE_FILE_KEY</string>
+</resources>
