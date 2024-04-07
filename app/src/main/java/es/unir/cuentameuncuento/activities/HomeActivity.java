@@ -4,11 +4,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import es.unir.cuentameuncuento.R;
-import es.unir.cuentameuncuento.abstracts.ControllerActivity;
-import es.unir.cuentameuncuento.controllers.HomeController;
+import androidx.appcompat.app.AppCompatActivity;
 
-public class HomeActivity extends ControllerActivity {
+import es.unir.cuentameuncuento.R;
+import es.unir.cuentameuncuento.controllers.HomeController;
+import es.unir.cuentameuncuento.helpers.ActivityHelper;
+
+public class HomeActivity extends AppCompatActivity {
 
     HomeController homeController;
 
@@ -22,7 +24,6 @@ public class HomeActivity extends ControllerActivity {
         initActivity();
     }
 
-    @Override
     protected void initActivity() {
         homeController = new HomeController(this);
 
@@ -31,7 +32,7 @@ public class HomeActivity extends ControllerActivity {
         bProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changeActivity(ProfileActivity.class, true);
+                ActivityHelper.ChangeActivity(HomeActivity.this, ProfileActivity.class, true);
             }
         });
 

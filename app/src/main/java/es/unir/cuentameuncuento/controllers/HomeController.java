@@ -1,5 +1,7 @@
 package es.unir.cuentameuncuento.controllers;
 
+import android.widget.Toast;
+
 import java.util.List;
 
 import es.unir.cuentameuncuento.impls.UserDAOImpl;
@@ -16,10 +18,10 @@ public class HomeController  {
 
     UserDAOImpl authManager;
     BookDAOImpl databaseManager;
-    HomeActivity homeActivity;
+    HomeActivity activity;
 
     public HomeController(HomeActivity activity) {
-        homeActivity = activity;
+        this.activity = activity;
 
         authManager = new UserDAOImpl(activity);
         userID = authManager.getIdUser();
@@ -37,12 +39,12 @@ public class HomeController  {
 
     public void refresh(){
         for (Book b: bookList){
-            homeActivity.showToast(b.getId());
+            Toast.makeText(activity, b.getId(), Toast.LENGTH_SHORT).show();
         }
     }
 
     public void showAlert(){
-        homeActivity.showToast("failure");
+        Toast.makeText(activity, "failure", Toast.LENGTH_SHORT).show();
     }
 
     public void generateBook(){
@@ -71,11 +73,11 @@ public class HomeController  {
 
     public void setFindedBook(Book book) {
         if(book != null){
-            homeActivity.showToast("Libro encontrado");
+            Toast.makeText(activity, "Libro encontrado", Toast.LENGTH_SHORT).show();
             currentBook = book;
         }
         else {
-            homeActivity.showToast("Libro no encontrado");
+            Toast.makeText(activity, "Libro no encontrado", Toast.LENGTH_SHORT).show();
         }
     }
 }

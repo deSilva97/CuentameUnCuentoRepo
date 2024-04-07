@@ -4,11 +4,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import es.unir.cuentameuncuento.R;
-import es.unir.cuentameuncuento.abstracts.ControllerActivity;
 import es.unir.cuentameuncuento.controllers.ProfileController;
 
-public class ProfileActivity extends ControllerActivity {
+public class ProfileActivity extends AppCompatActivity {
 
     Button bSignOut;
     Button bDeleteAccount;
@@ -23,7 +24,6 @@ public class ProfileActivity extends ControllerActivity {
         initActivity();
     }
 
-    @Override
     protected void initActivity() {
         profileController = new ProfileController(this);
 

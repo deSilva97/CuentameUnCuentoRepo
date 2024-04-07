@@ -1,16 +1,20 @@
 package es.unir.cuentameuncuento.controllers;
 
+import android.content.Intent;
+import android.widget.Toast;
+
 import es.unir.cuentameuncuento.activities.LoginActivity;
-import es.unir.cuentameuncuento.abstracts.ControllerActivity;
+import es.unir.cuentameuncuento.activities.ProfileActivity;
+import es.unir.cuentameuncuento.helpers.ActivityHelper;
 import es.unir.cuentameuncuento.impls.UserDAOImpl;
 
 public class ProfileController {
 
-    ControllerActivity activity;
+    ProfileActivity activity;
     UserDAOImpl firebaseController;
 
 
-    public ProfileController(ControllerActivity profileActivity){
+    public ProfileController(ProfileActivity profileActivity){
         activity = profileActivity;
         firebaseController = new UserDAOImpl(profileActivity);
     }
@@ -37,20 +41,22 @@ public class ProfileController {
 
     public void signOut(){
         firebaseController.signOut();
-        activity.changeActivity(LoginActivity.class, false);
-        activity.showToast("Session expired");
+        //
+        Intent intent = new Intent(activity, LoginActivity.class);
+        activity.startActivity(intent);
+        activity.finish();
+        Toast.makeText(activity, "Session expired", Toast.LENGTH_SHORT).show();
     }
 
     public void deleteAccount(boolean confirmation){
         if(confirmation){
             firebaseController.deleteAccount(this::onDeleteAccountComplete);
         } else{
-            activity.showToast("No se ha podido borrar la cuenta");
+            Toast.makeText(activity, "No se ha podido borrar la cuenta", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void onDeleteAccountComplete(boolean result){
-        activity.changeActivity(LoginActivity.class, false);
-
+        ActivityHelper.ChangeActivity(activity, LoginActivity.class, false);
     }
 }

@@ -7,9 +7,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import es.unir.cuentameuncuento.R;
-import es.unir.cuentameuncuento.abstracts.ControllerActivity;
+import es.unir.cuentameuncuento.helpers.ActivityHelper;
 
-public class MainActivity extends ControllerActivity {
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +27,7 @@ public class MainActivity extends ControllerActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId()== R.id.profile) {
             //click on profile
-            changeActivity(ProfileActivity.class, true);
+            ActivityHelper.ChangeActivity(MainActivity.this, ProfileActivity.class, true);
             return true;
         } else if (item.getItemId()== R.id.favorites) {
             //click on favorites
@@ -35,10 +35,5 @@ public class MainActivity extends ControllerActivity {
         } else {
             return super.onOptionsItemSelected(item);
         }
-    }
-
-    @Override
-    protected void initActivity() {
-
     }
 }

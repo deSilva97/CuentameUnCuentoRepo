@@ -5,23 +5,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import es.unir.cuentameuncuento.R;
-import es.unir.cuentameuncuento.contexts.SocialMediaContext;
 import es.unir.cuentameuncuento.controllers.LoginController;
-import es.unir.cuentameuncuento.controllers.OldAuthController;
-import es.unir.cuentameuncuento.abstracts.ControllerActivity;
+import es.unir.cuentameuncuento.helpers.ActivityHelper;
 import es.unir.cuentameuncuento.managers.SessionManager;
 
-public class LoginActivity extends ControllerActivity {
+public class LoginActivity extends AppCompatActivity {
+
+    LoginController controller;
 
     String email = "example@mail.com";
     String password = "_admin00";
-
-
-    OldAuthController authController;
 
     Button bRegister;
     Button bLogin;
@@ -39,9 +38,8 @@ public class LoginActivity extends ControllerActivity {
         SessionManager session = new SessionManager(this);
 
     }
-    @Override
     protected void initActivity() {
-        authController = new OldAuthController(this);
+        controller = new LoginController(this);
 
         bRegister = findViewById(R.id.button_register);
         bLogin = findViewById(R.id.button_login);
@@ -50,28 +48,21 @@ public class LoginActivity extends ControllerActivity {
         bRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!authController.isLoading()){
-                    changeActivity(NewAccountActivity.class, true);
-                }
-
+                ActivityHelper.ChangeActivity(LoginActivity.this, NewAccountActivity.class, true);
             }
         });
 
         bLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!authController.isLoading()) {
-                    authController.signInWithEmailPassword(email, password);
-                }
+                controller.signInWithEmailPassword(email, password);
             }
         });
 
         bGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!authController.isLoading()){
-                    authController.authWithGoogle();
-                }
+                controller.authWithGoogle();
             }
         });
     }
@@ -80,12 +71,12 @@ public class LoginActivity extends ControllerActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == SocialMediaContext.getProviderGoogleRequestCode()){
+        if(requestCode == LoginController.PROVIDER_GOOGLE){
             if(resultCode == RESULT_OK){
-                authController.signInWithGoogle(data);
+                controller.signInWithGoogle(data);
             }
             else {
-                showToast("SignIn failed");
+                controller.onLoginComplete(false);
             }
         }
     }
