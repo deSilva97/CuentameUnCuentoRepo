@@ -4,63 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:backgroundTint="@color/white"
-    tools:context=".views.LoginActivity">
+    tools:context="es.unir.cuentameuncuento.activities.MainActivity">
 
-    <TextView
-        android:id="@+id/textView"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/createStory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Cuenta cuentos AI"
-        android:textSize="32sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="416dp"
+        android:elevation="10dp"
+        android:paddingStart="24dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="24dp"
+        android:paddingBottom="16dp"
+        android:text="Crea un nuevo cuento"
+        android:textColor="@android:color/white"
+        app:cornerRadius="15dp"
+        app:iconGravity="start"
+        app:iconPadding="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="@+id/textView"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
-
-        <Button
-            android:id="@+id/button_register"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Register" />
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight=".025" />
-
-        <Button
-            android:id="@+id/button_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Login" />
-
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/button_google"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="128dp"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="@color/white"
-        android:drawableLeft="@drawable/common_google_signin_btn_icon_light_normal"
-        android:text="Google"
-        android:textColor="#000000"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

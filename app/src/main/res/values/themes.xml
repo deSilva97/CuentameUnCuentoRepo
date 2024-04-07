@@ -1,8 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.CuentameUnCuento" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <style name="Base.Theme.CuentameUnCuento" parent="Theme.Material3.DayNight">
+        <item name="colorPrimary">#4AD295</item> <!-- Color de la barra de herramientas -->
+        <item name="colorPrimaryDark">#3A9B78</item> <!-- Color oscuro para la sombra -->
+        <item name="colorAccent">#FF4081</item> <!-- Color de acento para botones, etc. -->
     </style>
 
     <style name="Theme.CuentameUnCuento" parent="Base.Theme.CuentameUnCuento" />
