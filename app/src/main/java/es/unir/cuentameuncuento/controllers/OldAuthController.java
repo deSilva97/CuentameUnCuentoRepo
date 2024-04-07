@@ -10,15 +10,15 @@ import com.google.android.gms.tasks.Task;
 
 import es.unir.cuentameuncuento.R;
 import es.unir.cuentameuncuento.abstracts.ControllerActivity;
+import es.unir.cuentameuncuento.activities.MainActivity;
 import es.unir.cuentameuncuento.contexts.SocialMediaContext;
-import es.unir.cuentameuncuento.managers.AuthManager;
-import es.unir.cuentameuncuento.views.HomeActivity;
-import es.unir.cuentameuncuento.views.ProfileActivity;
+import es.unir.cuentameuncuento.impls.UserDAOImpl;
+import es.unir.cuentameuncuento.activities.HomeActivity;
 
 
 public class OldAuthController {
     ControllerActivity activity;
-    AuthManager databaseController;
+    UserDAOImpl authManager;
 
     private boolean rememberMe;
 
@@ -26,7 +26,7 @@ public class OldAuthController {
 
     public OldAuthController(ControllerActivity activity){
         this.activity = activity;
-        databaseController = new AuthManager(activity);
+        authManager = new UserDAOImpl(activity);
     }
 
 
@@ -36,11 +36,11 @@ public class OldAuthController {
 
     public void signUpWithEmailPassword(String email, String password){
         loading = true;
-        databaseController.signUpWithEmailPassword(email, password, this::onRegistrationComplete);
+        authManager.signUpWithEmailPassword(email, password, this::onRegistrationComplete);
     }
     public  void signInWithEmailPassword(String email, String password){
         loading = true;
-        databaseController.signInWithEmailPassword(email, password, this::onLoginComplete);
+        authManager.signInWithEmailPassword(email, password, this::onLoginComplete);
     }
 
     public void signInWithGoogle(Intent data){
@@ -50,7 +50,7 @@ public class OldAuthController {
             GoogleSignInAccount account = task.getResult();
             String idToken = account.getIdToken();
             if (idToken != null) {
-                databaseController.signInWithGoogle(idToken, this::onGoogleComplete);
+                authManager.signInWithGoogle(idToken, this::onGoogleComplete);
             } else {
                 activity.showToast("Can not found google id token");
                 loading = false;
@@ -81,7 +81,7 @@ public class OldAuthController {
     private  void onLoginComplete(boolean result){
         if(result){
             activity.showToast("Sign-in success");
-            activity.changeActivity(HomeActivity.class, true); //Change view to Home
+            activity.changeActivity(MainActivity.class, true); //Change view to Home
         } else {
             activity.showToast("Sign-in failed");
 
@@ -92,7 +92,7 @@ public class OldAuthController {
     private void onGoogleComplete(boolean result){
         if(result){
             activity.showToast("Google sign-in success");
-            activity.changeActivity(HomeActivity.class, true); //Change view to Home
+            activity.changeActivity(MainActivity.class, true); //Change view to Home
         } else {
             activity.showToast("Google sign-in failed");
         }

@@ -1,20 +1,18 @@
 package es.unir.cuentameuncuento.controllers;
 
-import android.widget.Toast;
-
-import es.unir.cuentameuncuento.views.LoginActivity;
+import es.unir.cuentameuncuento.activities.LoginActivity;
 import es.unir.cuentameuncuento.abstracts.ControllerActivity;
-import es.unir.cuentameuncuento.managers.AuthManager;
+import es.unir.cuentameuncuento.impls.UserDAOImpl;
 
 public class ProfileController {
 
     ControllerActivity activity;
-    AuthManager firebaseController;
+    UserDAOImpl firebaseController;
 
 
     public ProfileController(ControllerActivity profileActivity){
         activity = profileActivity;
-        firebaseController = new AuthManager(profileActivity);
+        firebaseController = new UserDAOImpl(profileActivity);
     }
 
     public String getUserName(){
