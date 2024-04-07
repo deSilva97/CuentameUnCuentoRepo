@@ -1,15 +1,11 @@
 package es.unir.cuentameuncuento.controllers;
 
-import android.widget.Toast;
-
-import java.util.ArrayList;
 import java.util.List;
 
-import es.unir.cuentameuncuento.managers.AuthManager;
-import es.unir.cuentameuncuento.managers.DatabaseManager;
+import es.unir.cuentameuncuento.impls.UserDAOImpl;
+import es.unir.cuentameuncuento.impls.BookDAOImpl;
 import es.unir.cuentameuncuento.models.Book;
-import es.unir.cuentameuncuento.models.User;
-import es.unir.cuentameuncuento.views.HomeActivity;
+import es.unir.cuentameuncuento.activities.HomeActivity;
 
 public class HomeController  {
 
@@ -18,17 +14,17 @@ public class HomeController  {
     List<Book> bookList;
 
 
-    AuthManager authManager;
-    DatabaseManager databaseManager;
+    UserDAOImpl authManager;
+    BookDAOImpl databaseManager;
     HomeActivity homeActivity;
 
     public HomeController(HomeActivity activity) {
         homeActivity = activity;
 
-        authManager = new AuthManager(activity);
+        authManager = new UserDAOImpl(activity);
         userID = authManager.getIdUser();
 
-        databaseManager = new DatabaseManager(userID, this);
+        databaseManager = new BookDAOImpl(userID, this);
 
         databaseManager.findAll();
     }
