@@ -4,38 +4,35 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import es.unir.cuentameuncuento.impls.UserDAOImpl;
+import es.unir.cuentameuncuento.abstracts.ActivityController;
+import es.unir.cuentameuncuento.activities.MainActivity;
 import es.unir.cuentameuncuento.impls.BookDAOImpl;
+import es.unir.cuentameuncuento.impls.UserDAOImpl;
 import es.unir.cuentameuncuento.models.Book;
-import es.unir.cuentameuncuento.activities.HomeActivity;
 
-public class HomeController  {
+public class MainController extends ActivityController {
 
     String userID;
-    Book currentBook;
     List<Book> bookList;
+    Book currentBook;
 
-
-    UserDAOImpl authManager;
+    MainActivity activity;
     BookDAOImpl bookImpl;
-    HomeActivity activity;
 
-    public HomeController(HomeActivity activity) {
+    public MainController(MainActivity activity){
         this.activity = activity;
 
-        authManager = new UserDAOImpl(activity);
-        userID = authManager.getIdUser();
+        UserDAOImpl userImpl = new UserDAOImpl(activity);
+        userID = userImpl.getIdUser();
 
         bookImpl = new BookDAOImpl(userID);
-
         bookImpl.findAll(this::setBookList);
     }
 
     public void setBookList(List<Book> bookList){
-       this.bookList = bookList;
-       refresh();
+        this.bookList = bookList;
+        refresh();
     }
-
     public void refresh(){
         for (Book b: bookList){
             Toast.makeText(activity, b.getId(), Toast.LENGTH_SHORT).show();
@@ -62,25 +59,11 @@ public class HomeController  {
         bookImpl.deleteBook(b.getId(), this::onCompleteOperation);
     }
 
-    public void chooseAllBooks(){
-
-    }
-
     private void onCompleteOperation(boolean value){
         if (value)
             refresh();
         else
             Toast.makeText(activity, "Operación cancelada", Toast.LENGTH_SHORT).show();
 
-    }
-
-    public void setFindedBook(Book book) {
-        if(book != null){
-            Toast.makeText(activity, "Libro encontrado", Toast.LENGTH_SHORT).show();
-            currentBook = book;
-        }
-        else {
-            Toast.makeText(activity, "Libro no encontrado", Toast.LENGTH_SHORT).show();
-        }
     }
 }

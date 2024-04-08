@@ -19,52 +19,45 @@ import es.unir.cuentameuncuento.controllers.HomeController;
 import es.unir.cuentameuncuento.daos.BookDAO;
 import es.unir.cuentameuncuento.models.Book;
 
-public class BookDAOImpl implements BookDAO {
+public class BookDAOImpl  {
 
 
     String userID;
     FirebaseFirestore db;
-    HomeController controller;
 
     private final String FIELD_TITLE = "title";
     private final String FIELD_NARRATIVE = "narrative";
     private static final String FIELD_FK_USER = "fk_user";
 
-    public BookDAOImpl(String userID, HomeController controller){
+    public BookDAOImpl(String userID){
         this.userID = userID;
-        this.controller = controller;
         db = FirebaseFirestore.getInstance();
     }
 
-    private CollectionReference getUsersCollection(){
-        return db.collection("users");
-    }
-    private CollectionReference getBooksCollection(){
-        return db.collection("books");
+    private CollectionReference getUserCollection(){
+        return db.collection(userID);
     }
 
-    @Override
-    public boolean createBook(Book book) {
+    public void createBook(Book book, CompleteCallback callback) {
         Map<String, Object> dbBook = new HashMap<>();
         dbBook.put(FIELD_TITLE, book.getTitle());
         dbBook.put(FIELD_NARRATIVE, book.getNarrative());
         dbBook.put(FIELD_FK_USER, book.getFk_user());
 
-       getBooksCollection()
+       getUserCollection()
                 .add(dbBook)
                 .addOnSuccessListener(command -> {
-                    controller.refresh();
+                    callback.onComplete(true);
+                    //controller.refresh();
                 })
                 .addOnFailureListener(command -> {
-                    controller.showAlert();
+                    callback.onComplete(false);
+                    //controller.showAlert();
                 });
-
-        return true;
     }
 
-    @Override
-    public Book findBook(String idBook) {
-        getBooksCollection().get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+    public void findBook(String idBook, CompleteCallbackWithBook callback) {
+        getUserCollection().get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
@@ -72,53 +65,51 @@ public class BookDAOImpl implements BookDAO {
                     QuerySnapshot querySnapshot = task.getResult();
                     if (querySnapshot != null) {
                         for (QueryDocumentSnapshot document : querySnapshot) {
-                            controller.setFindedBook(getBook(document));
+                            //controller.setFindedBook(getBook(document));
+                            callback.onComplete(getBook(document));
                         }
                     }
                     else {
-                        controller.setFindedBook(null);
+                        callback.onComplete(null);
+                        //controller.setFindedBook(null);
                     }
                 }
                 else {
-                    controller.setFindedBook(null);
+                    callback.onComplete(null);
+                    //controller.setFindedBook(null);
                 }
             }
         });
-
-        return null;
     }
 
-    @Override
-    public boolean updateBook(Book idBook) {
-        return false;
+    public void updateBook(Book idBook, CompleteCallback callback) {
+
     }
 
-    @Override
-    public Book deleteBook(String idBook) {
-        DocumentReference doc = getBooksCollection().document(idBook);
+    public void deleteBook(String idBook, CompleteCallback callback) {
+        DocumentReference doc = getUserCollection().document(idBook);
 
         doc.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(Task<Void> task) {
                 if (task.isSuccessful()) {
-                    controller.refresh();
+                    //controller.refresh();
+                    callback.onComplete(true);
                 } else {
                     // Ocurrió un error al intentar eliminar el documento
                     Exception e = task.getException();
                     if (e != null) {
                         e.printStackTrace();
                     }
+                    callback.onComplete(false);
                 }
             }
         });
-
-        return null;
     }
 
-    @Override
-    public List<Book> findAll() {
+    public void findAll(CompleteCallbackWithBookList callback) {
 
-        getBooksCollection().get()
+        getUserCollection().get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -136,15 +127,14 @@ public class BookDAOImpl implements BookDAO {
                                 Book b = getBook(document);
                                 list.add(b);
                             }
-                            controller.setBookList(list);
+                            //controller.setBookList(list);
+                            callback.onComplete(list);
                         } else {
-
+                            callback.onComplete(null);
                         }
 
                     }
                 });
-
-        return null;
     }
     private Book getBook(QueryDocumentSnapshot document){
         Book b = new Book();
@@ -155,4 +145,14 @@ public class BookDAOImpl implements BookDAO {
         return b;
     }
 
+    public interface CompleteCallback {
+        void onComplete(boolean result);
+    }
+
+    public interface CompleteCallbackWithBook{
+        void onComplete(Book book);
+    }
+    public interface CompleteCallbackWithBookList{
+        void onComplete(List<Book> bookList);
+    }
 }

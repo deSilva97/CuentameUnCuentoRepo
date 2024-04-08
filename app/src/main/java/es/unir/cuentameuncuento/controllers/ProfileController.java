@@ -3,6 +3,8 @@ package es.unir.cuentameuncuento.controllers;
 import android.content.Intent;
 import android.widget.Toast;
 
+import com.google.common.base.MoreObjects;
+
 import es.unir.cuentameuncuento.activities.LoginActivity;
 import es.unir.cuentameuncuento.activities.ProfileActivity;
 import es.unir.cuentameuncuento.helpers.ActivityHelper;
@@ -56,7 +58,8 @@ public class ProfileController {
         }
     }
 
-    private void onDeleteAccountComplete(boolean result){
+    private void onDeleteAccountComplete(boolean result, String message){
+        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
         ActivityHelper.ChangeActivity(activity, LoginActivity.class, false);
     }
 }
