@@ -43,6 +43,7 @@ public class ProfileController {
 
     public void signOut(){
         firebaseController.signOut();
+        firebaseController.signOutGoogle(activity);
         //
         Intent intent = new Intent(activity, LoginActivity.class);
         activity.startActivity(intent);

@@ -15,6 +15,7 @@ import es.unir.cuentameuncuento.activities.LoginActivity;
 import es.unir.cuentameuncuento.activities.MainActivity;
 import es.unir.cuentameuncuento.helpers.ActivityHelper;
 import es.unir.cuentameuncuento.impls.UserDAOImpl;
+import es.unir.cuentameuncuento.managers.SessionManager;
 
 public class LoginController extends ActivityController {
 
@@ -23,6 +24,9 @@ public class LoginController extends ActivityController {
     LoginActivity activity;
 
     UserDAOImpl userImpl;
+
+    boolean rememberMe = true;
+
 
     public LoginController(LoginActivity activity){
         this.activity = activity;

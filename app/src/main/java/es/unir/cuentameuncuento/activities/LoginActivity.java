@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import es.unir.cuentameuncuento.R;
+import es.unir.cuentameuncuento.contexts.UserContext;
 import es.unir.cuentameuncuento.controllers.LoginController;
 import es.unir.cuentameuncuento.helpers.ActivityHelper;
 import es.unir.cuentameuncuento.managers.SessionManager;
@@ -18,9 +19,6 @@ import es.unir.cuentameuncuento.managers.SessionManager;
 public class LoginActivity extends AppCompatActivity {
 
     LoginController controller;
-
-    String email = "example@mail.com";
-    String password = "_admin00";
 
     Button bRegister;
     Button bLogin;
@@ -55,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         bLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                controller.signInWithEmailPassword(email, password);
+                controller.signInWithEmailPassword(UserContext.getDevEmail(), UserContext.getDevPassword());
             }
         });
 

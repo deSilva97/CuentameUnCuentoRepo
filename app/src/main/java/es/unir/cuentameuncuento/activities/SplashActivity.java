@@ -7,7 +7,9 @@ import android.os.Handler;
 import android.widget.TextView;
 
 import es.unir.cuentameuncuento.R;
+import es.unir.cuentameuncuento.controllers.SplashController;
 import es.unir.cuentameuncuento.helpers.ActivityHelper;
+import es.unir.cuentameuncuento.impls.UserDAOImpl;
 
 public class SplashActivity extends AppCompatActivity {
     private static final int SPLASH_DURATION = 3000; // 3 segundos
@@ -22,9 +24,9 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         //DELETE ME-->
-        //changeActivity(LoginActivity.class, false);
 
-        initActivity();
+        handleSession();
+        //initActivity();
     }
 
     protected void initActivity() {
@@ -51,12 +53,15 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                ActivityHelper.ChangeActivity(SplashActivity.this, LoginActivity.class, false);
-//                Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-//                startActivity(intent);
-//                finish();
+                //ActivityHelper.ChangeActivity(SplashActivity.this, LoginActivity.class, false);
+                handleSession();
             }
         }, SPLASH_DURATION);
+    }
+
+    private void handleSession(){
+        SplashController controller = new SplashController(this);
+        controller.handleSession();
     }
 
 

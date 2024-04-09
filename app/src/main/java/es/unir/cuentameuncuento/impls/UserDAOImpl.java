@@ -5,6 +5,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -25,6 +27,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.unir.cuentameuncuento.managers.SessionManager;
 import es.unir.cuentameuncuento.models.Book;
 import es.unir.cuentameuncuento.models.User;
 
@@ -38,6 +41,10 @@ public class UserDAOImpl {
 
         mAuth = FirebaseAuth.getInstance();
         //user = mAuth.getCurrentUser();
+    }
+
+    public boolean sessionSaved(){
+        return mAuth.getCurrentUser() != null;
     }
 
     public String getIdUser() {
@@ -118,6 +125,11 @@ public class UserDAOImpl {
         mAuth.signOut();
     }
 
+    public void signOutGoogle(Context context){
+        GoogleSignIn.getClient(context, GoogleSignInOptions.DEFAULT_SIGN_IN).signOut();
+        signOut();
+    }
+
     public void deleteAccount(CompleteCallbackResultMessage callback){
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
@@ -187,6 +199,19 @@ public class UserDAOImpl {
 //                    });
 //
 //        }
+    }
+
+    public void signInWithToken(String token, CompleteCallback callback){
+        mAuth.signInWithCustomToken(token).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
+                    callback.onComplete(true);
+                } else {
+                    callback.onComplete(false);
+                }
+            }
+        });
     }
 
     public interface CompleteCallback {

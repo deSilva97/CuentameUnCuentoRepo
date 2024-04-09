@@ -23,4 +23,7 @@ public class UserContext {
     public static List<String> getBooksIDs() {
         return booksIDs;
     }
+
+    public static String getDevEmail() {return  "example@mail.com"; }
+    public static String getDevPassword(){return "123456789"; }
 }

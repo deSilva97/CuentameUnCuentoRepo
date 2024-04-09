@@ -9,20 +9,21 @@ public class SessionManager {
     private SharedPreferences.Editor editor;
 
     private static final String PREF_NAME = "LoginPrefs";
-    private static final String KEY_EMAIL = "username";
-    private static final String KEY_PASSWORD = "password";
+    private static final String USER_TOKEN = "UserToken";
 
     public SessionManager(Context context) {
         sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
     }
 
-    public void saveSession(String email, String password){
-        editor.putString(KEY_EMAIL, email);
-        editor.putString(KEY_PASSWORD, password);
+    public void saveToken(String token){
+        editor.putString(USER_TOKEN, token);
         editor.apply();
     }
 
+    public String loadToken(){
+        return sharedPreferences.getString(USER_TOKEN, "");
+    }
     public void clearSession(){
         editor.clear();
         editor.apply();
