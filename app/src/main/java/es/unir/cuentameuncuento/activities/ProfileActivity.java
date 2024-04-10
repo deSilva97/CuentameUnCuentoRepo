@@ -13,6 +13,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     Button bSignOut;
     Button bDeleteAccount;
+    Button bReturn;
 
     ProfileController profileController;
 
@@ -29,11 +30,19 @@ public class ProfileActivity extends AppCompatActivity {
 
         bSignOut = findViewById(R.id.buttonSignOut);
         bDeleteAccount = findViewById(R.id.button_delete_account);
+        bReturn = findViewById(R.id.button_profile_return);
 
         bSignOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 profileController.signOut();
+            }
+        });
+
+        bReturn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                profileController.goToHome();
             }
         });
 

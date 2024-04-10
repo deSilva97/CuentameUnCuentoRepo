@@ -8,7 +8,6 @@ import android.view.MenuItem;
 import android.widget.Button;
 
 import es.unir.cuentameuncuento.R;
-import es.unir.cuentameuncuento.controllers.HomeController;
 import es.unir.cuentameuncuento.controllers.MainController;
 import es.unir.cuentameuncuento.helpers.ActivityHelper;
 

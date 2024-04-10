@@ -1,5 +1,7 @@
 package es.unir.cuentameuncuento.impls;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -15,8 +17,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import es.unir.cuentameuncuento.controllers.HomeController;
-import es.unir.cuentameuncuento.daos.BookDAO;
 import es.unir.cuentameuncuento.models.Book;
 
 public class BookDAOImpl  {
@@ -38,7 +38,7 @@ public class BookDAOImpl  {
         return db.collection(userID);
     }
 
-    public void createBook(Book book, CompleteCallback callback) {
+    public void createBook(Book book, CompleteCallbackWithDescription callback) {
         Map<String, Object> dbBook = new HashMap<>();
         dbBook.put(FIELD_TITLE, book.getTitle());
         dbBook.put(FIELD_NARRATIVE, book.getNarrative());
@@ -46,14 +46,18 @@ public class BookDAOImpl  {
 
        getUserCollection()
                 .add(dbBook)
-                .addOnSuccessListener(command -> {
-                    callback.onComplete(true);
-                    //controller.refresh();
-                })
-                .addOnFailureListener(command -> {
-                    callback.onComplete(false);
-                    //controller.showAlert();
-                });
+               .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                   @Override
+                   public void onComplete(@NonNull Task<DocumentReference> task) {
+                       if(task.isSuccessful()){
+                           Log.d("BookDAOImpl", "Callback valid");
+                           callback.onComplete(true, "Libro creado");
+                       } else{
+                           Log.d("BookDAOImpl", "Callback null");
+                           callback.onComplete(false, "Operación fallida");
+                       }
+                   }
+               });
     }
 
     public void findBook(String idBook, CompleteCallbackWithBook callback) {
@@ -86,7 +90,7 @@ public class BookDAOImpl  {
 
     }
 
-    public void deleteBook(String idBook, CompleteCallback callback) {
+    public void deleteBook(String idBook, CompleteCallbackWithDescription callback) {
         DocumentReference doc = getUserCollection().document(idBook);
 
         doc.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -94,14 +98,14 @@ public class BookDAOImpl  {
             public void onComplete(Task<Void> task) {
                 if (task.isSuccessful()) {
                     //controller.refresh();
-                    callback.onComplete(true);
+                    callback.onComplete(true, "Libro borrado");
                 } else {
                     // Ocurrió un error al intentar eliminar el documento
                     Exception e = task.getException();
                     if (e != null) {
                         e.printStackTrace();
                     }
-                    callback.onComplete(false);
+                    callback.onComplete(false, "Operación fallida");
                 }
             }
         });
@@ -154,5 +158,9 @@ public class BookDAOImpl  {
     }
     public interface CompleteCallbackWithBookList{
         void onComplete(List<Book> bookList);
+    }
+
+    public interface CompleteCallbackWithDescription{
+        void onComplete(boolean value, String description);
     }
 }

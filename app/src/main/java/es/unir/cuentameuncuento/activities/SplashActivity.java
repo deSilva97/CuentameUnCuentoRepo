@@ -63,6 +63,4 @@ public class SplashActivity extends AppCompatActivity {
         SplashController controller = new SplashController(this);
         controller.handleSession();
     }
-
-
 }

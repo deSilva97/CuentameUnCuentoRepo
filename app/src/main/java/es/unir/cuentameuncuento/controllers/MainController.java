@@ -1,7 +1,9 @@
 package es.unir.cuentameuncuento.controllers;
 
+import android.util.Log;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import es.unir.cuentameuncuento.abstracts.ActivityController;
@@ -26,7 +28,9 @@ public class MainController extends ActivityController {
         userID = userImpl.getIdUser();
 
         bookImpl = new BookDAOImpl(userID);
+        bookList = new ArrayList<>();
         bookImpl.findAll(this::setBookList);
+        refresh();
     }
 
     public void setBookList(List<Book> bookList){
@@ -34,8 +38,10 @@ public class MainController extends ActivityController {
         refresh();
     }
     public void refresh(){
+        Log.d("MainController", "Libros de " + userID);
         for (Book b: bookList){
-            Toast.makeText(activity, b.getId(), Toast.LENGTH_SHORT).show();
+            Log.d("MainController", "Libro " + b.getId());
+//            Toast.makeText(activity, b.getId(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -54,16 +60,18 @@ public class MainController extends ActivityController {
         }
     }
 
-    public void deleteBook(){
-        Book b = new Book();
-        bookImpl.deleteBook(b.getId(), this::onCompleteOperation);
+
+    public void deleteBook(Book book){
+        bookImpl.deleteBook(book.getId(), this::onCompleteOperation);
     }
 
-    private void onCompleteOperation(boolean value){
-        if (value)
-            refresh();
+    private void onCompleteOperation(boolean value, String description){
+        if (value){
+            Toast.makeText(activity, description + description, Toast.LENGTH_SHORT).show();
+            bookImpl.findAll(this::setBookList);
+        }
         else
-            Toast.makeText(activity, "Operación cancelada", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, description, Toast.LENGTH_SHORT).show();
 
     }
 }
