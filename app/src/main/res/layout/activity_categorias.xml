@@ -1,0 +1,41 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/background_gradient">
+
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20sp"
+                            android:textSize="30dp"
+                            android:layout_gravity="center_horizontal"
+                            android:textColor="@android:color/black"
+                            android:text="Categorias" />
+
+                        <GridLayout
+                            android:id="@+id/gridLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:alignmentMode="alignBounds"
+                            android:columnCount="1"
+                            android:columnOrderPreserved="true"
+                            android:padding="5dp">
+
+                        </GridLayout>
+
+                </LinearLayout>
+
+        </ScrollView>
+</LinearLayout>
