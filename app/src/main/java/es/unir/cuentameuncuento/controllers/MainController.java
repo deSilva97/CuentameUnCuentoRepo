@@ -1,11 +1,14 @@
 package es.unir.cuentameuncuento.controllers;
 
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import es.unir.cuentameuncuento.R;
 import es.unir.cuentameuncuento.abstracts.ActivityController;
 import es.unir.cuentameuncuento.activities.MainActivity;
 import es.unir.cuentameuncuento.impls.BookDAOImpl;
@@ -74,4 +77,5 @@ public class MainController extends ActivityController {
             Toast.makeText(activity, description, Toast.LENGTH_SHORT).show();
 
     }
+
 }
