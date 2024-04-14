@@ -33,11 +33,17 @@
             android:name=".activities.ProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.HomeActivity"
+            android:name=".activities.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.LoginActivity"
-            android:exported="true" />
+            android:name=".activities.CategoriasActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.CuentoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.NombreActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

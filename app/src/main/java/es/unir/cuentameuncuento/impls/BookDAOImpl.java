@@ -1,9 +1,13 @@
 package es.unir.cuentameuncuento.impls;
 
+import android.content.Context;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -15,56 +19,50 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import es.unir.cuentameuncuento.controllers.HomeController;
-import es.unir.cuentameuncuento.daos.BookDAO;
 import es.unir.cuentameuncuento.models.Book;
 
-public class BookDAOImpl implements BookDAO {
+public class BookDAOImpl  {
 
-
-    String userID;
     FirebaseFirestore db;
-    HomeController controller;
 
     private final String FIELD_TITLE = "title";
     private final String FIELD_NARRATIVE = "narrative";
     private static final String FIELD_FK_USER = "fk_user";
 
-    public BookDAOImpl(String userID, HomeController controller){
-        this.userID = userID;
-        this.controller = controller;
+    public BookDAOImpl(Context context){
+        FirebaseApp.initializeApp(context);
+        //this.userID = userID;
         db = FirebaseFirestore.getInstance();
     }
 
-    private CollectionReference getUsersCollection(){
-        return db.collection("users");
-    }
-    private CollectionReference getBooksCollection(){
-        return db.collection("books");
+    private CollectionReference getUserCollection(){
+        return db.collection(UserDAOImpl.getIdUser());
     }
 
-    @Override
-    public boolean createBook(Book book) {
+    public void createBook(Book book, CompleteCallbackWithDescription callback) {
         Map<String, Object> dbBook = new HashMap<>();
         dbBook.put(FIELD_TITLE, book.getTitle());
         dbBook.put(FIELD_NARRATIVE, book.getNarrative());
-        dbBook.put(FIELD_FK_USER, book.getFk_user());
+        dbBook.put(FIELD_FK_USER, UserDAOImpl.getIdUser());
 
-       getBooksCollection()
-                .add(dbBook)
-                .addOnSuccessListener(command -> {
-                    controller.refresh();
-                })
-                .addOnFailureListener(command -> {
-                    controller.showAlert();
-                });
-
-        return true;
+       getUserCollection()
+               .add(dbBook)
+               .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                   @Override
+                   public void onComplete(@NonNull Task<DocumentReference> task) {
+                       if(task.isSuccessful()){
+                           Log.d("BookDAOImpl", "Callback valid");
+                           callback.onComplete(true, "Libro creado");
+                       } else{
+                           Log.d("BookDAOImpl", "Callback null");
+                           callback.onComplete(false, "Operación fallida");
+                       }
+                   }
+               });
     }
 
-    @Override
-    public Book findBook(String idBook) {
-        getBooksCollection().get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+    public void findBook(String idBook, CompleteCallbackWithBook callback) {
+        getUserCollection().get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
@@ -72,53 +70,51 @@ public class BookDAOImpl implements BookDAO {
                     QuerySnapshot querySnapshot = task.getResult();
                     if (querySnapshot != null) {
                         for (QueryDocumentSnapshot document : querySnapshot) {
-                            controller.setFindedBook(getBook(document));
+                            //controller.setFindedBook(getBook(document));
+                            callback.onComplete(getBook(document));
                         }
                     }
                     else {
-                        controller.setFindedBook(null);
+                        callback.onComplete(null);
+                        //controller.setFindedBook(null);
                     }
                 }
                 else {
-                    controller.setFindedBook(null);
+                    callback.onComplete(null);
+                    //controller.setFindedBook(null);
                 }
             }
         });
-
-        return null;
     }
 
-    @Override
-    public boolean updateBook(Book idBook) {
-        return false;
+    public void updateBook(Book idBook, CompleteCallback callback) {
+
     }
 
-    @Override
-    public Book deleteBook(String idBook) {
-        DocumentReference doc = getBooksCollection().document(idBook);
+    public void deleteBook(String idBook, CompleteCallbackWithDescription callback) {
+        DocumentReference doc = getUserCollection().document(idBook);
 
         doc.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(Task<Void> task) {
                 if (task.isSuccessful()) {
-                    controller.refresh();
+                    //controller.refresh();
+                    callback.onComplete(true, "Libro borrado");
                 } else {
                     // Ocurrió un error al intentar eliminar el documento
                     Exception e = task.getException();
                     if (e != null) {
                         e.printStackTrace();
                     }
+                    callback.onComplete(false, "Operación fallida");
                 }
             }
         });
-
-        return null;
     }
 
-    @Override
-    public List<Book> findAll() {
+    public void findAll(CompleteCallbackWithBookList callback) {
 
-        getBooksCollection().get()
+        getUserCollection().get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -136,15 +132,14 @@ public class BookDAOImpl implements BookDAO {
                                 Book b = getBook(document);
                                 list.add(b);
                             }
-                            controller.setBookList(list);
+                            //controller.setBookList(list);
+                            callback.onComplete(list);
                         } else {
-
+                            callback.onComplete(null);
                         }
 
                     }
                 });
-
-        return null;
     }
     private Book getBook(QueryDocumentSnapshot document){
         Book b = new Book();
@@ -155,4 +150,18 @@ public class BookDAOImpl implements BookDAO {
         return b;
     }
 
+    public interface CompleteCallback {
+        void onComplete(boolean result);
+    }
+
+    public interface CompleteCallbackWithBook{
+        void onComplete(Book book);
+    }
+    public interface CompleteCallbackWithBookList{
+        void onComplete(List<Book> bookList);
+    }
+
+    public interface CompleteCallbackWithDescription{
+        void onComplete(boolean value, String description);
+    }
 }

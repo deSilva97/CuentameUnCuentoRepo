@@ -2,15 +2,16 @@ package es.unir.cuentameuncuento.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.TextView;
 
 import es.unir.cuentameuncuento.R;
-import es.unir.cuentameuncuento.abstracts.ControllerActivity;
+import es.unir.cuentameuncuento.controllers.SplashController;
+import es.unir.cuentameuncuento.helpers.ActivityHelper;
+import es.unir.cuentameuncuento.impls.UserDAOImpl;
 
-public class SplashActivity extends ControllerActivity {
+public class SplashActivity extends AppCompatActivity {
     private static final int SPLASH_DURATION = 3000; // 3 segundos
     private TextView textView;
     private String mText = "Cuentame un Cuento";
@@ -23,12 +24,11 @@ public class SplashActivity extends ControllerActivity {
         setContentView(R.layout.activity_splash);
 
         //DELETE ME-->
-        //changeActivity(LoginActivity.class, false);
 
-        initActivity();
+        handleSession();
+        //initActivity();
     }
 
-    @Override
     protected void initActivity() {
         textView = findViewById(R.id.text_view);
         animateTextView();
@@ -53,13 +53,14 @@ public class SplashActivity extends ControllerActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                changeActivity(LoginActivity.class, false);
-//                Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-//                startActivity(intent);
-//                finish();
+                //ActivityHelper.ChangeActivity(SplashActivity.this, LoginActivity.class, false);
+                handleSession();
             }
         }, SPLASH_DURATION);
     }
 
-
+    private void handleSession(){
+        SplashController controller = new SplashController(this);
+        controller.handleSession();
+    }
 }

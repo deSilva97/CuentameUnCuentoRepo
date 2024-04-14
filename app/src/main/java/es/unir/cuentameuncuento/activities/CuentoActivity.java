@@ -16,7 +16,10 @@ import java.io.File;
 import java.io.IOException;
 
 import es.unir.cuentameuncuento.R;
+import es.unir.cuentameuncuento.impls.BookDAOImpl;
+import es.unir.cuentameuncuento.impls.UserDAOImpl;
 import es.unir.cuentameuncuento.managers.ApiOpenAi;
+import es.unir.cuentameuncuento.models.Book;
 
 
 public class CuentoActivity extends AppCompatActivity {
@@ -36,11 +39,14 @@ public class CuentoActivity extends AppCompatActivity {
 
     Boolean audioGenerado;
 
+    BookDAOImpl impl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cuento);
+
+        impl = new BookDAOImpl(CuentoActivity.this);
 
         btnReproducir = findViewById(R.id.btnReproducir);
         btnPausar = findViewById(R.id.btnPausar);
@@ -102,11 +108,19 @@ public class CuentoActivity extends AppCompatActivity {
         btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(CuentoActivity.this,"Guardando el cuento", Toast.LENGTH_SHORT).show();
+                Book book = new Book();
+                book.setTitle("Ejemplo libro");
+                book.setNarrative(cuentoGenerado);
+                impl.createBook(book, new BookDAOImpl.CompleteCallbackWithDescription() {
+                    @Override
+                    public void onComplete(boolean value, String description) {
+                        Toast.makeText(CuentoActivity.this,description, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
             }
         });
     }
-
 
     private void generarCuento(String categoria, String personaje) {
 

@@ -5,8 +5,12 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -14,16 +18,22 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import es.unir.cuentameuncuento.managers.SessionManager;
+import es.unir.cuentameuncuento.models.Book;
 import es.unir.cuentameuncuento.models.User;
 
 public class UserDAOImpl {
 
-    FirebaseAuth mAuth;
+    static FirebaseAuth mAuth;
     //FirebaseUser user;
 
     public UserDAOImpl(Context context){
@@ -33,8 +43,12 @@ public class UserDAOImpl {
         //user = mAuth.getCurrentUser();
     }
 
-    public String getIdUser() {
-        return mAuth.getUid();
+    public boolean sessionSaved(){
+        return mAuth.getCurrentUser() != null;
+    }
+
+    public static String getIdUser() {
+            return mAuth.getUid();
     }
 
     public User getUser(){
@@ -111,52 +125,89 @@ public class UserDAOImpl {
         mAuth.signOut();
     }
 
-    public void deleteAccount(CompleteCallback callback){
+    public void signOutGoogle(Context context){
+        GoogleSignIn.getClient(context, GoogleSignInOptions.DEFAULT_SIGN_IN).signOut();
+        signOut();
+    }
+
+    public void deleteAccount(CompleteCallbackResultMessage callback){
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
-/*
-        if(user != null){
-            user.delete()
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()){
-
-                            } else {
-
-                            }
-
-                        }
-                    });
-
-        }
-
- */
-
-        //Eliminar sus libros asociados
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference librosRef = db.collection("books");
-        Query query = librosRef.whereEqualTo("fk_user", FirebaseAuth.getInstance().getUid());
+        String userID = getIdUser();
 
-        // Ejecutamos la consulta y agregamos un listener para manejar la tarea
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        List<Book> auxList = new ArrayList<>();
+
+        //Borrar libros y almacenarlos
+        //Borrar usuario si falla devolver libros borrados
+        //Si se completa invocar el callback con true
+
+        // Paso 1: Recopilar y eliminar libros
+        db.collection(userID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onComplete(Task<QuerySnapshot> task) {
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    // Iteramos sobre los documentos y los eliminamos
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        document.getReference().delete();
+                    List<Task<Void>> deleteTasks = new ArrayList<>();
+                    for (DocumentSnapshot document : task.getResult()) {
+                        deleteTasks.add(document.getReference().delete());
                     }
-                    System.out.println("Documentos eliminados exitosamente.");
-                    // Llamamos al callback para indicar que la operación se completó correctamente
+
+                    // Paso 2: Verificar eliminación de libros
+                    Tasks.whenAll(deleteTasks).addOnSuccessListener(aVoid -> {
+                        // Paso 3: Eliminar usuario
+                        user.delete().addOnCompleteListener(userDeletionTask -> {
+                            if (userDeletionTask.isSuccessful()) {
+                                callback.onComplete(true, "Operación exitosa");
+                            } else {
+                                callback.onComplete(false, "No se pudo eliminar al usuario");
+                            }
+                        });
+                    }).addOnFailureListener(e -> {
+                        callback.onComplete(false, "No se pudieron eliminar los libros");
+                    });
+                } else {
+                    callback.onComplete(false, "No se pudieron recuperar los libros");
+                }
+            }
+        });
+
+//
+//        if(user != null){
+//            user.delete()
+//                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<Void> task) {
+//                            if(task.isSuccessful()){
+//                                //Eliminar sus libros asociados
+//                                db.collection(userID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                                    @Override
+//                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                                        if(task.isSuccessful()){
+//                                            for (DocumentSnapshot document : task.getResult()){
+//                                                db.collection(userID).document(document.getId()).delete();
+//                                            }
+//                                        }
+//                                    }
+//                                });
+//
+//                                callback.onComplete(true);
+//                            } else {
+//                                callback.onComplete(false);
+//                            }
+//
+//                        }
+//                    });
+//
+//        }
+    }
+
+    public void signInWithToken(String token, CompleteCallback callback){
+        mAuth.signInWithCustomToken(token).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
                     callback.onComplete(true);
                 } else {
-                    // Manejo de errores
-                    Exception e = task.getException();
-                    if (e != null) {
-                        e.printStackTrace();
-                    }
-                    // Llamamos al callback para indicar que la operación falló
                     callback.onComplete(false);
                 }
             }
@@ -165,5 +216,9 @@ public class UserDAOImpl {
 
     public interface CompleteCallback {
         void onComplete(boolean result);
+    }
+
+    public interface CompleteCallbackResultMessage{
+        void onComplete(boolean result, String message);
     }
 }
