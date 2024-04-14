@@ -1,16 +1,16 @@
 package es.unir.cuentameuncuento.activities;
-
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import es.unir.cuentameuncuento.R;
+import es.unir.cuentameuncuento.abstracts.ActivityController;
 import es.unir.cuentameuncuento.controllers.MainController;
 import es.unir.cuentameuncuento.helpers.ActivityHelper;
 import es.unir.cuentameuncuento.models.Book;
@@ -21,7 +21,9 @@ public class MainActivity extends AppCompatActivity {
 
     Button bCreateStory;
 
-    @Override
+    Button createStory;
+
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -30,7 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
         bCreateStory = findViewById(R.id.createStory);
         bCreateStory.setOnClickListener(v -> {
-            controller.generateBook();
+            Intent intent = new Intent(MainActivity.this, CategoriasActivity.class);
+            //controller.generateBook();
         });
 
     }
