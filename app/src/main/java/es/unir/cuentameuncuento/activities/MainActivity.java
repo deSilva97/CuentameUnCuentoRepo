@@ -31,9 +31,11 @@ public class MainActivity extends AppCompatActivity {
         controller = new MainController(this);
 
         bCreateStory = findViewById(R.id.createStory);
-        bCreateStory.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, CategoriasActivity.class);
-            //controller.generateBook();
+        bCreateStory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ActivityHelper.ChangeActivity(MainActivity.this, CategoriasActivity.class, true);
+            }
         });
 
     }

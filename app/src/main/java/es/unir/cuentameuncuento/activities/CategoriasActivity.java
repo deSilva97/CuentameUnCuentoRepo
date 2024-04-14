@@ -21,42 +21,42 @@ import es.unir.cuentameuncuento.models.Categoria;
 
 public class CategoriasActivity extends AppCompatActivity {
     private List<Categoria> categorias = new ArrayList<>();
-    @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_categorias);
 
-            crearCategorias();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_categorias);
 
-            GridLayout gridLayout = findViewById(R.id.gridLayout);
+        crearCategorias();
 
-            for (Categoria categoria : categorias) {
+        GridLayout gridLayout = findViewById(R.id.gridLayout);
 
-
-                View cardViewLayout = LayoutInflater.from(this).inflate(R.layout.item_categoria, gridLayout, false);
-                CardView cardView = cardViewLayout.findViewById(R.id.cardViewCategoria);
-                TextView nombreCategoria = cardViewLayout.findViewById(R.id.categoryName);
-                ImageView imagenCategoria = cardViewLayout.findViewById(R.id.categoryImage);
+        for (Categoria categoria : categorias) {
 
 
-                nombreCategoria.setText(categoria.getNombre());
-                imagenCategoria.setImageResource(categoria.getImagenId());
-
-                cardView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        Intent intent = new Intent(CategoriasActivity.this, NombreActivity.class);
-
-                        intent.putExtra("nombreCategoria", categoria.getNombre());
-
-                        startActivity(intent);
-                    }
-                });
+            View cardViewLayout = LayoutInflater.from(this).inflate(R.layout.item_categoria, gridLayout, false);
+            CardView cardView = cardViewLayout.findViewById(R.id.cardViewCategoria);
+            TextView nombreCategoria = cardViewLayout.findViewById(R.id.categoryName);
+            ImageView imagenCategoria = cardViewLayout.findViewById(R.id.categoryImage);
 
 
-                gridLayout.addView(cardViewLayout);
-            }
+            nombreCategoria.setText(categoria.getNombre());
+            imagenCategoria.setImageResource(categoria.getImagenId());
+
+            cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent intent = new Intent(CategoriasActivity.this, NombreActivity.class);
+
+                    intent.putExtra("nombreCategoria", categoria.getNombre());
+
+                    startActivity(intent);
+                }
+            });
+
+
+            gridLayout.addView(cardViewLayout);
+        }
 
     }
 

@@ -27,10 +27,7 @@ public class MainController extends ActivityController {
     public MainController(MainActivity activity){
         this.activity = activity;
 
-        UserDAOImpl userImpl = new UserDAOImpl(activity);
-        userID = userImpl.getIdUser();
-
-        bookImpl = new BookDAOImpl(userID);
+        bookImpl = new BookDAOImpl(activity);
         bookList = new ArrayList<>();
         bookImpl.findAll(this::setBookList);
         refresh();

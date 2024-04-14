@@ -1,11 +1,13 @@
 package es.unir.cuentameuncuento.impls;
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -29,8 +31,10 @@ public class BookDAOImpl  {
     private final String FIELD_NARRATIVE = "narrative";
     private static final String FIELD_FK_USER = "fk_user";
 
-    public BookDAOImpl(String userID){
-        this.userID = userID;
+    public BookDAOImpl(Context context){
+        FirebaseApp.initializeApp(context);
+
+        //this.userID = userID;
         db = FirebaseFirestore.getInstance();
     }
 
@@ -42,10 +46,10 @@ public class BookDAOImpl  {
         Map<String, Object> dbBook = new HashMap<>();
         dbBook.put(FIELD_TITLE, book.getTitle());
         dbBook.put(FIELD_NARRATIVE, book.getNarrative());
-        dbBook.put(FIELD_FK_USER, book.getFk_user());
+        dbBook.put(FIELD_FK_USER, userID);
 
        getUserCollection()
-                .add(dbBook)
+               .add(dbBook)
                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                    @Override
                    public void onComplete(@NonNull Task<DocumentReference> task) {
