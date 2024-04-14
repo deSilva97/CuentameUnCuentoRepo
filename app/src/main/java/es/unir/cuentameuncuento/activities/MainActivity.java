@@ -1,20 +1,32 @@
 package es.unir.cuentameuncuento.activities;
-
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import es.unir.cuentameuncuento.R;
 import es.unir.cuentameuncuento.abstracts.ControllerActivity;
 
 public class MainActivity extends ControllerActivity {
 
+    Button createStory;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        createStory = findViewById(R.id.createStory);
+
+        createStory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, CategoriasActivity.class);
+            }
+        });
+
     }
 
     @Override

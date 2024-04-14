@@ -5,4 +5,5 @@
     <string name="favoritos">Favoritos</string>
     <string name="perfil">Perfil</string>
     <string name="title_activity_splash">Splash</string>
+    <string name="imagen_de_la_categoria">Imagen de la categoria</string>
 </resources>

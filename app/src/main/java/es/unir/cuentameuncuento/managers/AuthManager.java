@@ -25,7 +25,6 @@ import java.util.concurrent.ExecutionException;
 
 import es.unir.cuentameuncuento.controllers.OldAuthController;
 import es.unir.cuentameuncuento.models.User;
-import es.unir.cuentameuncuento.views.ProfileActivity;
 
 public class AuthManager {
 
