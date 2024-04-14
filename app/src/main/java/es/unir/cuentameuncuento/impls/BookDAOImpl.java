@@ -23,8 +23,6 @@ import es.unir.cuentameuncuento.models.Book;
 
 public class BookDAOImpl  {
 
-
-    String userID;
     FirebaseFirestore db;
 
     private final String FIELD_TITLE = "title";
@@ -33,20 +31,19 @@ public class BookDAOImpl  {
 
     public BookDAOImpl(Context context){
         FirebaseApp.initializeApp(context);
-
         //this.userID = userID;
         db = FirebaseFirestore.getInstance();
     }
 
     private CollectionReference getUserCollection(){
-        return db.collection(userID);
+        return db.collection(UserDAOImpl.getIdUser());
     }
 
     public void createBook(Book book, CompleteCallbackWithDescription callback) {
         Map<String, Object> dbBook = new HashMap<>();
         dbBook.put(FIELD_TITLE, book.getTitle());
         dbBook.put(FIELD_NARRATIVE, book.getNarrative());
-        dbBook.put(FIELD_FK_USER, userID);
+        dbBook.put(FIELD_FK_USER, UserDAOImpl.getIdUser());
 
        getUserCollection()
                .add(dbBook)

@@ -28,7 +28,7 @@ public class MainController extends ActivityController {
         this.activity = activity;
 
         bookImpl = new BookDAOImpl(activity);
-        bookList = new ArrayList<>();
+        bookList = new ArrayList<Book>();
         bookImpl.findAll(this::setBookList);
         refresh();
     }
@@ -38,6 +38,10 @@ public class MainController extends ActivityController {
         refresh();
     }
     public void refresh(){
+
+        if(bookList == null)
+            return;
+
         Log.d("MainController", "Libros de " + userID);
         for (Book b: bookList){
             Log.d("MainController", "Libro " + b.getId());

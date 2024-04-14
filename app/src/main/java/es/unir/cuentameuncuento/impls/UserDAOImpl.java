@@ -33,7 +33,7 @@ import es.unir.cuentameuncuento.models.User;
 
 public class UserDAOImpl {
 
-    FirebaseAuth mAuth;
+    static FirebaseAuth mAuth;
     //FirebaseUser user;
 
     public UserDAOImpl(Context context){
@@ -47,8 +47,8 @@ public class UserDAOImpl {
         return mAuth.getCurrentUser() != null;
     }
 
-    public String getIdUser() {
-        return mAuth.getUid();
+    public static String getIdUser() {
+            return mAuth.getUid();
     }
 
     public User getUser(){
