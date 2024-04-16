@@ -30,7 +30,8 @@ public class MainController extends ActivityController {
         bookImpl = new BookDAOImpl(activity);
         bookList = new ArrayList<Book>();
         bookImpl.findAll(this::setBookList);
-        refresh();
+
+        userID = UserDAOImpl.getIdUser();
     }
 
     public void setBookList(List<Book> bookList){

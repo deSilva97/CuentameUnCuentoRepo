@@ -6,15 +6,17 @@
     android:layout_height="match_parent"
     tools:context="es.unir.cuentameuncuento.activities.MainActivity">
 
-    <!-- RecyclerView para el contenedor de libros -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/books_recycler_view"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/textView_title_books"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:scrollbars="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:text="LIBROS"
+        android:textSize="26sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/createStory"
@@ -23,8 +25,6 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_gravity="center_horizontal"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="416dp"
         android:elevation="10dp"
         android:paddingStart="24dp"
         android:paddingTop="16dp"
@@ -35,6 +35,20 @@
         app:cornerRadius="15dp"
         app:iconGravity="start"
         app:iconPadding="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.92" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/bookContainerRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="64dp"
+        android:layout_marginBottom="128dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
