@@ -1,44 +1,54 @@
 package es.unir.cuentameuncuento.activities;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import es.unir.cuentameuncuento.R;
-import es.unir.cuentameuncuento.abstracts.ActivityController;
+import es.unir.cuentameuncuento.adapters.BookAdapter;
+import es.unir.cuentameuncuento.adapters.BookAdapterElement;
 import es.unir.cuentameuncuento.controllers.MainController;
 import es.unir.cuentameuncuento.helpers.ActivityHelper;
-import es.unir.cuentameuncuento.models.Book;
 
 public class MainActivity extends AppCompatActivity {
 
     MainController controller;
 
     Button bCreateStory;
-
-    Button createStory;
-
+    public RecyclerView recyclerView;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        controller = new MainController(this);
+        init();
+        setListeners();
+    }
 
+    void init(){
+        controller = new MainController(this);
         bCreateStory = findViewById(R.id.createStory);
+
+        recyclerView = findViewById(R.id.bookContainerRecyclerView);
+    }
+    void setListeners(){
         bCreateStory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActivityHelper.ChangeActivity(MainActivity.this, CategoriasActivity.class, true);
+                controller.generateBook();
             }
         });
-
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);

@@ -1,24 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- res/layout/book_container.xml -->
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:animateLayoutChanges="true"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="4dp"
+    app:cardUseCompatPadding="true">
 
-    <!-- ImageView para la portada del libro -->
-    <ImageView
-        android:id="@+id/book_cover"
-        android:layout_width="100dp"
-        android:layout_height="150dp"
-        android:src="@drawable/book_placeholder" /> <!-- Reemplaza con tu imagen de portada -->
-
-    <!-- TextView para el título del libro -->
-    <TextView
-        android:id="@+id/book_title"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="6dp">
+
+            <ImageView
+                android:id="@+id/book_icon_container"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="6dp"
+                android:paddingLeft="14dp"
+                android:paddingRight="14dp"
+                android:src="@drawable/book_placeholder" />
+
+            <TextView
+                android:id="@+id/book_title_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="12dp"
+                android:layout_toEndOf="@+id/book_icon_container"
+                android:orientation="vertical"
+                android:text="Titulo del libro amplio, pero que muy amplio"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/btn_favorite_book_container"
+        android:src="@mipmap/star_outline"
+        android:backgroundTint="@color/white"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Título del Libro"
-        android:textSize="18sp"
-        android:textStyle="bold"/>
-</LinearLayout>
+        />
+
+    <ImageButton
+        android:id="@+id/btn_delete_book_container"
+        android:src="@mipmap/delete_fill"
+        android:backgroundTint="@color/white"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_gravity="end|bottom"/>
+
+    <!-- Agrega más vistas según necesites -->
+</androidx.cardview.widget.CardView>
