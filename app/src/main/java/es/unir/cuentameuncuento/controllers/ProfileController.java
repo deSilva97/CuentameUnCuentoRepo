@@ -1,5 +1,7 @@
 package es.unir.cuentameuncuento.controllers;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.widget.Toast;
 
@@ -52,12 +54,32 @@ public class ProfileController {
         Toast.makeText(activity, "Session expired", Toast.LENGTH_SHORT).show();
     }
 
-    public void deleteAccount(boolean confirmation){
-        if(confirmation){
-            firebaseController.deleteAccount(this::onDeleteAccountComplete);
-        } else{
-            Toast.makeText(activity, "No se ha podido borrar la cuenta", Toast.LENGTH_SHORT).show();
-        }
+    public void confirmDeleteAccount(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+
+        builder.setMessage("ESTAS SEGURO DE QUE QUIERES REALIZAR ESTA ACCIÓN")
+                .setTitle("Confirm");
+
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                deleteAccount();
+            }
+        });
+
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    public void deleteAccount(){
+        firebaseController.deleteAccount(this::onDeleteAccountComplete);
     }
 
     private void onDeleteAccountComplete(boolean result, String message){
@@ -66,6 +88,6 @@ public class ProfileController {
     }
 
     public void goToHome(){
-        ActivityHelper.ChangeActivity(activity, MainActivity.class, true);
+        ActivityHelper.ChangeActivity(activity, MainActivity.class, false);
     }
 }
