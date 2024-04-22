@@ -34,7 +34,9 @@ public class MainActivity extends AppCompatActivity {
         bCreateStory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActivityHelper.ChangeActivity(MainActivity.this, CategoriasActivity.class, true);
+                Intent intent = new Intent(MainActivity.this, CategoriasActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                startActivity(intent);
             }
         });
 

@@ -34,14 +34,24 @@ public class NombreActivity extends AppCompatActivity {
         btnGenerar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(NombreActivity.this, CuentoActivity.class);
+                String nombrePersonaje = textoNombre.getText().toString().trim();
 
-                intent.putExtra("nombreCategoria", textoCategoria.getText().toString());
-                intent.putExtra("nombrePersonaje", textoNombre.getText().toString());
+                if (nombrePersonaje.matches("[a-zA-Z]+")) {
 
-                startActivity(intent);
+                    Intent intent = new Intent(NombreActivity.this, CuentoActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+                    intent.putExtra("nombreCategoria", textoCategoria.getText().toString());
+                    intent.putExtra("nombrePersonaje", nombrePersonaje);
+
+                    startActivity(intent);
+                } else {
+
+                    Toast.makeText(NombreActivity.this, "Por favor, ingresa un nombre válido (solo letras).", Toast.LENGTH_SHORT).show();
+                }
             }
+
         });
+    }
 
     }
-}
