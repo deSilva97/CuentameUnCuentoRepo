@@ -1,4 +1,5 @@
 package es.unir.cuentameuncuento.managers;
+import android.content.Context;
 import android.os.AsyncTask;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -11,11 +12,15 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import android.util.Log;
+
+import es.unir.cuentameuncuento.helpers.ApiKeyReader;
 import es.unir.cuentameuncuento.helpers.JSONUtils;
 
 public class ApiOpenAi {
 
-    public static void generarCuento(String categoria, String personaje, final CuentoCallback callback) {
+    public static void generarCuento(String categoria, String personaje, Context context, final CuentoCallback callback){
+
+        String openAiApiKey = ApiKeyReader.getApiKeyOpenAi(context);
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -30,11 +35,11 @@ public class ApiOpenAi {
                             "    \"messages\": [\n" +
                             "      {\n" +
                             "        \"role\": \"system\",\n" +
-                            "        \"content\": \"Eres un generador de cuentos para niños que generaras cuentos personalizados segun categoria y personaje.\"\n" +
+                            "        \"content\": \"Eres un generador de cuentos infantiles que generaras cuentos personalizados segun categoria y personaje. Ten en cuenta de no utilizar lenguaje soez y se creativo.\"\n" +
                             "      },\n" +
                             "      {\n" +
                             "        \"role\": \"user\",\n" +
-                            "        \"content\": \"Generame un cuento de " + categoria + " con " + personaje + "\"\n" +
+                            "        \"content\": \"Generame un cuento de la categoria: " + categoria + " y el personaje: " + personaje + "\"\n" +
                             "      }\n" +
                             "    ]\n" +
                             "}";
@@ -43,7 +48,8 @@ public class ApiOpenAi {
                     HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                     urlConnection.setRequestMethod("POST");
                     urlConnection.setRequestProperty("Content-Type", "application/json");
-                    urlConnection.setRequestProperty("Authorization", "Bearer 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");
+                    Log.d("Apikey", "es: " + openAiApiKey);
+                    urlConnection.setRequestProperty("Authorization",openAiApiKey);
                     urlConnection.setDoOutput(true);
 
                     // Trazas
@@ -104,7 +110,9 @@ public class ApiOpenAi {
         void onError(String mensajeError);
     }
 
-    public static void generarAudio(String cuento, final AudioCallback audioCallback) {
+    public static void generarAudio(String cuento, Context context, final AudioCallback audioCallback) {
+
+        String openAiApiKey = ApiKeyReader.getApiKeyOpenAi(context);
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -127,7 +135,8 @@ public class ApiOpenAi {
                     HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                     urlConnection.setRequestMethod("POST");
                     urlConnection.setRequestProperty("Content-Type", "application/json");
-                    urlConnection.setRequestProperty("Authorization", "Bearer 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");
+                    Log.d("Apikey", "es: " + openAiApiKey);
+                    urlConnection.setRequestProperty("Authorization",openAiApiKey);
                     urlConnection.setDoOutput(true);
 
                     audioCallback.onStartCreation();

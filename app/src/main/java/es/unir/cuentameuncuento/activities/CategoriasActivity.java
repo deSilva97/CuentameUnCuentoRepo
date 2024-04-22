@@ -47,7 +47,7 @@ public class CategoriasActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
                     Intent intent = new Intent(CategoriasActivity.this, NombreActivity.class);
-
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                     intent.putExtra("nombreCategoria", categoria.getNombre());
 
                     startActivity(intent);
@@ -61,10 +61,15 @@ public class CategoriasActivity extends AppCompatActivity {
     }
 
     private void crearCategorias() {
-        categorias.add(new Categoria(1, "Fantasía", "Descripción de fantasía", getResources().getIdentifier("icono_fantasia", "drawable", getPackageName())));
-        categorias.add(new Categoria(2, "Aventuras", "Descripción de aventuras", getResources().getIdentifier("icono_fantasia", "drawable", getPackageName())));
-        categorias.add(new Categoria(3, "Super Heroes", "Descripción de super héroes", getResources().getIdentifier("icono_fantasia", "drawable", getPackageName())));
-        categorias.add(new Categoria(4, "Princesas", "Descripción de princesas", getResources().getIdentifier("icono_princesas", "drawable", getPackageName())));
+        categorias.add(new Categoria(1, "Fantasía", "Explora mundos mágicos y criaturas fantásticas.", getResources().getIdentifier("icono_fantasia", "drawable", getPackageName())));
+        categorias.add(new Categoria(2, "Aventuras", "Embárcate en emocionantes viajes llenos de peligros y descubrimientos.", getResources().getIdentifier("icono_fantasia", "drawable", getPackageName())));
+        categorias.add(new Categoria(3, "Super Héroes", "Únete a valientes héroes en su lucha contra el mal.", getResources().getIdentifier("icono_fantasia", "drawable", getPackageName())));
+        categorias.add(new Categoria(4, "Princesas", "Descubre historias de valentía y romance en reinos lejanos.", getResources().getIdentifier("icono_fantasia", "drawable", getPackageName())));
+        categorias.add(new Categoria(5, "Ciencia Ficción", "Explora mundos futuristas y tecnologías avanzadas.", getResources().getIdentifier("icono_fantasia", "drawable", getPackageName())));
+        categorias.add(new Categoria(6, "Misterio", "Resuelve enigmas y descubre secretos ocultos.", getResources().getIdentifier("icono_fantasia", "drawable", getPackageName())));
+        categorias.add(new Categoria(7, "Animales", "Acompaña a encantadores animales en aventuras asombrosas.", getResources().getIdentifier("icono_fantasia", "drawable", getPackageName())));
+        categorias.add(new Categoria(8, "Magia", "Desentraña los misterios de la magia y los hechizos.", getResources().getIdentifier("icono_fantasia", "drawable", getPackageName())));
+
 
     }
 }

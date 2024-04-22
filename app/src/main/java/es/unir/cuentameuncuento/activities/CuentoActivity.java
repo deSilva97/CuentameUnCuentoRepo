@@ -124,7 +124,7 @@ public class CuentoActivity extends AppCompatActivity {
 
     private void generarCuento(String categoria, String personaje) {
 
-        ApiOpenAi.generarCuento(categoria, personaje, new ApiOpenAi.CuentoCallback() {
+        ApiOpenAi.generarCuento(categoria, personaje, this, new ApiOpenAi.CuentoCallback() {
 
             @Override
             public void onStartCreation() {
@@ -165,14 +165,12 @@ public class CuentoActivity extends AppCompatActivity {
 
 
     private void generarAudio(String cuento) {
-        ApiOpenAi.generarAudio(cuento, new ApiOpenAi.AudioCallback() {
+        ApiOpenAi.generarAudio(cuento,this, new ApiOpenAi.AudioCallback() {
 
             @Override
             public void onStartCreation() {
 
             }
-
-
             @Override
             public void onAudioGenerated(File audioFile) {
                 if (audioFile != null && audioFile.exists()) {
