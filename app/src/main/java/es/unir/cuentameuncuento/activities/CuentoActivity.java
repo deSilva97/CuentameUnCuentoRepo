@@ -107,11 +107,10 @@ public class CuentoActivity extends AppCompatActivity {
                     public void onComplete(boolean value, String description) {
 
                         Toast.makeText(CuentoActivity.this,description, Toast.LENGTH_SHORT).show();
-
-
+                        backToHome();
                     }
                 });
-                backToHome();
+
             }
         });
     }

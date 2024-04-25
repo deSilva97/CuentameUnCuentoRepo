@@ -51,7 +51,6 @@ public class StoryController extends ActivityController {
             });
             }
 
-
     public void newSpeech(String cuento) {
         ApiService.generarAudio(cuento,activity, new ApiService.AudioCallback() {
             @Override
