@@ -1,8 +1,9 @@
 package es.unir.cuentameuncuento.models;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Book {
+public class Book implements Serializable {
     private String id;
     private String title;
     private String narrative;

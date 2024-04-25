@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import es.unir.cuentameuncuento.R;
+import es.unir.cuentameuncuento.models.Book;
 
 public class NombreActivity extends AppCompatActivity {
 
@@ -41,8 +42,12 @@ public class NombreActivity extends AppCompatActivity {
                     Intent intent = new Intent(NombreActivity.this, CuentoActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
+                    Book testLibro = new Book("1","Test","Eres un chico listo",true,"23");
+
                     intent.putExtra("nombreCategoria", textoCategoria.getText().toString());
                     intent.putExtra("nombrePersonaje", nombrePersonaje);
+                    intent.putExtra("book", testLibro);
+                    intent.putExtra("origen", "NombreActivity");
 
                     startActivity(intent);
                 } else {
