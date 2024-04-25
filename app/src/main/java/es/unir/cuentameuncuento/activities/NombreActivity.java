@@ -47,7 +47,7 @@ public class NombreActivity extends AppCompatActivity {
                     intent.putExtra("nombreCategoria", textoCategoria.getText().toString());
                     intent.putExtra("nombrePersonaje", nombrePersonaje);
                     intent.putExtra("book", testLibro);
-                    intent.putExtra("origen", "MainActivity");
+                    intent.putExtra("origen", "NombreActivity");
 
                     startActivity(intent);
                 } else {
