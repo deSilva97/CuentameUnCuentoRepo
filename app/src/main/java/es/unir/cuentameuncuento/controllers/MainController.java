@@ -36,9 +36,15 @@ public class MainController extends ActivityController {
 
         bookImpl = new BookDAOImpl(activity);
         bookList = new ArrayList<Book>();
-        bookImpl.findAll(this::setBookList);
+
 
         userID = UserDAOImpl.getIdUser();
+
+
+    }
+
+    public void findBooks(){
+        bookImpl.findAll(this::setBookList);
     }
 
     public void setBookList(List<Book> bookList){

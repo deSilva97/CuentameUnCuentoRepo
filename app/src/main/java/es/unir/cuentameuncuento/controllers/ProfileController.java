@@ -79,7 +79,7 @@ public class ProfileController {
     }
 
     public void deleteAccount(){
-        firebaseController.deleteAccount(this::onDeleteAccountComplete);
+        firebaseController.deleteAccount(activity, this::onDeleteAccountComplete);
     }
 
     private void onDeleteAccountComplete(boolean result, String message){
