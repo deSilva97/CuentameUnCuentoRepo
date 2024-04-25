@@ -16,8 +16,6 @@ import es.unir.cuentameuncuento.models.Book;
 
 public class StoryController extends ActivityController {
     CuentoActivity activity;
-    String cuentoGenerado;
-
 
     // Constructor del controllador de cuentos
     public StoryController ( CuentoActivity activity){
@@ -38,8 +36,8 @@ public class StoryController extends ActivityController {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        cuentoGenerado = cuento;
-                        activity.txtCuentoGenerado.setText(cuentoGenerado);
+                        activity.cuentoGenerado = cuento;
+                        activity.txtCuentoGenerado.setText(activity.cuentoGenerado);
                         activity.progressBar.setVisibility(View.INVISIBLE);
                     }
                 });
@@ -100,6 +98,8 @@ public class StoryController extends ActivityController {
 
         activity.txtCuentoGenerado.setText(cuento.getNarrative().toString());
         activity.progressBar.setVisibility(View.INVISIBLE);
+
+//        activity.cuentoGenerado = cuento.getNarrative().toString();
 
     }
 

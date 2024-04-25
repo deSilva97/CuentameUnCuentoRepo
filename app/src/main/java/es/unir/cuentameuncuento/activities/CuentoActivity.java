@@ -18,7 +18,8 @@ import es.unir.cuentameuncuento.models.Book;
 
 public class CuentoActivity extends AppCompatActivity {
     StoryController controller;
-    String nombreCategoria, nombrePersonaje,cuentoGenerado,origen;
+    public String cuentoGenerado;
+    String nombreCategoria, nombrePersonaje,origen;
     public Button btnReproducir,btnGuardar,btnPausar;
     public ProgressBar progressBar, progressBarReproducir;
     public TextView txtCuentoGenerado;
@@ -42,9 +43,9 @@ public class CuentoActivity extends AppCompatActivity {
 
             case "NombreActivity": controller.newStory(nombreCategoria,nombrePersonaje);
             break;
-            case "MainActivity": controller.showSavedBook(book);
-
-
+            case "MainActivity":
+                btnGuardar.setEnabled(false);
+                controller.showSavedBook(book);
         }
 
 
@@ -64,8 +65,6 @@ public class CuentoActivity extends AppCompatActivity {
         progressBarReproducir.setVisibility(View.INVISIBLE);
         btnPausar.setVisibility(View.INVISIBLE);
         audioGenerado = false;
-
-
     }
     private void setListeners() {
 
@@ -99,6 +98,9 @@ public class CuentoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                //Quitar el botón Guardar
+                btnGuardar.setEnabled(false);
+
                 Book book = new Book();
                 book.setTitle("Ejemplo libro");
                 book.setNarrative(cuentoGenerado);
@@ -106,8 +108,14 @@ public class CuentoActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(boolean value, String description) {
 
-                        Toast.makeText(CuentoActivity.this,description, Toast.LENGTH_SHORT).show();
-                        backToHome();
+                        if(value){
+                            Toast.makeText(CuentoActivity.this,description, Toast.LENGTH_SHORT).show();
+                            backToHome();
+                        } else {
+                            //Devolver el botón Guardar
+                            btnGuardar.setEnabled(true);
+                        }
+
                     }
                 });
 
