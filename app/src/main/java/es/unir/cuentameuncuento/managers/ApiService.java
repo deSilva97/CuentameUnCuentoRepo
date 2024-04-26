@@ -16,7 +16,7 @@ import android.util.Log;
 import es.unir.cuentameuncuento.helpers.ApiKeyReader;
 import es.unir.cuentameuncuento.helpers.JSONUtils;
 
-public class ApiOpenAi {
+public class ApiService {
 
     public static void generarCuento(String categoria, String personaje, Context context, final CuentoCallback callback){
 

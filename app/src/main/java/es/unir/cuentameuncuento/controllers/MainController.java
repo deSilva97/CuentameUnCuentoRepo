@@ -2,6 +2,7 @@ package es.unir.cuentameuncuento.controllers;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Debug;
 import android.util.Log;
 import android.widget.Toast;
@@ -14,7 +15,10 @@ import java.util.List;
 
 import es.unir.cuentameuncuento.R;
 import es.unir.cuentameuncuento.abstracts.ActivityController;
+import es.unir.cuentameuncuento.activities.CategoriasActivity;
+import es.unir.cuentameuncuento.activities.CuentoActivity;
 import es.unir.cuentameuncuento.activities.MainActivity;
+import es.unir.cuentameuncuento.activities.NombreActivity;
 import es.unir.cuentameuncuento.adapters.BookAdapter;
 import es.unir.cuentameuncuento.adapters.BookAdapterElement;
 import es.unir.cuentameuncuento.impls.BookDAOImpl;
@@ -36,9 +40,15 @@ public class MainController extends ActivityController {
 
         bookImpl = new BookDAOImpl(activity);
         bookList = new ArrayList<Book>();
-        bookImpl.findAll(this::setBookList);
+
 
         userID = UserDAOImpl.getIdUser();
+
+
+    }
+
+    public void findBooks(){
+        bookImpl.findAll(this::setBookList);
     }
 
     public void setBookList(List<Book> bookList){
@@ -93,7 +103,11 @@ public class MainController extends ActivityController {
     public void readBook(Book book){
         Toast.makeText(activity, "Leer: " + book.getId(), Toast.LENGTH_SHORT).show();
 
-        //El PABLO me tiene que dar su metodo
+        //El FAKIN PABLO me tiene que dar su metodo
+        Intent intent = new Intent(activity, CuentoActivity.class);
+        intent.putExtra("book", book);
+        intent.putExtra("origen", "MainActivity");
+        activity.startActivity(intent);
     }
 
     public void deleteBook(String id){

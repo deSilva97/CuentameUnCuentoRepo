@@ -56,6 +56,13 @@ public class MainActivity extends AppCompatActivity {
         setListeners();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        controller.findBooks();
+    }
+
     void init(){
         controller = new MainController(this);
         bCreateStory = findViewById(R.id.createStory);

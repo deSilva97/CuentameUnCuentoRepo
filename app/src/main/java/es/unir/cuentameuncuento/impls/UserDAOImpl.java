@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -130,7 +131,7 @@ public class UserDAOImpl {
         signOut();
     }
 
-    public void deleteAccount(CompleteCallbackResultMessage callback){
+    public void deleteAccount(Context context, CompleteCallbackResultMessage callback){
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -158,6 +159,8 @@ public class UserDAOImpl {
                         user.delete().addOnCompleteListener(userDeletionTask -> {
                             if (userDeletionTask.isSuccessful()) {
                                 callback.onComplete(true, "Operación exitosa");
+                                //Eliminar aqui credenciales guardadas de Google
+                                signOutGoogle(context);
                             } else {
                                 callback.onComplete(false, "No se pudo eliminar al usuario");
                             }
@@ -170,35 +173,6 @@ public class UserDAOImpl {
                 }
             }
         });
-
-//
-//        if(user != null){
-//            user.delete()
-//                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<Void> task) {
-//                            if(task.isSuccessful()){
-//                                //Eliminar sus libros asociados
-//                                db.collection(userID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                                    @Override
-//                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                                        if(task.isSuccessful()){
-//                                            for (DocumentSnapshot document : task.getResult()){
-//                                                db.collection(userID).document(document.getId()).delete();
-//                                            }
-//                                        }
-//                                    }
-//                                });
-//
-//                                callback.onComplete(true);
-//                            } else {
-//                                callback.onComplete(false);
-//                            }
-//
-//                        }
-//                    });
-//
-//        }
     }
 
     public void signInWithToken(String token, CompleteCallback callback){

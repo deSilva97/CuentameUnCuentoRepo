@@ -78,7 +78,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
                 }
             });
 
-            bDelete.setOnClickListener(null);
+            bFavorite.setOnClickListener(null);
             bFavorite.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
