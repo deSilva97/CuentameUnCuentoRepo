@@ -8,9 +8,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +34,23 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                if (item.getItemId()== R.id.profile) {
+                    //click on profile
+                    ActivityHelper.ChangeActivity(MainActivity.this, ProfileActivity.class, true);
+                    return true;
+                } else if (item.getItemId()== R.id.favorites) {
+                    //click on favorites
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
 
         init();
         setListeners();
@@ -59,25 +79,5 @@ public class MainActivity extends AppCompatActivity {
                 //controller.generateBook();
             }
         });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId()== R.id.profile) {
-            //click on profile
-            ActivityHelper.ChangeActivity(MainActivity.this, ProfileActivity.class, true);
-            return true;
-        } else if (item.getItemId()== R.id.favorites) {
-            //click on favorites
-            return true;
-        } else {
-            return super.onOptionsItemSelected(item);
-        }
     }
 }
