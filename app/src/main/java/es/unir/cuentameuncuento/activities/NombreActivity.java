@@ -39,7 +39,7 @@ public class NombreActivity extends AppCompatActivity {
 
                 if (nombrePersonaje.matches("[a-zA-Z]+")) {
 
-                    Intent intent = new Intent(NombreActivity.this, CuentoActivity.class);
+                    Intent intent = new Intent(NombreActivity.this, StoryActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
                     Book testLibro = new Book("1","Test","Eres un chico listo",true,"23");
@@ -48,7 +48,6 @@ public class NombreActivity extends AppCompatActivity {
                     intent.putExtra("nombrePersonaje", nombrePersonaje);
                     intent.putExtra("book", testLibro);
                     intent.putExtra("origen", "NombreActivity");
-
                     startActivity(intent);
                 } else {
 

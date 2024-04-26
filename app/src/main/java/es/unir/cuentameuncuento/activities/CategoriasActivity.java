@@ -54,7 +54,6 @@ public class CategoriasActivity extends AppCompatActivity {
                 }
             });
 
-
             gridLayout.addView(cardViewLayout);
         }
 
@@ -69,7 +68,6 @@ public class CategoriasActivity extends AppCompatActivity {
         categorias.add(new Categoria(6, "Misterio", "Resuelve enigmas y descubre secretos ocultos.", getResources().getIdentifier("icono_misterio", "drawable", getPackageName())));
         categorias.add(new Categoria(7, "Animales", "Acompaña a encantadores animales en aventuras asombrosas.", getResources().getIdentifier("icono_animales", "drawable", getPackageName())));
         categorias.add(new Categoria(8, "Magia", "Desentraña los misterios de la magia y los hechizos.", getResources().getIdentifier("icono_magia", "drawable", getPackageName())));
-
 
     }
 }
