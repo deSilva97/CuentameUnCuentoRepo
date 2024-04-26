@@ -101,11 +101,10 @@ public class StoryController extends ActivityController {
     }
 
     public void showSavedBook(Book book){
-        activity.btnSave.setEnabled(false);
+        activity.btnSave.setVisibility(View.INVISIBLE);
         activity.currentBook = book;
         activity.txtStory.setText(book.getNarrative().toString());
         activity.progressBar.setVisibility(View.INVISIBLE);
-
     }
 
     public void saveBook (Book cuentoGenerado){

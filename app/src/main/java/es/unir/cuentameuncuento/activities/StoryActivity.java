@@ -96,6 +96,7 @@ public class StoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 controller.saveBook(currentBook);
+                backToHome();
             }
         });
     }
