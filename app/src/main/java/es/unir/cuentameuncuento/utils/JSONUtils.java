@@ -1,4 +1,4 @@
-package es.unir.cuentameuncuento.helpers;
+package es.unir.cuentameuncuento.utils;
 
 import android.util.Log;
 

@@ -14,7 +14,7 @@ import java.net.URL;
 import android.util.Log;
 
 import es.unir.cuentameuncuento.helpers.ApiKeyReader;
-import es.unir.cuentameuncuento.helpers.JSONUtils;
+import es.unir.cuentameuncuento.utils.JSONUtils;
 
 public class ApiService {
 
