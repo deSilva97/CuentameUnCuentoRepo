@@ -1,12 +1,15 @@
 package es.unir.cuentameuncuento.controllers;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 import java.io.File;
 import java.io.IOException;
 import es.unir.cuentameuncuento.abstracts.ActivityController;
+import es.unir.cuentameuncuento.activities.MainActivity;
 import es.unir.cuentameuncuento.activities.StoryActivity;
 import es.unir.cuentameuncuento.impls.BookDAOImpl;
 import es.unir.cuentameuncuento.managers.ApiService;
@@ -15,6 +18,8 @@ import es.unir.cuentameuncuento.models.Book;
 public class StoryController extends ActivityController {
     StoryActivity activity;
     BookDAOImpl bookDaoImpl;
+    private Handler handler;
+    private Runnable runnable;
     public StoryController ( StoryActivity activity){
         this.activity = activity;
         bookDaoImpl = new BookDAOImpl(activity);
@@ -74,11 +79,13 @@ public class StoryController extends ActivityController {
                                 activity.speechMediaPlayer.setDataSource(audioFile.getAbsolutePath());
                                 activity.speechMediaPlayer.prepare();
                                 activity.speechMediaPlayer.start();
+                                startAutoScroll();
                                 activity.speechMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                                     @Override
                                     public void onCompletion(MediaPlayer mp) {
                                         Toast.makeText(activity, "Reproducción finalizada", Toast.LENGTH_SHORT).show();
                                         mp.release();
+                                        stopAutoScroll();
                                     }
                                 });
                             } catch (IOException e) {
@@ -117,6 +124,7 @@ public class StoryController extends ActivityController {
 
                 if (value) {
                     Toast.makeText(activity, description, Toast.LENGTH_SHORT).show();
+                    backToHome();
                 } else {
                     activity.btnSave.setEnabled(true);
                 }
@@ -124,6 +132,33 @@ public class StoryController extends ActivityController {
         });
     }
 
+    public void backToHome(){
+        Intent intent = new Intent(activity, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        activity.startActivity(intent);
+    }
+
+    private void startAutoScroll() {
+        handler = new Handler();
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                // Realizar el autoscroll
+                activity.scrollView.scrollTo(0, activity.scrollView.getScrollY() + 1); // Ajusta el valor según la velocidad deseada
+
+                // Programar el siguiente autoscroll después de un intervalo
+                handler.postDelayed(this, 100); // Ajusta el valor según la velocidad deseada
+            }
+        };
+
+        // Iniciar el autoscroll
+        handler.post(runnable);
+    }
+
+    private void stopAutoScroll() {
+        // Detener el autoscroll eliminando las llamadas a postDelayed
+        handler.removeCallbacks(runnable);
+    }
 
 
 }

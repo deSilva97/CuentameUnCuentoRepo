@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,9 +28,7 @@ public class StoryActivity extends AppCompatActivity {
     public TextView txtStory;
     public MediaPlayer backgroundMediaPlayer, speechMediaPlayer;
     Boolean generatedAudioSuccesfuly;
-
-
-
+    public ScrollView scrollView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +63,7 @@ public class StoryActivity extends AppCompatActivity {
         progressBarPlay.setVisibility(View.INVISIBLE);
         btnPause.setVisibility(View.INVISIBLE);
         generatedAudioSuccesfuly = false;
+        scrollView =findViewById(R.id.scrollView);
     }
     private void setListeners() {
 
@@ -96,7 +96,6 @@ public class StoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 controller.saveBook(currentBook);
-                backToHome();
             }
         });
     }
@@ -112,11 +111,7 @@ public class StoryActivity extends AppCompatActivity {
         }
     }
 
-    private void backToHome(){
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        startActivity(intent);
-    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
