@@ -38,7 +38,7 @@
             android:name=".activities.CategoriasActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.CuentoActivity"
+            android:name=".activities.StoryActivity"
             android:exported="false" />
         <activity
             android:name=".activities.NombreActivity"
