@@ -37,7 +37,7 @@
                         android:id="@+id/btnReproducir"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/green"
+                        android:backgroundTint="@color/backgroundColor"
                         android:text="Reproducir" />
 
                     <ProgressBar
