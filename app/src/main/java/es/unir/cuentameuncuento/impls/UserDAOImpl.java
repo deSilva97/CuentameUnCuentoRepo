@@ -188,6 +188,22 @@ public class UserDAOImpl {
         });
     }
 
+    public void recoverPassword(String email, CompleteCallbackResultMessage callback){
+        mAuth.sendPasswordResetEmail(email)
+            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        callback.onComplete(true, "Email send.");
+
+                    } else {
+                        callback.onComplete(false, "Something wrong...");
+                    }
+
+                }
+            });
+    }
+
     public interface CompleteCallback {
         void onComplete(boolean result);
     }

@@ -15,6 +15,7 @@ import es.unir.cuentameuncuento.abstracts.ActivityController;
 import es.unir.cuentameuncuento.activities.LoginActivity;
 import es.unir.cuentameuncuento.activities.MainActivity;
 import es.unir.cuentameuncuento.helpers.ActivityHelper;
+import es.unir.cuentameuncuento.helpers.CredentialsHelper;
 import es.unir.cuentameuncuento.impls.UserDAOImpl;
 import es.unir.cuentameuncuento.managers.SessionManager;
 
@@ -48,14 +49,32 @@ public class LoginController extends ActivityController {
     public  void signInWithEmailPassword(String email, String password){
         loading = true;
 
-        Log.d("LoginController", "email=" + email);
-        Log.d("LoginController", "pssw=" + password);
+        boolean correctEmail = CredentialsHelper.verifyEmail(email);
+        boolean correctPassword = CredentialsHelper.verifyPassword(password);
 
-        if(verifyEmailPassword(email, password)){
+        if(correctEmail && correctPassword){
             userImpl.signInWithEmailPassword(email, password, this::onLoginComplete);
-        } else {
+        }else {
             Toast.makeText(activity, "Not valid email or password", Toast.LENGTH_SHORT).show();
+
+            if(!correctEmail){
+                Toast.makeText(activity, "Not valid email", Toast.LENGTH_SHORT).show();
+            }
+
+            if(!correctPassword){
+                Toast.makeText(activity, "Not valid password", Toast.LENGTH_SHORT).show();
+            }
+
         }
+
+//        Log.d("LoginController", "email=" + email);
+//        Log.d("LoginController", "pssw=" + password);
+//
+//        if(verifyEmailPassword(email, password)){
+//            userImpl.signInWithEmailPassword(email, password, this::onLoginComplete);
+//        } else {
+//            Toast.makeText(activity, "Not valid email or password", Toast.LENGTH_SHORT).show();
+//        }
 
     }
 
@@ -100,5 +119,16 @@ public class LoginController extends ActivityController {
         Log.d("LoginController", "password? " + correctPassword);
 
         return correctEmail && correctPassword;
+    }
+
+    public void recoverPassword(String email){
+
+        if(CredentialsHelper.verifyEmail(email)){
+            userImpl.recoverPassword(email, this::onRecoverPasswordComplete);
+        }
+    }
+
+    private  void onRecoverPasswordComplete(boolean value, String msj){
+        Toast.makeText(activity, msj, Toast.LENGTH_SHORT).show();
     }
 }

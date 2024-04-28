@@ -20,12 +20,14 @@ public class LoginActivity extends AppCompatActivity {
 
     LoginController controller;
 
-    TextView bRegister;
+    TextView txtRegister;
     Button bLogin;
     Button bGoogle;
 
     EditText editTxtEmail;
     EditText editTxtPassword;
+
+    TextView txtForgotPassword;
 
 
     @SuppressLint("MissingInflatedId")
@@ -47,15 +49,17 @@ public class LoginActivity extends AppCompatActivity {
         editTxtEmail = findViewById(R.id.editTextTextEmailAddress);
         editTxtPassword = findViewById(R.id.editTextTextPassword);
 
-        bRegister = findViewById(R.id.button_register);
+        txtRegister = findViewById(R.id.button_register);
         bLogin = findViewById(R.id.button_login);
         bGoogle = findViewById(R.id.button_google);
+
+        txtForgotPassword = findViewById(R.id.txtForgotPassword);
 
     }
 
     private void setListeners() {
 
-        bRegister.setOnClickListener(new View.OnClickListener() {
+        txtRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ActivityHelper.ChangeActivity(LoginActivity.this, NewAccountActivity.class, true);
@@ -76,10 +80,16 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        txtForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                controller.recoverPassword(editTxtEmail.getText().toString());
+            }
+        });
+
+
 
     }
-
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
