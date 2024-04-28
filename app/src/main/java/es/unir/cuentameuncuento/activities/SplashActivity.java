@@ -25,8 +25,8 @@ public class SplashActivity extends AppCompatActivity {
 
         //DELETE ME-->
 
-        //handleSession();
-        initActivity();
+        handleSession();
+        //initActivity();
     }
 
     protected void initActivity() {
