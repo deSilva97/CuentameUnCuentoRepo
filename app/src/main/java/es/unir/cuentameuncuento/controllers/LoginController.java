@@ -1,6 +1,7 @@
 package es.unir.cuentameuncuento.controllers;
 
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -46,7 +47,16 @@ public class LoginController extends ActivityController {
 
     public  void signInWithEmailPassword(String email, String password){
         loading = true;
-        userImpl.signInWithEmailPassword(email, password, this::onLoginComplete);
+
+        Log.d("LoginController", "email=" + email);
+        Log.d("LoginController", "pssw=" + password);
+
+        if(verifyEmailPassword(email, password)){
+            userImpl.signInWithEmailPassword(email, password, this::onLoginComplete);
+        } else {
+            Toast.makeText(activity, "Not valid email or password", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     public void signInWithGoogle(Intent data){
@@ -72,5 +82,23 @@ public class LoginController extends ActivityController {
             Toast.makeText(activity, "Sign in failed", Toast.LENGTH_SHORT).show();
         }
         loading = false;
+    }
+
+    private boolean verifyEmailPassword(String email, String psw){
+
+        String regex_email = "[a-zA-Z0-9_+&*-]+";
+        String opt_re_email_points = "(?:\\\\.[a-zA-Z0-9_+&*-]+)*";
+        String regex_prov = "[a-zA-Z0-9]+";
+        String regex_domain = "[a-zA-Z]{2,7}";
+
+        String emRegix= "^" + regex_email + opt_re_email_points + "@" + regex_prov + "." + regex_domain + "$";
+
+        boolean correctEmail = !email.isEmpty() && email.matches(emRegix);
+        boolean correctPassword = !psw.isEmpty() && (psw.length() >= 6);
+
+        Log.d("LoginController", "email? " + correctEmail);
+        Log.d("LoginController", "password? " + correctPassword);
+
+        return correctEmail && correctPassword;
     }
 }

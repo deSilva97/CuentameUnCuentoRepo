@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -24,6 +25,9 @@ public class LoginActivity extends AppCompatActivity {
     Button bLogin;
     Button bGoogle;
 
+    EditText editTxtEmail;
+    EditText editTxtPassword;
+
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -32,16 +36,25 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         initActivity();
+        setListeners();
 
         SessionManager session = new SessionManager(this);
 
     }
+
     protected void initActivity() {
         controller = new LoginController(this);
+
+        editTxtEmail = findViewById(R.id.editTextTextEmailAddress);
+        editTxtPassword = findViewById(R.id.editTextTextPassword);
 
         bRegister = findViewById(R.id.button_register);
         bLogin = findViewById(R.id.button_login);
         bGoogle = findViewById(R.id.button_google);
+
+    }
+
+    private void setListeners() {
 
         bRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
         bLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                controller.signInWithEmailPassword(UserContext.getDevEmail(), UserContext.getDevPassword());
+                controller.signInWithEmailPassword(editTxtEmail.getText().toString(), editTxtPassword.getText().toString());
             }
         });
 
@@ -63,7 +76,11 @@ public class LoginActivity extends AppCompatActivity {
                 controller.authWithGoogle();
             }
         });
+
+
     }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
