@@ -2,14 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/home"
-        android:icon="@mipmap/star_fill"
+        android:icon="@mipmap/home"
         android:title="Inicio" />
     <item
         android:id="@+id/favorites"
-        android:icon="@mipmap/star_fill"
+        android:icon="@mipmap/star"
         android:title="Favoritos" />
     <item
         android:id="@+id/profile"
-        android:icon="@mipmap/star_fill"
+        android:icon="@mipmap/profile"
         android:title="Perfil" />
 </menu>

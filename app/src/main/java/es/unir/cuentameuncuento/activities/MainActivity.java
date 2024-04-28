@@ -46,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
                 } else if (item.getItemId()== R.id.favorites) {
                     //click on favorites
                     return true;
+                } else if (item.getItemId()== R.id.home){
+                    ActivityHelper.ChangeActivity(MainActivity.this, MainActivity.class, true);
+                    return true;
                 } else {
                     return false;
                 }
