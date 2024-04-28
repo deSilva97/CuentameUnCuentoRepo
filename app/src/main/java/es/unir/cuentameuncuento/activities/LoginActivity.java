@@ -6,13 +6,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import es.unir.cuentameuncuento.R;
-import es.unir.cuentameuncuento.contexts.UserContext;
 import es.unir.cuentameuncuento.controllers.LoginController;
 import es.unir.cuentameuncuento.helpers.ActivityHelper;
 import es.unir.cuentameuncuento.managers.SessionManager;
@@ -21,7 +20,7 @@ public class LoginActivity extends AppCompatActivity {
 
     LoginController controller;
 
-    Button bRegister;
+    TextView bRegister;
     Button bLogin;
     Button bGoogle;
 
