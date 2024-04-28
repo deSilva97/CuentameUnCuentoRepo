@@ -3,9 +3,8 @@ package es.unir.cuentameuncuento.controllers;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
-
-import com.google.common.base.MoreObjects;
 
 import es.unir.cuentameuncuento.activities.LoginActivity;
 import es.unir.cuentameuncuento.activities.MainActivity;
@@ -16,20 +15,25 @@ import es.unir.cuentameuncuento.impls.UserDAOImpl;
 public class ProfileController {
 
     ProfileActivity activity;
-    UserDAOImpl firebaseController;
+    UserDAOImpl userImpl;
 
 
     public ProfileController(ProfileActivity profileActivity){
         activity = profileActivity;
-        firebaseController = new UserDAOImpl(profileActivity);
+        userImpl = new UserDAOImpl(profileActivity);
     }
 
     public String getUserName(){
-        return "";
+        return userImpl.getUser().getName();
     }
 
     public String getEmail(){
-        return "";
+        return userImpl.getUser().getEmail();
+    }
+
+
+    public void tryToChangeEmail(String email){
+        Log.d("ProfileController", "Change email?" + email);
     }
 
     public boolean changeName(String name){
@@ -45,8 +49,8 @@ public class ProfileController {
     }
 
     public void signOut(){
-        firebaseController.signOut();
-        firebaseController.signOutGoogle(activity);
+        userImpl.signOut();
+        userImpl.signOutGoogle(activity);
         //
         Intent intent = new Intent(activity, LoginActivity.class);
         activity.startActivity(intent);
@@ -79,7 +83,7 @@ public class ProfileController {
     }
 
     public void deleteAccount(){
-        firebaseController.deleteAccount(activity, this::onDeleteAccountComplete);
+        userImpl.deleteAccount(activity, this::onDeleteAccountComplete);
     }
 
     private void onDeleteAccountComplete(boolean result, String message){
