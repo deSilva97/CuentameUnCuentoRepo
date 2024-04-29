@@ -8,6 +8,13 @@
         <item name="fontFamily">@font/bubblegum</item>
     </style>
 
+    <style name="Theme.CuentameUnCuento.AnimatedSplash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/backgroundColor</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/avd_splash</item>
+        <item name="windowSplashScreenAnimationDuration">1000</item>
+        <item name="postSplashScreenTheme">@style/Base.Theme.CuentameUnCuento</item>
+    </style>
+
     <!-- Aplicar el estilo por defecto a los textos -->
     <style name="Theme.CuentameUnCuento" parent="Base.Theme.CuentameUnCuento"/>
 </resources>
