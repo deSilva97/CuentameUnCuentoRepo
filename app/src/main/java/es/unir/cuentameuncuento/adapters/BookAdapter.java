@@ -55,6 +55,8 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         ImageButton bDelete;
         ImageButton bFavorite;
 
+        Button bSelect;
+
         @SuppressLint("WrongViewCast")
         ViewHolder(View itemView){
             super(itemView);
@@ -63,15 +65,15 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
 
             bFavorite = itemView.findViewById(R.id.btn_favorite_book_container);
             bDelete = itemView.findViewById(R.id.btn_delete_book_container);
-
+            bSelect = itemView.findViewById(R.id.btn_select_book_container);
         }
 
         void bindData(final BookAdapterElement item){
             iconImage.setImageResource(R.drawable.book_placeholder);
             title.setText(item.getTextTitle());
 
-            iconImage.setOnClickListener(null);
-            iconImage.setOnClickListener(new View.OnClickListener() {
+            bSelect.setOnClickListener(null);
+            bSelect.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     item.actionReadBook();

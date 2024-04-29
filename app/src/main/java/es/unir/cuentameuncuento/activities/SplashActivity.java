@@ -13,6 +13,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
         super.onCreate(savedInstanceState);
+      
         ActivityHelper.ChangeActivity(SplashActivity.this, LoginActivity.class, false);
     }
 }

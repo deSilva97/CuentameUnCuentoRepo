@@ -46,7 +46,14 @@
                 android:textSize="24sp"
                 android:textStyle="bold" />
         </RelativeLayout>
+
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_select_book_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:backgroundTint="#00FFFFFF" />
 
     <ImageButton
         android:id="@+id/btn_favorite_book_container"
