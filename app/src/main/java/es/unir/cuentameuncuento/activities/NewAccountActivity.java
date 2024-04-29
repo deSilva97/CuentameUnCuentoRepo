@@ -25,9 +25,5 @@ public class NewAccountActivity extends AppCompatActivity {
         findViewById(R.id.button_signup_register).setOnClickListener(v -> {
             ctr.signUpWithEmailPassword(UserContext.getDevEmail(), UserContext.getDevPassword());
         });
-
-        findViewById(R.id.button_signup_return).setOnClickListener(v -> {
-            ctr.changeActivityToLogin();
-        });
     }
 }
