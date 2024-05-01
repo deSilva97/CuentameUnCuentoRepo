@@ -39,8 +39,6 @@ public class LoginActivity extends AppCompatActivity {
         initActivity();
         setListeners();
 
-        SessionManager session = new SessionManager(this);
-
     }
 
     protected void initActivity() {

@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import es.unir.cuentameuncuento.helpers.BitmapHelper;
 import es.unir.cuentameuncuento.models.Book;
 
 public class BookDAOImpl  {
@@ -28,6 +29,8 @@ public class BookDAOImpl  {
     private final String FIELD_TITLE = "title";
     private final String FIELD_NARRATIVE = "narrative";
     private static final String FIELD_FK_USER = "fk_user";
+
+    private static final String FIELD_ICON = "icon";
 
     public BookDAOImpl(Context context){
         FirebaseApp.initializeApp(context);
@@ -41,24 +44,34 @@ public class BookDAOImpl  {
 
     public void createBook(Book book, CompleteCallbackWithDescription callback) {
         Map<String, Object> dbBook = new HashMap<>();
-        dbBook.put(FIELD_TITLE, book.getTitle());
-        dbBook.put(FIELD_NARRATIVE, book.getNarrative());
-        dbBook.put(FIELD_FK_USER, UserDAOImpl.getIdUser());
+        try{
+            dbBook.put(FIELD_TITLE, book.getTitle());
+            dbBook.put(FIELD_NARRATIVE, book.getNarrative());
+            dbBook.put(FIELD_FK_USER, UserDAOImpl.getIdUser());
+            dbBook.put(FIELD_ICON, BitmapHelper.ConvertBitmap(book.getBitmap()));
 
-       getUserCollection()
-               .add(dbBook)
-               .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                   @Override
-                   public void onComplete(@NonNull Task<DocumentReference> task) {
-                       if(task.isSuccessful()){
-                           Log.d("BookDAOImpl", "Callback valid");
-                           callback.onComplete(true, "Libro creado");
-                       } else{
-                           Log.d("BookDAOImpl", "Callback null");
-                           callback.onComplete(false, "Operación fallida");
-                       }
-                   }
-               });
+            getUserCollection()
+                    .add(dbBook)
+                    .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentReference> task) {
+                            if(task.isSuccessful()){
+                                Log.d("BookDAOImpl", "Callback valid");
+                                callback.onComplete(true, "Libro creado");
+                            } else{
+                                Log.d("BookDAOImpl", "Callback null");
+                                callback.onComplete(false, "Operación fallida");
+                            }
+                        }
+                    });
+        } catch (Exception e){
+            Log.e("BookDAOImpl", "ERROR: \n" + e);
+            callback.onComplete(false, "Operación fallida");
+        }
+
+
+
+
     }
 
     public void findBook(String idBook, CompleteCallbackWithBook callback) {

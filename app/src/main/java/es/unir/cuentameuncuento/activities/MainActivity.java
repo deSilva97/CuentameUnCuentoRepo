@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     MainController controller;
 
+    TextView title;
     Button bCreateStory;
     public RecyclerView recyclerView;
 
@@ -71,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
         bCreateStory = findViewById(R.id.createStory);
 
         recyclerView = findViewById(R.id.bookContainerRecyclerView);
+
+        title = findViewById(R.id.main_title);
     }
     void setListeners(){
         bCreateStory.setOnClickListener(new View.OnClickListener() {
@@ -80,6 +84,13 @@ public class MainActivity extends AppCompatActivity {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 startActivity(intent);
                 //controller.generateBook();
+            }
+        });
+
+        title.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                controller.returnToCurrentBook();
             }
         });
     }

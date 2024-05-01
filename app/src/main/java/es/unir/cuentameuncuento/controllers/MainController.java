@@ -19,6 +19,7 @@ import es.unir.cuentameuncuento.adapters.BookAdapter;
 import es.unir.cuentameuncuento.adapters.BookAdapterElement;
 import es.unir.cuentameuncuento.impls.BookDAOImpl;
 import es.unir.cuentameuncuento.impls.UserDAOImpl;
+import es.unir.cuentameuncuento.managers.SessionManager;
 import es.unir.cuentameuncuento.models.Book;
 
 public class MainController extends ActivityController {
@@ -80,22 +81,6 @@ public class MainController extends ActivityController {
         activity.recyclerView.setAdapter(bookAdapter);
     }
 
-    public void generateBook(){
-        Log.d("MainController", "generating book...");
-        Book book = new Book();
-        book.setFk_user(userID);
-        book.setTitle("Ejemplo libro");
-        book.setNarrative("Lorem ipsum...");
-        currentBook = book;
-        saveBook();
-    }
-
-    public void saveBook(){
-        if(currentBook != null){
-            bookImpl.createBook(currentBook, this::onCompleteOperation);
-        }
-    }
-
     public void readBook(Book book){
         Toast.makeText(activity, "Leer: " + book.getId(), Toast.LENGTH_SHORT).show();
 
@@ -141,7 +126,12 @@ public class MainController extends ActivityController {
         }
         else
             Toast.makeText(activity, description, Toast.LENGTH_SHORT).show();
+    }
 
+    public void returnToCurrentBook(){
+        if(SessionManager.currentBook != null){
+
+        }
     }
 
 }
