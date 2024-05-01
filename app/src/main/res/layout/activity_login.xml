@@ -29,17 +29,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
-    <Button
-        android:id="@+id/button_google"
-        android:layout_width="0dp"
-        android:layout_height="68dp"
-        android:backgroundTint="@color/white"
-        android:drawableLeft="@drawable/common_google_signin_btn_icon_light_normal"
-        android:text="Google"
-        android:textColor="#000000"
-        tools:layout_editor_absoluteX="164dp"
-        tools:layout_editor_absoluteY="632dp" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
