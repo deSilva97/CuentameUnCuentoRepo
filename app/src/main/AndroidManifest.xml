@@ -15,7 +15,10 @@
         android:theme="@style/Base.Theme.CuentameUnCuento"
         tools:targetApi="31">
         <activity
-            android:name=".activities.RecoverPassword"
+            android:name=".activities.RecoverPassword"          
+            android:exported="false" />
+        <activity
+            android:name=".activities.LoadingActivity"
             android:exported="false" />
         <activity
             android:name=".activities.NewAccountActivity"

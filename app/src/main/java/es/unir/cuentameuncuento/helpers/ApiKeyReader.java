@@ -1,8 +1,6 @@
 package es.unir.cuentameuncuento.helpers;
 import android.content.Context;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.Properties;
 
 public class ApiKeyReader {
