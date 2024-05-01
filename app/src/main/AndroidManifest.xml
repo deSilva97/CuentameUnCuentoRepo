@@ -15,6 +15,9 @@
         android:theme="@style/Base.Theme.CuentameUnCuento"
         tools:targetApi="31">
         <activity
+            android:name=".activities.RecoverPassword"
+            android:exported="false" />
+        <activity
             android:name=".activities.NewAccountActivity"
             android:exported="false" />
         <activity
@@ -22,10 +25,11 @@
             android:exported="false" />
         <activity
             android:name=".activities.SplashActivity"
-            android:theme="@style/Theme.CuentameUnCuento.AnimatedSplash"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.CuentameUnCuento.AnimatedSplash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
