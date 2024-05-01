@@ -1,6 +1,7 @@
 package es.unir.cuentameuncuento.controllers;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.util.Log;
@@ -8,110 +9,126 @@ import android.view.View;
 import android.widget.Toast;
 import java.io.File;
 import java.io.IOException;
+
+import es.unir.cuentameuncuento.managers.ApiManager;
+import es.unir.cuentameuncuento.R;
 import es.unir.cuentameuncuento.abstracts.ActivityController;
 import es.unir.cuentameuncuento.activities.MainActivity;
 import es.unir.cuentameuncuento.activities.StoryActivity;
 import es.unir.cuentameuncuento.impls.BookDAOImpl;
-import es.unir.cuentameuncuento.managers.ApiService;
 import es.unir.cuentameuncuento.models.Book;
 
 public class StoryController extends ActivityController {
     StoryActivity activity;
     BookDAOImpl bookDaoImpl;
+    ApiManager apiManager;
     private Handler handler;
     private Runnable runnable;
     public StoryController ( StoryActivity activity){
         this.activity = activity;
         bookDaoImpl = new BookDAOImpl(activity);
+        apiManager = new ApiManager(activity);
     }
 
-    public void newStory(String categoria, String personaje) {
-        ApiService.generarCuento(categoria, personaje, activity, new ApiService.CuentoCallback() {
+    public void newStory( String category, String character){
 
+        apiManager.generateStory(category, character, new ApiManager.StoryCallback() {
             @Override
             public void onStartCreation() {
             }
 
             @Override
-            public void onCuentoGenerated(final String cuento) {
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        activity.currentBook = new Book();
-                        activity.currentBook.setNarrative(cuento);
-                        activity.currentBook.setTitle("Cuento de "+ categoria + "de " + personaje);
-                        activity.txtStory.setText(activity.currentBook.getNarrative());
-                        activity.progressBar.setVisibility(View.INVISIBLE);
-                    }
-                });
+            public void onStoryGenerated(Book story) {
+                activity.currentStory = story;
+
             }
+
             @Override
             public void onError(String mensajeError) {
 
+                activity.txtStory.setText(mensajeError);
             }
-            });
+        });
 
-            }
 
-    public void newSpeech(String cuento) {
-        ApiService.generarAudio(cuento,activity, new ApiService.AudioCallback() {
 
+    }
+
+    public void newSpeech(Book story){
+
+        apiManager.generateSpeech(story, new ApiManager.SpeechCallback() {
             @Override
             public void onStartCreation() {
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        activity.progressBarPlay.setVisibility(View.VISIBLE);
-                    }
-                });
             }
 
             @Override
-            public void onAudioGenerated(File audioFile) {
-                if (audioFile != null && audioFile.exists()) {
-                    activity.runOnUiThread(new Runnable() {
+            public void onSpeechGenerated(File audioFile)  {
+                try {
+                    activity.progressBarPlay.setVisibility(View.INVISIBLE);
+                    activity.speechMediaPlayer.reset();
+                    activity.speechMediaPlayer.setDataSource(audioFile.getAbsolutePath());
+                    activity.speechMediaPlayer.prepare();
+                    activity.speechMediaPlayer.start();
+                    activity.btnPlay.setImageResource(R.drawable.icono_pausa);
+                    startAutoScroll();
+                    activity.speechMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                         @Override
-                        public void run() {
-                            try {
-                                activity.progressBarPlay.setVisibility(View.INVISIBLE);
-                                activity.btnPause.setVisibility(View.VISIBLE);
-                                activity.speechMediaPlayer.reset();
-                                activity.speechMediaPlayer.setDataSource(audioFile.getAbsolutePath());
-                                activity.speechMediaPlayer.prepare();
-                                activity.speechMediaPlayer.start();
-                                startAutoScroll();
-                                activity.speechMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                    @Override
-                                    public void onCompletion(MediaPlayer mp) {
-                                        Toast.makeText(activity, "Reproducción finalizada", Toast.LENGTH_SHORT).show();
-                                        mp.release();
-                                        stopAutoScroll();
-                                    }
-                                });
-                            } catch (IOException e) {
-                                Log.e("generarAudio", "Error al reproducir audio: " + e.getMessage());
-                                e.printStackTrace();
-                            }
+                        public void onCompletion(MediaPlayer mp) {
+                            Toast.makeText(activity, "Reproducción finalizada", Toast.LENGTH_SHORT).show();
+                            mp.release();
+                            stopAutoScroll();
                         }
                     });
-                } else {
-                    Log.e("generarAudio", "El archivo de audio no es válido");
+                } catch (IOException e) {
+                    Log.e("generarAudio", "Error al reproducir audio: " + e.getMessage());
+                    e.printStackTrace();
                 }
             }
 
+            @Override
+            public void onError(String mensajeError) {
+
+            }
+        });
+
+
+    }
+
+    public void newImage(String categoria, String personaje){
+        apiManager.generateImage(categoria,personaje, new ApiManager.ImageCallback() {
+            @Override
+            public void onStartCreation() {
+
+            }
+
+            @Override
+            public void onImageGenerated(final Bitmap imageBitmap) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        activity.imageView.setImageBitmap(imageBitmap);
+                        activity.txtStory.setText(activity.currentStory.getNarrative());
+                    }
+                });
+            }
+
+
 
             @Override
             public void onError(String mensajeError) {
-                Log.e("generarAudio", "Error al generar audio: " + mensajeError);
+
+                Toast.makeText(activity, mensajeError, Toast.LENGTH_SHORT).show();
+
             }
         });
+
+
     }
 
     public void showSavedBook(Book book){
         activity.btnSave.setVisibility(View.INVISIBLE);
-        activity.currentBook = book;
+        activity.currentStory = book;
         activity.txtStory.setText(book.getNarrative().toString());
-        activity.progressBar.setVisibility(View.INVISIBLE);
     }
 
     public void saveBook (Book cuentoGenerado){
@@ -138,7 +155,7 @@ public class StoryController extends ActivityController {
         activity.startActivity(intent);
     }
 
-    private void startAutoScroll() {
+    public void startAutoScroll() {
         handler = new Handler();
         runnable = new Runnable() {
             @Override
@@ -155,11 +172,13 @@ public class StoryController extends ActivityController {
         handler.post(runnable);
     }
 
-    private void stopAutoScroll() {
+    public void stopAutoScroll() {
         // Detener el autoscroll eliminando las llamadas a postDelayed
         handler.removeCallbacks(runnable);
     }
 
 
 }
+
+
 
