@@ -65,7 +65,8 @@ public class LoginActivity extends AppCompatActivity {
         txtRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActivityHelper.ChangeActivity(LoginActivity.this, NewAccountActivity.class, true);
+                Intent intent = new Intent(LoginActivity.this, NewAccountActivity.class);
+                startActivity(intent);
             }
         });
 
