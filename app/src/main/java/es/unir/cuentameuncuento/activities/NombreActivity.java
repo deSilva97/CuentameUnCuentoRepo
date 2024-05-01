@@ -3,10 +3,13 @@ package es.unir.cuentameuncuento.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +26,7 @@ public class NombreActivity extends AppCompatActivity {
         TextView textoCategoria = findViewById(R.id.textoCategoria);
         EditText textoNombre = findViewById(R.id.editTextPersonaje);
         Button btnGenerar = findViewById(R.id.btnGenerar);
+        ImageButton btnAtras = findViewById(R.id.btnAtrasNombre);
 
 
         Intent intent = getIntent();
@@ -42,13 +46,11 @@ public class NombreActivity extends AppCompatActivity {
                     Intent intent = new Intent(NombreActivity.this, StoryActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
-                    Book testLibro = new Book("1","Test","Eres un chico listo",true,"23");
-
                     intent.putExtra("nombreCategoria", textoCategoria.getText().toString());
                     intent.putExtra("nombrePersonaje", nombrePersonaje);
-                    intent.putExtra("book", testLibro);
                     intent.putExtra("origen", "NombreActivity");
                     startActivity(intent);
+
                 } else {
 
                     Toast.makeText(NombreActivity.this, "Por favor, ingresa un nombre válido (solo letras).", Toast.LENGTH_SHORT).show();
@@ -56,6 +58,19 @@ public class NombreActivity extends AppCompatActivity {
             }
 
         });
+
+        btnAtras.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(NombreActivity.this, CategoriasActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                startActivity(intent);
+
+            }
+        });
+
+
     }
 
     }

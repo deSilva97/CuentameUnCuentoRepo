@@ -83,6 +83,8 @@ public class ApiManager {
 
         requestBody.setMessages(messages);
         requestBody.setModel("gpt-3.5-turbo");
+
+        storyCallback.onStartCreation();
         apiService.generateStory(requestBody).enqueue(new Callback<StoryResponseBody>() {
             @Override
             public void onResponse(Call<StoryResponseBody> call, Response<StoryResponseBody> response) {
@@ -118,11 +120,14 @@ public class ApiManager {
     }
 
     public void generateSpeech(Book story, SpeechCallback speechCallback) {
+
             SpeechRequestBody requestBody = new SpeechRequestBody();
 
-           requestBody.setModel("tts-1");
-           requestBody.setInput(story.getNarrative());
-           requestBody.setVoice("nova");
+            requestBody.setModel("tts-1");
+            requestBody.setInput(story.getNarrative());
+            requestBody.setVoice("nova");
+
+        speechCallback.onStartCreation();
 
             apiService.generateSpeech(requestBody).enqueue(new Callback<ResponseBody>() {
                 @Override

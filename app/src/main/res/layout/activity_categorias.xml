@@ -1,8 +1,33 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@drawable/background_gradient">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20sp">
+                <ImageButton
+                    android:id="@+id/btnAtrasCategoria"
+                    android:layout_width="70sp"
+                    android:layout_height="70sp"
+                    android:backgroundTint="@android:color/transparent"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icono_atras"
+                    app:showAsAction="always"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="70sp"
+                    android:layout_marginLeft="60sp"
+                    android:textSize="35sp"
+                    android:gravity="center_vertical"
+                    android:textColor="@android:color/black"
+                    android:text="Categorias" />
+
+        </LinearLayout>
 
 
 
@@ -14,15 +39,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="20sp"
-                            android:textSize="30dp"
-                            android:layout_gravity="center_horizontal"
-                            android:textColor="@android:color/black"
-                            android:text="Categorias" />
 
                         <GridLayout
                             android:id="@+id/gridLayout"
