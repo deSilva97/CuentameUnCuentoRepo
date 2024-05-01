@@ -1,5 +1,7 @@
 package es.unir.cuentameuncuento.models;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -9,6 +11,8 @@ public class Book implements Serializable {
     private String narrative;
     private boolean favorite;
     private String fk_user;
+
+    private Bitmap bitmap;
 
     public Book() {
     }
