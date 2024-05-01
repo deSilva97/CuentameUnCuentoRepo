@@ -22,7 +22,7 @@ public class LoginActivity extends AppCompatActivity {
 
     TextView txtRegister;
     Button bLogin;
-    Button bGoogle;
+    Button bGoogle, bFacebook, bTwitter;
 
     EditText editTxtEmail;
     EditText editTxtPassword;
@@ -51,7 +51,10 @@ public class LoginActivity extends AppCompatActivity {
 
         txtRegister = findViewById(R.id.button_register);
         bLogin = findViewById(R.id.button_login);
-        bGoogle = findViewById(R.id.button_google);
+
+        bGoogle = findViewById(R.id.button_signin_google);
+        bFacebook = findViewById(R.id.button_signin_facebook);
+        bTwitter = findViewById(R.id.button_signin_twitter);
 
         txtForgotPassword = findViewById(R.id.txtForgotPassword);
 
@@ -62,7 +65,8 @@ public class LoginActivity extends AppCompatActivity {
         txtRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActivityHelper.ChangeActivity(LoginActivity.this, NewAccountActivity.class, true);
+                Intent intent = new Intent(LoginActivity.this, NewAccountActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -77,6 +81,18 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 controller.authWithGoogle();
+            }
+        });
+        bFacebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                controller.authWithFacebook();
+            }
+        });
+        bTwitter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                controller.authWithTwitter();
             }
         });
 
@@ -97,10 +113,18 @@ public class LoginActivity extends AppCompatActivity {
             if(resultCode == RESULT_OK){
                 controller.signInWithGoogle(data);
             }
-            else {
-                controller.onLoginComplete(false);
+        } else if(requestCode == LoginController.PROVIDER_FACEBOOK){
+            if(resultCode == RESULT_OK){
+                controller.signInWithFacebook(data);
             }
+        } else if(requestCode == LoginController.PROVIDER_TWITTER){
+            if(resultCode == RESULT_OK){
+                controller.signInWithTwitter(data);
+            }
+        } else {
+            controller.onLoginComplete(false);
         }
+
     }
 
 }

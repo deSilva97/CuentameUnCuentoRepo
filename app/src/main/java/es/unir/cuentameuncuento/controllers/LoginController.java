@@ -22,13 +22,12 @@ import es.unir.cuentameuncuento.managers.SessionManager;
 public class LoginController extends ActivityController {
 
     public static final int PROVIDER_GOOGLE = 25;
+    public static final int PROVIDER_FACEBOOK = 101;
+    public static final int PROVIDER_TWITTER = 9;
 
     LoginActivity activity;
 
     UserDAOImpl userImpl;
-
-    boolean rememberMe = true;
-
 
     public LoginController(LoginActivity activity){
         this.activity = activity;
@@ -44,6 +43,15 @@ public class LoginController extends ActivityController {
 
         GoogleSignInClient googleClient = GoogleSignIn.getClient(activity, googleConfig);
         activity.startActivityForResult(googleClient.getSignInIntent(), PROVIDER_GOOGLE);
+    }
+
+    public void authWithFacebook(){
+        //https://www.youtube.com/watch?v=M2earjn-XXQ
+//        activity.startActivityForResult(, PROVIDER_FACEBOOK);
+    }
+
+    public void authWithTwitter(){
+//        activity.startActivityForResult(, PROVIDER_TWITTER);
     }
 
     public  void signInWithEmailPassword(String email, String password){
@@ -66,16 +74,6 @@ public class LoginController extends ActivityController {
             }
 
         }
-
-//        Log.d("LoginController", "email=" + email);
-//        Log.d("LoginController", "pssw=" + password);
-//
-//        if(verifyEmailPassword(email, password)){
-//            userImpl.signInWithEmailPassword(email, password, this::onLoginComplete);
-//        } else {
-//            Toast.makeText(activity, "Not valid email or password", Toast.LENGTH_SHORT).show();
-//        }
-
     }
 
     public void signInWithGoogle(Intent data){
@@ -91,6 +89,14 @@ public class LoginController extends ActivityController {
                 loading = false;
             }
         }
+    }
+
+    public void signInWithFacebook(Intent data){
+
+    }
+
+    public void signInWithTwitter(Intent data){
+
     }
 
     public void onLoginComplete(boolean result){

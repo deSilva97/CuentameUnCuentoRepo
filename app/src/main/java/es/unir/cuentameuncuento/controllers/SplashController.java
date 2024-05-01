@@ -1,5 +1,7 @@
 package es.unir.cuentameuncuento.controllers;
 
+import android.content.Intent;
+
 import es.unir.cuentameuncuento.abstracts.ActivityController;
 import es.unir.cuentameuncuento.activities.LoginActivity;
 import es.unir.cuentameuncuento.activities.MainActivity;
@@ -17,10 +19,10 @@ public class SplashController extends ActivityController {
 
     public void handleSession() {
         UserDAOImpl impl = new UserDAOImpl(activity);
-        if (impl.sessionSaved()) {
-            ActivityHelper.ChangeActivity(activity, MainActivity.class, false);
-        } else {
-            ActivityHelper.ChangeActivity(activity, LoginActivity.class, false);
-        }
+
+        Intent intent = new Intent(activity, impl.sessionSaved()? MainActivity.class : LoginActivity.class);
+
+        activity.startActivity(intent);
+        activity.finish();
     }
 }
