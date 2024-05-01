@@ -83,12 +83,10 @@ public class LoginActivity extends AppCompatActivity {
         txtForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                controller.recoverPassword(editTxtEmail.getText().toString());
+                Intent intent = new Intent(LoginActivity.this, RecoverPassword.class);
+                startActivity(intent);
             }
         });
-
-
-
     }
 
     @Override
