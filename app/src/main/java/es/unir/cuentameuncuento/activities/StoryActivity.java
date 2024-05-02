@@ -1,6 +1,7 @@
 package es.unir.cuentameuncuento.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -24,19 +26,21 @@ public class StoryActivity extends AppCompatActivity {
     public Book currentStory;
     public String intentCategoryName, intentCharactername, intentContext;
     Book intentBook;
-    public ImageButton btnPlay, btnSave;
+    public ImageButton btnPlay, btnSave,btnBack;
     public ProgressBar progressBarPlay;
     public TextView txtStory;
     public MediaPlayer backgroundMediaPlayer, speechMediaPlayer;
     Boolean generatedAudioSuccesfuly;
     public ScrollView scrollView;
-
     public ImageView imageView;
+    public CardView cardViewImage;
+
+    public LinearLayout layoutStory,layoutLoading;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cuento);
-
         init();
         setListeners();
         getExtras();
@@ -46,6 +50,8 @@ public class StoryActivity extends AppCompatActivity {
             case "NombreActivity":
                 controller.newStory(intentCategoryName, intentCharactername);
                 controller.newImage(intentCategoryName,intentCharactername);
+                controller.setLoadingLayout();
+
             break;
             case "MainActivity":
                 controller.showSavedBook(intentBook);
@@ -59,6 +65,7 @@ public class StoryActivity extends AppCompatActivity {
         controller = new StoryController(this);
         btnPlay = findViewById(R.id.btnReproducir);
         btnSave = findViewById(R.id.btnGuardar);
+        btnBack = findViewById(R.id.btnAtras);
         progressBarPlay = findViewById(R.id.progressBarReproducir);
         txtStory = findViewById(R.id.txtCuentoGenerado);
         speechMediaPlayer = new MediaPlayer();
@@ -67,6 +74,9 @@ public class StoryActivity extends AppCompatActivity {
         generatedAudioSuccesfuly = false;
         scrollView =findViewById(R.id.scrollView);
         imageView =findViewById(R.id.imageView);
+        cardViewImage =findViewById(R.id.cardViewImage);
+        layoutStory =findViewById(R.id.layoutStory);
+        layoutLoading =findViewById(R.id.layoutLoading);
     }
     private void setListeners() {
 
@@ -100,6 +110,13 @@ public class StoryActivity extends AppCompatActivity {
                 controller.saveBook(currentStory);
             }
         });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                controller.backToHome();
+            }
+        });
     }
     private void getExtras(){
         Intent intent = getIntent();
@@ -112,8 +129,6 @@ public class StoryActivity extends AppCompatActivity {
             Toast.makeText(this, "Error: Intent Without Parameters", Toast.LENGTH_SHORT).show();
         }
     }
-
-
     @Override
     protected void onDestroy() {
         super.onDestroy();

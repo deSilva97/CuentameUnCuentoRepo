@@ -1,62 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/background_gradient">
+    android:orientation="vertical">
+    <ImageButton
+        android:id="@+id/btnAtrasNombre"
+        android:layout_width="70sp"
+        android:layout_height="70sp"
+        android:layout_marginTop="30sp"
+        android:backgroundTint="@android:color/transparent"
+        android:scaleType="fitCenter"
+        android:src="@drawable/icono_atras"
+        app:showAsAction="always"/>
 
-    <TextView
-        android:id="@+id/textoCategoria1"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5sp"
-        android:textSize="25sp"
-        android:textColor="@color/white"
-        android:text="Categoria:"
-        android:layout_gravity="center_horizontal"
-        />
+        android:orientation="vertical"
+        android:layout_marginTop="20sp">
 
-    <TextView
-        android:id="@+id/textoCategoria"
+        <TextView
+            android:id="@+id/textoCategoria1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5sp"
+            android:textSize="35sp"
+            android:textColor="@color/backgroundColor"
+            android:text="Categoria:"
+            android:layout_gravity="center_horizontal"
+            />
+
+        <TextView
+            android:id="@+id/textoCategoria"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5sp"
+            android:textSize="25sp"
+            android:textColor="@color/black"
+            android:text="Animales"
+            android:layout_gravity="center_horizontal"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5sp"
-        android:textSize="25sp"
-        android:textColor="@color/black"
-        android:text=""
-        android:layout_gravity="center_horizontal"
-        />
+        android:orientation="vertical"
+        android:layout_marginTop="150sp">
 
-    <TextView
-        android:id="@+id/textoPersonaje"
+
+        <EditText
+            android:id="@+id/editTextPersonaje"
+            android:layout_width="250sp"
+            android:layout_height="63dp"
+            android:layout_margin="5sp"
+            android:gravity="center"
+            android:background="@drawable/boton_redondo"
+            android:ems="10"
+            android:hint="Introduce un personaje"
+            android:inputType="text"
+            android:textSize="25sp"
+            android:layout_gravity="center_horizontal"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5sp"
-        android:textSize="25sp"
-        android:textColor="@color/white"
-        android:text="Personaje:"
-        android:layout_gravity="center_horizontal"
-        />
+        android:orientation="vertical"
+        android:layout_marginTop="50sp">
 
-    <EditText
-        android:id="@+id/editTextPersonaje"
-        android:layout_width="match_parent"
-        android:layout_height="63dp"
-        android:layout_margin="5sp"
-        android:background="@color/white"
-        android:ems="10"
-        android:hint="Introduce un personaje"
-        android:inputType="text" />
+        <Button
+            android:id="@+id/btnGenerar"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginLeft="25sp"
+            android:layout_marginTop="50sp"
+            android:layout_marginRight="25sp"
+            android:backgroundTint="@color/backgroundColor"
+            android:elevation="10dp"
+            android:text="Generar Cuento"
+            android:textSize="25sp"/>
 
-    <Button
-        android:id="@+id/btnGenerar"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginLeft="25sp"
-        android:layout_marginTop="50sp"
-        android:backgroundTint="@color/black"
-        android:layout_marginRight="25sp"
-        android:text="Generar Cuento" />
+
+    </LinearLayout>
+
+
 
 
 </LinearLayout>
+
