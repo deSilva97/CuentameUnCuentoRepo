@@ -6,6 +6,8 @@ import android.media.MediaPlayer;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 import java.io.File;
 import java.io.IOException;
@@ -40,13 +42,13 @@ public class StoryController extends ActivityController {
             @Override
             public void onStoryGenerated(Book story) {
                 activity.currentStory = story;
-
+                activity.txtStory.setText(activity.currentStory.getNarrative());
             }
 
             @Override
             public void onError(String mensajeError) {
-
-                activity.txtStory.setText(mensajeError);
+                Toast.makeText(activity, "Error en la generacion del cuento :" + mensajeError, Toast.LENGTH_SHORT).show();
+                backToHome();
             }
         });
 
@@ -87,7 +89,8 @@ public class StoryController extends ActivityController {
 
             @Override
             public void onError(String mensajeError) {
-
+                Toast.makeText(activity, "Error en la generacion de audio :" + mensajeError, Toast.LENGTH_SHORT).show();
+                backToHome();
             }
         });
 
@@ -106,8 +109,13 @@ public class StoryController extends ActivityController {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        if (imageBitmap != null){
+                        activity.currentStory.setBitmap(imageBitmap);
                         activity.imageView.setImageBitmap(imageBitmap);
-                        activity.txtStory.setText(activity.currentStory.getNarrative());
+                        }
+
+
+                        setStoryLayout();
                     }
                 });
             }
@@ -117,7 +125,8 @@ public class StoryController extends ActivityController {
             @Override
             public void onError(String mensajeError) {
 
-                Toast.makeText(activity, mensajeError, Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "Error en la generacion de imagen :" + mensajeError, Toast.LENGTH_SHORT).show();
+                backToHome();
 
             }
         });
@@ -128,14 +137,15 @@ public class StoryController extends ActivityController {
     public void showSavedBook(Book book){
         activity.btnSave.setVisibility(View.INVISIBLE);
         activity.currentStory = book;
-        activity.txtStory.setText(book.getNarrative().toString());
+        activity.txtStory.setText(book.getNarrative());
+        activity.imageView.setImageBitmap(book.getBitmap());
     }
 
-    public void saveBook (Book cuentoGenerado){
+    public void saveBook (Book currentStory){
 
         activity.btnSave.setEnabled(false);
 
-        bookDaoImpl.createBook(cuentoGenerado, new BookDAOImpl.CompleteCallbackWithDescription() {
+        bookDaoImpl.createBook(currentStory, new BookDAOImpl.CompleteCallbackWithDescription() {
             @Override
             public void onComplete(boolean value, String description) {
 
@@ -175,6 +185,19 @@ public class StoryController extends ActivityController {
     public void stopAutoScroll() {
         // Detener el autoscroll eliminando las llamadas a postDelayed
         handler.removeCallbacks(runnable);
+    }
+
+
+    public void setLoadingLayout(){
+        activity.layoutLoading.setVisibility(View.VISIBLE);
+        activity.layoutStory.setVisibility(View.GONE);
+    }
+
+    public void setStoryLayout(){
+        activity.layoutStory.setVisibility(View.VISIBLE);
+        activity.layoutLoading.setVisibility(View.GONE);
+        Animation scaleUp = AnimationUtils.loadAnimation(activity, R.anim.anim_scaleup);
+        activity.layoutStory.startAnimation(scaleUp);
     }
 
 
