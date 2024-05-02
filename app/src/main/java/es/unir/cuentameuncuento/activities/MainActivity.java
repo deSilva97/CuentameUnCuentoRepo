@@ -80,9 +80,8 @@ public class MainActivity extends AppCompatActivity {
         bCreateStory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, CategoriasActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                startActivity(intent);
+                controller.generateStory();
+
                 //controller.generateBook();
             }
         });

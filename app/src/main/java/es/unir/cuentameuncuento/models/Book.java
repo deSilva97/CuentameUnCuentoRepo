@@ -13,16 +13,19 @@ public class Book implements Serializable {
     private String fk_user;
 
     private Bitmap bitmap;
+    private String iconID;
 
-    public Book() {
-    }
-
-    public Book(String title, String narrative, boolean favorite, String fk_user, Bitmap bitmap) {
+    public Book(String id, String title, String narrative, boolean favorite, String fk_user, Bitmap bitmap, String iconID) {
+        this.id = id;
         this.title = title;
         this.narrative = narrative;
         this.favorite = favorite;
         this.fk_user = fk_user;
         this.bitmap = bitmap;
+        this.iconID = iconID;
+    }
+
+    public Book() {
     }
 
 
@@ -74,6 +77,14 @@ public class Book implements Serializable {
         this.bitmap = bitmap;
     }
 
+    public String getIconID() {
+        return iconID;
+    }
+
+    public void setIconID(String iconID) {
+        this.iconID = iconID;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -87,6 +98,7 @@ public class Book implements Serializable {
         return Objects.hash(id);
     }
 
+
     @Override
     public String toString() {
         return "Book{" +
@@ -96,6 +108,7 @@ public class Book implements Serializable {
                 ", favorite=" + favorite +
                 ", fk_user='" + fk_user + '\'' +
                 ", bitmap=" + bitmap +
+                ", iconID='" + iconID + '\'' +
                 '}';
     }
 }

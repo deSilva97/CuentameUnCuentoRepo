@@ -3,6 +3,10 @@ package es.unir.cuentameuncuento.controllers;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -13,6 +17,7 @@ import java.util.List;
 
 import es.unir.cuentameuncuento.R;
 import es.unir.cuentameuncuento.abstracts.ActivityController;
+import es.unir.cuentameuncuento.activities.CategoriasActivity;
 import es.unir.cuentameuncuento.activities.StoryActivity;
 import es.unir.cuentameuncuento.activities.MainActivity;
 import es.unir.cuentameuncuento.adapters.BookAdapter;
@@ -132,6 +137,58 @@ public class MainController extends ActivityController {
         if(SessionManager.currentBook != null){
 
         }
+    }
+
+    public void generateStory(){
+        Intent intent = new Intent(activity, CategoriasActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        activity.startActivity(intent);
+
+//        Book test_story = new Book();
+//
+//        // Cargar el bitmap desde el recurso drawable
+//        Bitmap bitmap = decodeBitmapFromResource(activity.getResources(), R.drawable.icono_animales, 256, 256);
+//
+//        test_story.setTitle("Test Title");
+//        test_story.setNarrative("Test Narrative");
+//        test_story.setBitmap(bitmap);
+//
+//
+//        bookImpl.createBook(test_story, this::onCompleteOperation);
+    }
+
+    public static Bitmap decodeBitmapFromResource(Resources res, int resId, int reqWidth, int reqHeight) {
+        // Primero decodifica con inJustDecodeBounds=true para revisar las dimensiones
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeResource(res, resId, options);
+
+        // Calcular el inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+        // Decodificar el bitmap con el inSampleSize seteado
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeResource(res, resId, options);
+    }
+
+    // Método para calcular un inSampleSize para escalar las imágenes de manera eficiente
+    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calcular el mayor inSampleSize que es una potencia de 2 y mantiene tanto
+            // la altura como el ancho mayores que los requeridos
+            while ((halfHeight / inSampleSize) >= reqHeight && (halfWidth / inSampleSize) >= reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
     }
 
 }

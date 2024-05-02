@@ -68,6 +68,7 @@ dependencies {
 
     implementation("androidx.core:core-splashscreen:1.0.1")
 
+    //FIREBASE
     implementation("com.google.android.gms:play-services-oss-licenses:17.0.0")
     implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
     implementation("com.google.firebase:firebase-analytics")
@@ -75,6 +76,7 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.android.gms:play-services-auth:21.0.0")
     implementation("com.google.firebase:firebase-firestore")
+    implementation("com.google.firebase:firebase-storage")
 
 
     implementation("androidx.recyclerview:recyclerview:1.3.2")

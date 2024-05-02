@@ -2,6 +2,8 @@ package es.unir.cuentameuncuento.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import es.unir.cuentameuncuento.R;
+import es.unir.cuentameuncuento.impls.BookDAOImpl;
+import es.unir.cuentameuncuento.impls.UserDAOImpl;
 
 //https://www.youtube.com/watch?v=HrZgfoBeams
 
@@ -69,7 +73,11 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         }
 
         void bindData(final BookAdapterElement item){
-            iconImage.setImageResource(R.drawable.book_placeholder);
+
+            iconImage.setImageResource(R.drawable.icono_loading);
+            BookDAOImpl.downloadFile(UserDAOImpl.getIdUser(), item.book.getIconID(), this::setImage);
+
+
             title.setText(item.getTextTitle());
 
             bSelect.setOnClickListener(null);
@@ -96,6 +104,19 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
                     item.actionDelete();
                 }
             });
+        }
+
+        private void setImage(Bitmap bitmap){
+            if(bitmap != null){
+                Log.d("BookAdapterJava","Bitmap loaded success load!!");
+                iconImage.setImageBitmap(bitmap);
+            }
+
+            else{
+                Log.d("BookAdapterJava","Bitmap loaded is null");
+                iconImage.setImageResource(R.drawable.icono_story_98);
+            }
+
         }
     }
 }
