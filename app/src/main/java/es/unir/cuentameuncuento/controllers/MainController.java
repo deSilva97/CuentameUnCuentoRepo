@@ -96,11 +96,11 @@ public class MainController extends ActivityController {
         activity.startActivity(intent);
     }
 
-    public void deleteBook(String id){
-        bookImpl.deleteBook(id, this::onCompleteOperation);
+    public void deleteBook(Book story){
+        bookImpl.deleteBook(story, this::onCompleteOperation);
     }
 
-    public void confirmDeleteBook(String book_id){
+    public void confirmDeleteBook(Book story){
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
         builder.setMessage("ESTAS SEGURO DE QUE QUIERES REALIZAR ESTA ACCIÓN")
@@ -109,7 +109,7 @@ public class MainController extends ActivityController {
         builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                deleteBook(book_id);
+                deleteBook(story);
             }
         });
 
@@ -140,21 +140,21 @@ public class MainController extends ActivityController {
     }
 
     public void generateStory(){
-        Intent intent = new Intent(activity, CategoriasActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        activity.startActivity(intent);
+//        Intent intent = new Intent(activity, CategoriasActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+//        activity.startActivity(intent);
 
-//        Book test_story = new Book();
-//
-//        // Cargar el bitmap desde el recurso drawable
-//        Bitmap bitmap = decodeBitmapFromResource(activity.getResources(), R.drawable.icono_animales, 256, 256);
-//
-//        test_story.setTitle("Test Title");
-//        test_story.setNarrative("Test Narrative");
-//        test_story.setBitmap(bitmap);
-//
-//
-//        bookImpl.createBook(test_story, this::onCompleteOperation);
+        Book test_story = new Book();
+
+        // Cargar el bitmap desde el recurso drawable
+        Bitmap bitmap = decodeBitmapFromResource(activity.getResources(), R.drawable.icono_animales, 256, 256);
+
+        test_story.setTitle("Test Title");
+        test_story.setNarrative("Test Narrative");
+        test_story.setBitmap(bitmap);
+
+
+        bookImpl.createBook(test_story, this::onCompleteOperation);
     }
 
     public static Bitmap decodeBitmapFromResource(Resources res, int resId, int reqWidth, int reqHeight) {

@@ -55,6 +55,10 @@ public class BookDAOImpl  {
         return db.collection(UserDAOImpl.getIdUser());
     }
 
+    private static String pathIcon(String endpoint){
+        return UserDAOImpl.getIdUser() + "/" + endpoint;
+    }
+
     public void createBook(Book book, CompleteCallbackWithDescription callback) {
         Map<String, Object> dbBook = new HashMap<>();
         String uniqueStoryImageUUID = UUID.randomUUID().toString();
@@ -120,14 +124,35 @@ public class BookDAOImpl  {
 
     }
 
-    public void deleteBook(String idBook, CompleteCallbackWithDescription callback) {
-        DocumentReference doc = getUserCollection().document(idBook);
+    public void deleteBook(Book story, CompleteCallbackWithDescription callback) {
+        DocumentReference doc = getUserCollection().document(story.getId());
 
         doc.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(Task<Void> task) {
                 if (task.isSuccessful()) {
                     //controller.refresh();
+
+                    StorageReference storageRef = storage.getReference();
+
+                    StorageReference desertRef = storageRef.child(pathIcon(story.getIconID()));
+
+                    // Delete the file
+                    desertRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            // File deleted successfully
+                            Log.d("BookDAOImpl", "Icono borrado");
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Uh-oh, an error occurred!
+                            Log.e("BookDAOImpl", "No se ha podido borrar el icono");
+                        }
+                    });
+
+
                     callback.onComplete(true, "Libro borrado");
                 } else {
                     // Ocurrió un error al intentar eliminar el documento
@@ -186,7 +211,7 @@ public class BookDAOImpl  {
     private void uploadFile(Bitmap image, String userID, String imageID){
         StorageReference storageRef = storage.getReference();
         // Create a reference to "mountains.jpg"
-        StorageReference mountainsRef = storageRef.child(FIELD_ICON + "/" + imageID);
+        StorageReference mountainsRef = storageRef.child(pathIcon(imageID));
 
         Log.d("StoryIcon", "image uploaded=" + imageID);
 
@@ -212,7 +237,7 @@ public class BookDAOImpl  {
 
     public static void downloadFile(String userID, String imageID, CompleteCallbackWithBitmap callback){
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-        StorageReference islandRef = storageRef.child(FIELD_ICON + "/" + imageID);
+        StorageReference islandRef = storageRef.child(pathIcon(imageID));
         Log.d("StoryIcon", "image downloaded=" + imageID);
 
         final long ONE_MEGABYTE = 1024 * 1024;

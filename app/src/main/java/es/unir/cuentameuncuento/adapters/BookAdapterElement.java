@@ -45,7 +45,7 @@ public class BookAdapterElement {
     }
 
     public void actionDelete(){
-        controller.confirmDeleteBook(book.getId());
+        controller.confirmDeleteBook(book);
     }
 
     public void actionFavorite() {

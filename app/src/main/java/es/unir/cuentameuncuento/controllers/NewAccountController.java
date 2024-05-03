@@ -24,7 +24,7 @@ public class NewAccountController extends ActivityController {
     }
 
     public void signUpWithEmailPassword(String email, String password){
-        loading = false;
+        loading = true;
 
         boolean correctEmail = CredentialsHelper.verifyEmail(email);
         boolean correctPassword = CredentialsHelper.verifyPassword(password);
@@ -36,13 +36,6 @@ public class NewAccountController extends ActivityController {
             activity.setErrorFields(!correctEmail, !correctPassword);
         }
     }
-
-    public  void signInWithEmailPassword(String email, String password){
-        loading = true;
-
-
-    }
-
     private void onCompleteSignUp(boolean resul){
         if(resul){
             Toast.makeText(activity, "Registro completado", Toast.LENGTH_SHORT).show();
