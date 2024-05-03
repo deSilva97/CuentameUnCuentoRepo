@@ -19,6 +19,7 @@ import java.util.List;
 
 import es.unir.cuentameuncuento.R;
 import es.unir.cuentameuncuento.impls.BookDAOImpl;
+import es.unir.cuentameuncuento.impls.IconStorageDAOImpl;
 import es.unir.cuentameuncuento.impls.UserDAOImpl;
 
 //https://www.youtube.com/watch?v=HrZgfoBeams
@@ -75,7 +76,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         void bindData(final BookAdapterElement item){
 
             iconImage.setImageResource(R.drawable.icono_loading);
-            BookDAOImpl.downloadFile(UserDAOImpl.getIdUser(), item.book.getIconID(), this::setImage);
+            IconStorageDAOImpl.read(UserDAOImpl.getIdUser(), item.book.getIconID(), this::setImage);
 
 
             title.setText(item.getTextTitle());

@@ -36,7 +36,7 @@ import es.unir.cuentameuncuento.utils.BitmapEncoder;
 public class BookDAOImpl  {
 
     FirebaseFirestore db;
-    FirebaseStorage storage;
+    IconStorageDAOImpl storageImpl;
 
     private final String FIELD_TITLE = "title";
     private final String FIELD_NARRATIVE = "narrative";
@@ -48,16 +48,13 @@ public class BookDAOImpl  {
         FirebaseApp.initializeApp(context);
         //this.userID = userID;
         db = FirebaseFirestore.getInstance();
-        storage = FirebaseStorage.getInstance();
+        storageImpl = new IconStorageDAOImpl();
     }
 
     private CollectionReference getUserCollection(){
         return db.collection(UserDAOImpl.getIdUser());
     }
 
-    private static String pathIcon(String endpoint){
-        return UserDAOImpl.getIdUser() + "/" + endpoint;
-    }
 
     public void createBook(Book book, CompleteCallbackWithDescription callback) {
         Map<String, Object> dbBook = new HashMap<>();
@@ -77,7 +74,7 @@ public class BookDAOImpl  {
                             if(task.isSuccessful()){
                                 Log.d("BookDAOImpl", "Callback valid Story=" + book.toString());
 
-                                uploadFile(book.getBitmap(), UserDAOImpl.getIdUser(), uniqueStoryImageUUID);
+                                storageImpl.create(book.getBitmap(), uniqueStoryImageUUID);
 
                                 callback.onComplete(true, "Libro creado");
                             } else{
@@ -92,8 +89,6 @@ public class BookDAOImpl  {
             callback.onComplete(false, "Operación fallida");
         }
     }
-
-
     public void findBook(String idBook, CompleteCallbackWithBook callback) {
         getUserCollection().get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -119,11 +114,9 @@ public class BookDAOImpl  {
             }
         });
     }
-
     public void updateBook(Book idBook, CompleteCallback callback) {
 
     }
-
     public void deleteBook(Book story, CompleteCallbackWithDescription callback) {
         DocumentReference doc = getUserCollection().document(story.getId());
 
@@ -133,25 +126,7 @@ public class BookDAOImpl  {
                 if (task.isSuccessful()) {
                     //controller.refresh();
 
-                    StorageReference storageRef = storage.getReference();
-
-                    StorageReference desertRef = storageRef.child(pathIcon(story.getIconID()));
-
-                    // Delete the file
-                    desertRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            // File deleted successfully
-                            Log.d("BookDAOImpl", "Icono borrado");
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            // Uh-oh, an error occurred!
-                            Log.e("BookDAOImpl", "No se ha podido borrar el icono");
-                        }
-                    });
-
+                    storageImpl.delete(story.getIconID());
 
                     callback.onComplete(true, "Libro borrado");
                 } else {
@@ -165,7 +140,6 @@ public class BookDAOImpl  {
             }
         });
     }
-
     public void findAll(CompleteCallbackWithBookList callback) {
 
         getUserCollection().get()
@@ -206,64 +180,6 @@ public class BookDAOImpl  {
         story.setBitmap(null);
 
         return story;
-    }
-
-    private void uploadFile(Bitmap image, String userID, String imageID){
-        StorageReference storageRef = storage.getReference();
-        // Create a reference to "mountains.jpg"
-        StorageReference mountainsRef = storageRef.child(pathIcon(imageID));
-
-        Log.d("StoryIcon", "image uploaded=" + imageID);
-
-        // Get the data from an ImageView as bytes
-        byte[] data = BitmapEncoder.encodeBitmap(image);
-
-        UploadTask uploadTask = mountainsRef.putBytes(data);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
-                Log.d("BookDAOImpl", "Picture can not uploaded");
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                // ...
-                Log.d("BookDAOImpl", "Picture  uploaded");
-            }
-        });
-    }
-
-    public static void downloadFile(String userID, String imageID, CompleteCallbackWithBitmap callback){
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-        StorageReference islandRef = storageRef.child(pathIcon(imageID));
-        Log.d("StoryIcon", "image downloaded=" + imageID);
-
-        final long ONE_MEGABYTE = 1024 * 1024;
-        islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                // Data for "images/island.jpg" is returns, use this as needed
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);;
-                callback.onComplete(bitmap);
-                Log.d("StoryIcon", "download success");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-                callback.onComplete(null);
-                Log.e("StoryIcon", "download failure " + exception);
-
-                if(exception instanceof StorageException){
-                    StorageException storageException = (StorageException) exception;
-                    Log.e("StoryIcon", "HTTP Result Code=" + storageException.getHttpResultCode());
-                }
-
-
-            }
-        });
     }
 
 
