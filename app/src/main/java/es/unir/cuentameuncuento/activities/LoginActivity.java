@@ -13,8 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import es.unir.cuentameuncuento.R;
 import es.unir.cuentameuncuento.controllers.LoginController;
-import es.unir.cuentameuncuento.helpers.ActivityHelper;
-import es.unir.cuentameuncuento.managers.SessionManager;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -44,8 +42,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void initActivity() {
         controller = new LoginController(this);
 
-        editTxtEmail = findViewById(R.id.editTextTextEmailAddress);
-        editTxtPassword = findViewById(R.id.editTextTextPassword);
+        editTxtEmail = findViewById(R.id.register_field_email);
+        editTxtPassword = findViewById(R.id.register_field_password);
 
         txtRegister = findViewById(R.id.button_register);
         bLogin = findViewById(R.id.button_login);
