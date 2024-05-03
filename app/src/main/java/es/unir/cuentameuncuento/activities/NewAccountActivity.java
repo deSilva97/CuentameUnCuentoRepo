@@ -3,6 +3,9 @@ package es.unir.cuentameuncuento.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import es.unir.cuentameuncuento.R;
 
@@ -11,19 +14,52 @@ import es.unir.cuentameuncuento.controllers.NewAccountController;
 
 public class NewAccountActivity extends AppCompatActivity {
 
+    NewAccountController controller;
+    Button bRegister;
+    TextView textSignin;
+
+    EditText fieldEmail, fieldPassword;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_account);
 
-        initActivity();
+
+        init();
+        setListerners();
     }
 
-    protected void initActivity() {
-        NewAccountController ctr = new NewAccountController(this);
+    private void setListerners() {
 
-        findViewById(R.id.button_signup_register).setOnClickListener(v -> {
-            ctr.signUpWithEmailPassword(UserContext.getDevEmail(), UserContext.getDevPassword());
+        bRegister.setOnClickListener(v -> {
+            controller.signUpWithEmailPassword(fieldEmail.getText().toString(), fieldPassword.getText().toString());
         });
+
+        textSignin.setOnClickListener(v -> {
+            controller.changeActivityToLogin();
+        });
+    }
+
+    private void init(){
+        controller = new NewAccountController(this);
+
+        fieldEmail = findViewById(R.id.register_field_email);
+        fieldPassword = findViewById(R.id.register_field_password);
+
+        bRegister = findViewById(R.id.register_button_register);
+        textSignin = findViewById(R.id.register_button_signin);
+
+    }
+
+    public void setErrorFields(boolean email, boolean password){
+
+        if(email){
+            fieldEmail.setError("Email not valid");
+        }
+        if(password){
+            fieldPassword.setError("Password not valid");
+        }
+
     }
 }

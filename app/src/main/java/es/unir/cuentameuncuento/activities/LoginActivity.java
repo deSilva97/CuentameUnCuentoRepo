@@ -13,8 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import es.unir.cuentameuncuento.R;
 import es.unir.cuentameuncuento.controllers.LoginController;
-import es.unir.cuentameuncuento.helpers.ActivityHelper;
-import es.unir.cuentameuncuento.managers.SessionManager;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -39,15 +37,13 @@ public class LoginActivity extends AppCompatActivity {
         initActivity();
         setListeners();
 
-        SessionManager session = new SessionManager(this);
-
     }
 
     protected void initActivity() {
         controller = new LoginController(this);
 
-        editTxtEmail = findViewById(R.id.editTextTextEmailAddress);
-        editTxtPassword = findViewById(R.id.editTextTextPassword);
+        editTxtEmail = findViewById(R.id.register_field_email);
+        editTxtPassword = findViewById(R.id.register_field_password);
 
         txtRegister = findViewById(R.id.button_register);
         bLogin = findViewById(R.id.button_login);
@@ -123,6 +119,17 @@ public class LoginActivity extends AppCompatActivity {
             }
         } else {
             controller.onLoginComplete(false);
+        }
+
+    }
+
+    public void setErrorFields(boolean email, boolean password){
+
+        if(email){
+            editTxtEmail.setError("Email not valid");
+        }
+        if(password){
+            editTxtPassword.setError("Password not valid");
         }
 
     }

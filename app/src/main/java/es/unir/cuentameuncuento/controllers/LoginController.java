@@ -64,14 +64,7 @@ public class LoginController extends ActivityController {
             userImpl.signInWithEmailPassword(email, password, this::onLoginComplete);
         }else {
             Toast.makeText(activity, "Not valid email or password", Toast.LENGTH_SHORT).show();
-
-            if(!correctEmail){
-                Toast.makeText(activity, "Not valid email", Toast.LENGTH_SHORT).show();
-            }
-
-            if(!correctPassword){
-                Toast.makeText(activity, "Not valid password", Toast.LENGTH_SHORT).show();
-            }
+            activity.setErrorFields(!correctEmail, !correctPassword);
 
         }
     }
@@ -109,23 +102,7 @@ public class LoginController extends ActivityController {
         loading = false;
     }
 
-    private boolean verifyEmailPassword(String email, String psw){
 
-        String regex_email = "[a-zA-Z0-9_+&*-]+";
-        String opt_re_email_points = "(?:\\\\.[a-zA-Z0-9_+&*-]+)*";
-        String regex_prov = "[a-zA-Z0-9]+";
-        String regex_domain = "[a-zA-Z]{2,7}";
-
-        String emRegix= "^" + regex_email + opt_re_email_points + "@" + regex_prov + "." + regex_domain + "$";
-
-        boolean correctEmail = !email.isEmpty() && email.matches(emRegix);
-        boolean correctPassword = !psw.isEmpty() && (psw.length() >= 6);
-
-        Log.d("LoginController", "email? " + correctEmail);
-        Log.d("LoginController", "password? " + correctPassword);
-
-        return correctEmail && correctPassword;
-    }
 
     public void recoverPassword(String email){
 
