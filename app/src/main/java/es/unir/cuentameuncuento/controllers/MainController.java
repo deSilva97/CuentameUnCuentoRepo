@@ -23,6 +23,7 @@ import es.unir.cuentameuncuento.activities.MainActivity;
 import es.unir.cuentameuncuento.adapters.BookAdapter;
 import es.unir.cuentameuncuento.adapters.BookAdapterElement;
 import es.unir.cuentameuncuento.impls.BookDAOImpl;
+import es.unir.cuentameuncuento.impls.IconStorageDAOImpl;
 import es.unir.cuentameuncuento.impls.UserDAOImpl;
 import es.unir.cuentameuncuento.managers.SessionManager;
 import es.unir.cuentameuncuento.models.Book;
@@ -67,6 +68,8 @@ public class MainController extends ActivityController {
 //            Toast.makeText(activity, b.getId(), Toast.LENGTH_SHORT).show();
         }
         showBookList(bookList);
+
+        IconStorageDAOImpl deleteme = new IconStorageDAOImpl();
     }
 
     private void showBookList(List<Book> bookList){

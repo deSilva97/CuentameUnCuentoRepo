@@ -9,10 +9,15 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageException;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import es.unir.cuentameuncuento.models.Book;
 import es.unir.cuentameuncuento.utils.BitmapEncoder;
 
 public class IconStorageDAOImpl {
@@ -109,6 +114,91 @@ public class IconStorageDAOImpl {
                 Log.e("BookDAOImpl", "No se ha podido borrar el icono");
             }
         });
+    }
+
+    public void deleteAll(){
+        StorageReference storageRef = storage.getReference();
+        StorageReference userFolderRef = storageRef.child(userID);
+
+        userFolderRef.listAll()
+                .addOnSuccessListener(listResult -> {
+                    // Eliminar todos los archivos listados
+                    for (StorageReference item : listResult.getItems()) {
+                        item.delete().addOnSuccessListener(aVoid -> {
+                            Log.d("BookDAOImpl", "Archivo borrado: " + item.getName());
+                        }).addOnFailureListener(exception -> {
+                            Log.e("BookDAOImpl", "No se ha podido borrar el archivo: " + item.getName(), exception);
+                        });
+                    }
+
+//                    // Si necesitas manejar subdirectorios, deberías llamar recursivamente a deleteAll() aquí
+//                    for (StorageReference prefix : listResult.getPrefixes()) {
+//                        deleteAll(prefix.getPath());  // Debes asegurarte de que este método pueda manejar paths completos o ajustar la lógica
+//                    }
+                })
+                .addOnFailureListener(exception -> {
+                    Log.e("BookDAOImpl", "No se pudieron listar los archivos para borrar", exception);
+                });
+    }
+
+    public void findAll(CompleteCallback callback){
+        StorageReference listRef = storage.getReference().child(userID);
+
+        listRef.listAll()
+                .addOnSuccessListener(new OnSuccessListener<ListResult>() {
+                    @Override
+                    public void onSuccess(ListResult listResult) {
+                        List<Bitmap> iconList = new ArrayList<>();
+
+                        // Recursivamente listar directorios, si necesitas explorar directorios anidados
+                        for (StorageReference prefix : listResult.getPrefixes()) {
+                            findAllInPrefix(prefix, iconList);  // Este método debería ser similar a findAll, pero operando sobre el prefijo
+                        }
+
+                        // Iterar sobre cada ítem directo bajo el directorio
+                        for (StorageReference item : listResult.getItems()) {
+                            item.getBytes(Long.MAX_VALUE).addOnSuccessListener(bytes -> {
+                                // Convertir bytes a Bitmap
+                                Bitmap icon = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                iconList.add(icon);
+                                Log.d("IconStorageDAOImpl", "Icono agregado a la lista: " + item.getName());
+                            }).addOnFailureListener(e -> {
+                                Log.e("IconStorageDAOImpl", "Error al descargar el icono: " + item.getName(), e);
+                            });
+                        }
+
+                        callback.onComplete(iconList);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("IconStorageDAOImpl", "Error al listar ítems", e);
+                    }
+                });
+    }
+
+    private void findAllInPrefix(StorageReference prefix, List<Bitmap> iconList) {
+        prefix.listAll().addOnSuccessListener(listResult -> {
+            for (StorageReference subPrefix : listResult.getPrefixes()) {
+                findAllInPrefix(subPrefix, iconList); // Llamada recursiva para subdirectorios
+            }
+            for (StorageReference item : listResult.getItems()) {
+                item.getBytes(Long.MAX_VALUE).addOnSuccessListener(bytes -> {
+                    Bitmap icon = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                    iconList.add(icon);
+                    Log.d("IconStorageDAOImpl", "Icono agregado a la lista desde subdirectorio: " + item.getName());
+                }).addOnFailureListener(e -> {
+                    Log.e("IconStorageDAOImpl", "Error al descargar el icono de subdirectorio: " + item.getName(), e);
+                });
+            }
+        }).addOnFailureListener(e -> {
+            Log.e("IconStorageDAOImpl", "Error al listar ítems en subdirectorio: " + prefix.getPath(), e);
+        });
+    }
+
+    public interface CompleteCallback{
+        void onComplete(List<Bitmap> list);
     }
 
 }

@@ -24,6 +24,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -135,13 +137,17 @@ public class UserDAOImpl {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseStorage storage = FirebaseStorage.getInstance();
         String userID = getIdUser();
 
         List<Book> auxList = new ArrayList<>();
 
-        //Borrar libros y almacenarlos
-        //Borrar usuario si falla devolver libros borrados
-        //Si se completa invocar el callback con true
+        //Borrar cuenta del usuario
+        //Borrar libros asociados asociados al usuario
+        //Borrar galeria de imágenes asociados al usuario
+
+        IconStorageDAOImpl storageDAO = new IconStorageDAOImpl();
+        storageDAO.deleteAll();
 
         // Paso 1: Recopilar y eliminar libros
         db.collection(userID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -174,6 +180,7 @@ public class UserDAOImpl {
             }
         });
     }
+
 
     public void signInWithToken(String token, CompleteCallback callback){
         mAuth.signInWithCustomToken(token).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
