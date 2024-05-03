@@ -123,4 +123,15 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    public void setErrorFields(boolean email, boolean password){
+
+        if(email){
+            editTxtEmail.setError("Email not valid");
+        }
+        if(password){
+            editTxtPassword.setError("Password not valid");
+        }
+
+    }
+
 }

@@ -51,4 +51,15 @@ public class NewAccountActivity extends AppCompatActivity {
         textSignin = findViewById(R.id.register_button_signin);
 
     }
+
+    public void setErrorFields(boolean email, boolean password){
+
+        if(email){
+            fieldEmail.setError("Email not valid");
+        }
+        if(password){
+            fieldPassword.setError("Password not valid");
+        }
+
+    }
 }

@@ -64,14 +64,7 @@ public class LoginController extends ActivityController {
             userImpl.signInWithEmailPassword(email, password, this::onLoginComplete);
         }else {
             Toast.makeText(activity, "Not valid email or password", Toast.LENGTH_SHORT).show();
-
-            if(!correctEmail){
-                Toast.makeText(activity, "Not valid email", Toast.LENGTH_SHORT).show();
-            }
-
-            if(!correctPassword){
-                Toast.makeText(activity, "Not valid password", Toast.LENGTH_SHORT).show();
-            }
+            activity.setErrorFields(!correctEmail, !correctPassword);
 
         }
     }
