@@ -143,21 +143,21 @@ public class MainController extends ActivityController {
     }
 
     public void generateStory(){
-//        Intent intent = new Intent(activity, CategoriasActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-//        activity.startActivity(intent);
+        Intent intent = new Intent(activity, CategoriasActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        activity.startActivity(intent);
 
         Book test_story = new Book();
 
-        // Cargar el bitmap desde el recurso drawable
-        Bitmap bitmap = decodeBitmapFromResource(activity.getResources(), R.drawable.icono_animales, 256, 256);
-
-        test_story.setTitle("Test Title");
-        test_story.setNarrative("Test Narrative");
-        test_story.setBitmap(bitmap);
-
-
-        bookImpl.createBook(test_story, this::onCompleteOperation);
+//        // Cargar el bitmap desde el recurso drawable
+//        Bitmap bitmap = decodeBitmapFromResource(activity.getResources(), R.drawable.icono_animales, 256, 256);
+//
+//        test_story.setTitle("Test Title");
+//        test_story.setNarrative("Test Narrative");
+//        test_story.setBitmap(bitmap);
+//
+//
+//        bookImpl.createBook(test_story, this::onCompleteOperation);
     }
 
     public static Bitmap decodeBitmapFromResource(Resources res, int resId, int reqWidth, int reqHeight) {
