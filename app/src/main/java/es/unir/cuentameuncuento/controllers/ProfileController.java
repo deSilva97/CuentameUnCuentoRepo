@@ -4,12 +4,14 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import es.unir.cuentameuncuento.activities.LoginActivity;
 import es.unir.cuentameuncuento.activities.MainActivity;
 import es.unir.cuentameuncuento.activities.ProfileActivity;
 import es.unir.cuentameuncuento.helpers.ActivityHelper;
+import es.unir.cuentameuncuento.helpers.CredentialsHelper;
 import es.unir.cuentameuncuento.impls.UserDAOImpl;
 
 public class ProfileController {
@@ -23,29 +25,33 @@ public class ProfileController {
         userImpl = new UserDAOImpl(profileActivity);
     }
 
-    public String getUserName(){
-        return userImpl.getUser().getName();
-    }
 
     public String getEmail(){
-        return userImpl.getUser().getEmail();
+        return userImpl.getEmail();
     }
 
+    public String getPassword(){
+        return userImpl.getPassword();
+    }
 
     public void tryToChangeEmail(String email){
         Log.d("ProfileController", "Change email?" + email);
     }
 
-    public boolean changeName(String name){
-        return false;
+    public void updateEmail(String email, TextView ref){
+        if(CredentialsHelper.verifyEmail(email)){
+            userImpl.updateEmail(email, this::onCompleteEmailUpdate);
+        } else{
+            ref.setError("Not valid email");
+        }
     }
 
-    public boolean changeEmail(String email){
-        return false;
-    }
-
-    public boolean changePassword(String password){
-        return false;
+    public void updatePassword(String password, TextView ref){
+        if(CredentialsHelper.verifyPassword(password)){
+            userImpl.updatePassword(password, this::onCompletePasswordUpdate);
+        } else{
+            ref.setError("Not valid passoword. May contain at least 6 chars");
+        }
     }
 
     public void signOut(){
@@ -94,4 +100,29 @@ public class ProfileController {
     public void goToHome(){
         ActivityHelper.ChangeActivity(activity, MainActivity.class, false);
     }
+
+    public void onCompleteEmailUpdate(String email){
+        String[] split = email.split(":");
+
+        if(!email.isEmpty()){
+            signOut();
+            Toast.makeText(activity, email, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(activity, "update email fails", Toast.LENGTH_SHORT).show();
+        }
+
+        //Desactivar carga
+    }
+
+    public void onCompletePasswordUpdate(String password){
+        if(!password.isEmpty()){
+            signOut();
+            Toast.makeText(activity, "Contraseña actualizada, vuelva a iniciar sesión", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(activity, "update password fails", Toast.LENGTH_SHORT).show();
+        }
+
+        //Desactivar carga
+    }
+
 }
