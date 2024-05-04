@@ -12,16 +12,16 @@ public class Book implements Serializable {
     private boolean favorite;
     private String fk_user;
 
-    private Bitmap bitmap;
+//    private Bitmap bitmap;
     private String iconID;
 
-    public Book(String id, String title, String narrative, boolean favorite, String fk_user, Bitmap bitmap, String iconID) {
+    public Book(String id, String title, String narrative, boolean favorite, String fk_user, String iconID) {
         this.id = id;
         this.title = title;
         this.narrative = narrative;
         this.favorite = favorite;
         this.fk_user = fk_user;
-        this.bitmap = bitmap;
+//        this.bitmap = bitmap;
         this.iconID = iconID;
     }
 
@@ -69,14 +69,6 @@ public class Book implements Serializable {
         this.fk_user = fk_user;
     }
 
-    public Bitmap getBitmap() {
-        return bitmap;
-    }
-
-    public void setBitmap(Bitmap bitmap) {
-        this.bitmap = bitmap;
-    }
-
     public String getIconID() {
         return iconID;
     }
@@ -107,7 +99,6 @@ public class Book implements Serializable {
                 ", narrative='" + narrative + '\'' +
                 ", favorite=" + favorite +
                 ", fk_user='" + fk_user + '\'' +
-                ", bitmap=" + bitmap +
                 ", iconID='" + iconID + '\'' +
                 '}';
     }

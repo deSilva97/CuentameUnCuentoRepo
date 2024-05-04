@@ -12,12 +12,14 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.IOException;
 
+import es.unir.cuentameuncuento.adapters.BookAdapterElement;
 import es.unir.cuentameuncuento.managers.ApiManager;
 import es.unir.cuentameuncuento.R;
 import es.unir.cuentameuncuento.abstracts.ActivityController;
 import es.unir.cuentameuncuento.activities.MainActivity;
 import es.unir.cuentameuncuento.activities.StoryActivity;
 import es.unir.cuentameuncuento.impls.BookDAOImpl;
+import es.unir.cuentameuncuento.managers.SessionManager;
 import es.unir.cuentameuncuento.models.Book;
 
 public class StoryController extends ActivityController {
@@ -41,8 +43,14 @@ public class StoryController extends ActivityController {
 
             @Override
             public void onStoryGenerated(Book story) {
+                Log.d("Debug","story=" + story);
                 activity.currentStory = story;
+                SessionManager.currentStory = new BookAdapterElement();
+
+
+                SessionManager.currentStory.setBook(story);
                 activity.txtStory.setText(activity.currentStory.getNarrative());
+                Log.d("Debug", "End story");
             }
 
             @Override
@@ -109,9 +117,11 @@ public class StoryController extends ActivityController {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        SessionManager.currentStory = new BookAdapterElement();
+
                         if (imageBitmap != null){
-                        activity.currentStory.setBitmap(imageBitmap);
-                        activity.imageView.setImageBitmap(imageBitmap);
+                            SessionManager.currentStory.setIcon(imageBitmap);
+                            activity.imageView.setImageBitmap(imageBitmap);
                         }
 
 
@@ -136,9 +146,11 @@ public class StoryController extends ActivityController {
 
     public void showSavedBook(Book book){
         activity.btnSave.setVisibility(View.INVISIBLE);
-        activity.currentStory = book;
+//        activity.currentStory = book;
+        activity.currentStory = SessionManager.currentStory.getBook();
         activity.txtStory.setText(book.getNarrative());
-        activity.imageView.setImageBitmap(book.getBitmap());
+//        activity.imageView.setImageBitmap(book.getBitmap());
+        activity.imageView.setImageBitmap(SessionManager.currentStory.getIcon());
     }
 
     public void saveBook (Book currentStory){
@@ -199,8 +211,6 @@ public class StoryController extends ActivityController {
         Animation scaleUp = AnimationUtils.loadAnimation(activity, R.anim.anim_scaleup);
         activity.layoutStory.startAnimation(scaleUp);
     }
-
-
 }
 
 

@@ -1,29 +1,17 @@
 package es.unir.cuentameuncuento.activities;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import es.unir.cuentameuncuento.R;
-import es.unir.cuentameuncuento.adapters.BookAdapter;
-import es.unir.cuentameuncuento.adapters.BookAdapterElement;
 import es.unir.cuentameuncuento.controllers.MainController;
-import es.unir.cuentameuncuento.helpers.ActivityHelper;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,13 +31,14 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(MenuItem item) {
                 if (item.getItemId()== R.id.profile) {
                     //click on profile
-                    ActivityHelper.ChangeActivity(MainActivity.this, ProfileActivity.class, true);
+                    controller.changeActivityToProfile();
                     return true;
                 } else if (item.getItemId()== R.id.favorites) {
                     //click on favorites
+                    controller.changeActivityToCurrentStory();
                     return true;
                 } else if (item.getItemId()== R.id.home){
-                    ActivityHelper.ChangeActivity(MainActivity.this, MainActivity.class, true);
+                    controller.changeActivityToMain();
                     return true;
                 } else {
                     return false;

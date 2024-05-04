@@ -6,10 +6,8 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.FirebaseApp;
@@ -18,32 +16,26 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import es.unir.cuentameuncuento.managers.SessionManager;
 import es.unir.cuentameuncuento.models.Book;
-import es.unir.cuentameuncuento.models.User;
 
 public class UserDAOImpl {
 
     static FirebaseAuth mAuth;
-    //FirebaseUser user;
+    static FirebaseUser mUser;
 
     public UserDAOImpl(Context context){
         FirebaseApp.initializeApp(context);
 
         mAuth = FirebaseAuth.getInstance();
-        //user = mAuth.getCurrentUser();
+        mUser = mAuth.getCurrentUser();
     }
 
     public boolean sessionSaved(){
@@ -54,19 +46,14 @@ public class UserDAOImpl {
             return mAuth.getUid();
     }
 
-    public User getUser(){
-
-        FirebaseUser aux = FirebaseAuth.getInstance().getCurrentUser();
-        if(aux != null){
-            User user = new User();
-            user.setId(aux.getUid());
-            user.setEmail(aux.getEmail());
-            user.setPassword("********");
-            return user;
-        }
-
-        return null;
+    public String getEmail(){
+        return mUser.getEmail();
     }
+    public String getPassword(){
+        return getIdUser();
+    }
+
+
     public void signUpWithEmailPassword(String email, String password, CompleteCallback callback){
 
         mAuth.createUserWithEmailAndPassword(email, password)
@@ -195,6 +182,39 @@ public class UserDAOImpl {
         });
     }
 
+    public void updateEmail(String email, CompleteCallbackString callback){
+        Log.d("UserDAOImpl", "verify and update email...");
+        mUser.verifyBeforeUpdateEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    callback.onComplete("Se ha enviado un correo para completar la operación a: " + email);
+                } else {
+                    Log.e("UserDAOImpl", "Verify email fails: " + task.getException().toString());
+                    callback.onComplete("");
+                }
+
+            }
+        });
+    }
+
+    public void updatePassword(String password, CompleteCallbackString callback){
+        mUser.updatePassword(password).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Log.d("UserDAOImpl", "update password sucess=" + password);
+                    callback.onComplete(password);
+                } else{
+                    Log.e("UserDAOImpl", "update password fail");
+                    callback.onComplete("");
+                }
+
+
+            }
+        });
+    }
+
     public void recoverPassword(String email, CompleteCallbackResultMessage callback){
         mAuth.sendPasswordResetEmail(email)
             .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -217,5 +237,9 @@ public class UserDAOImpl {
 
     public interface CompleteCallbackResultMessage{
         void onComplete(boolean result, String message);
+    }
+
+    public interface CompleteCallbackString{
+        void onComplete(String result);
     }
 }

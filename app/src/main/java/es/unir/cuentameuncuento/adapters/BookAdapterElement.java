@@ -1,46 +1,58 @@
 package es.unir.cuentameuncuento.adapters;
 
+import android.graphics.Bitmap;
 import android.graphics.drawable.Icon;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.io.Serializable;
+
 import es.unir.cuentameuncuento.controllers.MainController;
+import es.unir.cuentameuncuento.managers.SessionManager;
 import es.unir.cuentameuncuento.models.Book;
 
-public class BookAdapterElement {
+public class BookAdapterElement implements Serializable {
 
     MainController controller;
     Book book;
+    Bitmap icon;
 
-
-    private Icon iconImage;
     private String textTitle;
 
-    public BookAdapterElement(MainController controller, Book book, int iconResourceID, String textTitle) {
+    public BookAdapterElement(){
+
+    }
+
+    public BookAdapterElement(MainController controller, Book book, Bitmap icon, String textTitle) {
         this.controller = controller;
         this.book = book;
+        this.icon = icon;
         this.textTitle = textTitle;
-    }
-
-    public Icon getIconImage() {
-        return iconImage;
-    }
-
-    public void setIconImage(Icon iconImage) {
-        this.iconImage = iconImage;
     }
 
     public String getTextTitle() {
         return textTitle;
     }
 
-    public void setTextTitle(String textTitle) {
-        this.textTitle = textTitle;
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
+    public Bitmap getIcon(){
+        return icon;
+    }
+
+    public void setIcon(Bitmap bitmap){
+        icon = bitmap;
     }
 
     public void actionReadBook(){
-//        Log.w("BookAdapterElement", "Not implemented method: actionReadBook");
+        SessionManager.currentStory = this;
         controller.readBook(book);
     }
 

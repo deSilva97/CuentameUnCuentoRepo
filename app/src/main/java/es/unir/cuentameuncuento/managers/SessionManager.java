@@ -2,12 +2,17 @@ package es.unir.cuentameuncuento.managers;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 
+import es.unir.cuentameuncuento.adapters.BookAdapterElement;
 import es.unir.cuentameuncuento.models.Book;
 
 public class SessionManager {
 
-    public static Book currentBook;
+    public static BookAdapterElement currentStory;
+
+//    public static Book currentBook;
+//    public static Bitmap currentIcon;
 
 
 
