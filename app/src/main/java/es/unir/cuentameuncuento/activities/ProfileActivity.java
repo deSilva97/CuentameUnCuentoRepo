@@ -1,12 +1,17 @@
 package es.unir.cuentameuncuento.activities;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import es.unir.cuentameuncuento.R;
@@ -14,12 +19,10 @@ import es.unir.cuentameuncuento.controllers.ProfileController;
 
 public class ProfileActivity extends AppCompatActivity {
 
-
-    EditText userText, emailText;
+    Button bChangeEmail, bChangePassword;
 
     Button bSignOut;
-    Button bDeleteAccount;
-    Button bReturn;
+    TextView bDeleteAccount;
 
     ProfileController controller;
 
@@ -34,35 +37,26 @@ public class ProfileActivity extends AppCompatActivity {
         setListeners();
     }
 
-    public void setProfileValues(String user_name, String email){
-
-    }
-
     protected void initActivity() {
-        userText = findViewById(R.id.profile_editText_user);
-        emailText = findViewById(R.id.profile_editText_email);
 
+        bChangeEmail = findViewById(R.id.buttonChangeEmail);
+        bChangePassword = findViewById(R.id.profile_button_changePassword);
         bSignOut = findViewById(R.id.buttonSignOut);
         bDeleteAccount = findViewById(R.id.button_delete_account);
-        bReturn = findViewById(R.id.button_profile_return);
     }
 
     private void setListeners() {
-
-        userText.addTextChangedListener(new TextWatcher() {
+        bChangeEmail.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+            public void onClick(View v) {
+                showChangeInfoDialog("email");
             }
+        });
 
+        bChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                controller.tryToChangeEmail(s.toString());
+            public void onClick(View v) {
+                showChangeInfoDialog("password");
             }
         });
 
@@ -73,13 +67,6 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        bReturn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                controller.goToHome();
-            }
-        });
-
         bDeleteAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,4 +74,27 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
     }
+
+        private void showChangeInfoDialog(final String changeType) {
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+            LayoutInflater inflater = this.getLayoutInflater();
+            View dialogView = inflater.inflate(R.layout.dialog_change_info, null);
+            dialogBuilder.setView(dialogView);
+
+            final EditText editTextNewInfo = dialogView.findViewById(R.id.editTextNewInfo);
+
+            dialogBuilder.setTitle("Cambiar " + (changeType.equals("email") ? "Email" : "Contraseña"));
+            dialogBuilder.setPositiveButton("Cambiar", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    String newInfo = editTextNewInfo.getText().toString().trim();
+                    Toast.makeText(ProfileActivity.this, "Información actualizada", Toast.LENGTH_SHORT).show();
+                }
+            });
+            dialogBuilder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                }
+            });
+            AlertDialog b = dialogBuilder.create();
+            b.show();
+        }
 }
