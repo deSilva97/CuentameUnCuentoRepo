@@ -45,6 +45,9 @@ public class StoryController extends ActivityController {
             public void onStoryGenerated(Book story) {
                 Log.d("Debug","story=" + story);
                 activity.currentStory = story;
+                SessionManager.currentStory = new BookAdapterElement();
+
+
                 SessionManager.currentStory.setBook(story);
                 activity.txtStory.setText(activity.currentStory.getNarrative());
                 Log.d("Debug", "End story");
@@ -114,8 +117,7 @@ public class StoryController extends ActivityController {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if(SessionManager.currentStory == null)
-                            SessionManager.currentStory = new BookAdapterElement();
+                        SessionManager.currentStory = new BookAdapterElement();
 
                         if (imageBitmap != null){
                             SessionManager.currentStory.setIcon(imageBitmap);

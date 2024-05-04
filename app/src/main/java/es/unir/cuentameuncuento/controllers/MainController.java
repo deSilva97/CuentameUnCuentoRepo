@@ -43,6 +43,8 @@ public class MainController extends ActivityController {
     public MainController(MainActivity activity){
         this.activity = activity;
 
+        SessionManager.currentStory = new BookAdapterElement();
+
         bookImpl = new BookDAOImpl(activity);
         bookList = new ArrayList<Book>();
 
