@@ -17,6 +17,7 @@ import com.google.firebase.storage.UploadTask;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.unir.cuentameuncuento.adapters.BookAdapterElement;
 import es.unir.cuentameuncuento.models.Book;
 import es.unir.cuentameuncuento.utils.BitmapEncoder;
 
@@ -63,7 +64,7 @@ public class IconStorageDAOImpl {
         });
     }
 
-    public static void read(String userID, String imageID, BookDAOImpl.CompleteCallbackWithBitmap callback){
+    public static void read(BookAdapterElement element, String imageID,  CompleteCallbackWithBookElement callback){
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
         StorageReference islandRef = storageRef.child(pathIcon(imageID));
         Log.d("StoryIcon", "image downloaded=" + imageID);
@@ -74,14 +75,14 @@ public class IconStorageDAOImpl {
             public void onSuccess(byte[] bytes) {
                 // Data for "images/island.jpg" is returns, use this as needed
                 Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);;
-                callback.onComplete(bitmap);
+                callback.onIconFounded(element, bitmap);
                 Log.d("StoryIcon", "download success");
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // Handle any errors
-                callback.onComplete(null);
+                callback.onIconFounded(element, null);
                 Log.e("StoryIcon", "download failure " + exception);
 
                 if(exception instanceof StorageException){
@@ -141,42 +142,42 @@ public class IconStorageDAOImpl {
                 });
     }
 
-    public void findAll(CompleteCallback callback){
-        StorageReference listRef = storage.getReference().child(userID);
-
-        listRef.listAll()
-                .addOnSuccessListener(new OnSuccessListener<ListResult>() {
-                    @Override
-                    public void onSuccess(ListResult listResult) {
-                        List<Bitmap> iconList = new ArrayList<>();
-
-                        // Recursivamente listar directorios, si necesitas explorar directorios anidados
-                        for (StorageReference prefix : listResult.getPrefixes()) {
-                            findAllInPrefix(prefix, iconList);  // Este método debería ser similar a findAll, pero operando sobre el prefijo
-                        }
-
-                        // Iterar sobre cada ítem directo bajo el directorio
-                        for (StorageReference item : listResult.getItems()) {
-                            item.getBytes(Long.MAX_VALUE).addOnSuccessListener(bytes -> {
-                                // Convertir bytes a Bitmap
-                                Bitmap icon = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                iconList.add(icon);
-                                Log.d("IconStorageDAOImpl", "Icono agregado a la lista: " + item.getName());
-                            }).addOnFailureListener(e -> {
-                                Log.e("IconStorageDAOImpl", "Error al descargar el icono: " + item.getName(), e);
-                            });
-                        }
-
-                        callback.onComplete(iconList);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e("IconStorageDAOImpl", "Error al listar ítems", e);
-                    }
-                });
-    }
+//    public void findAll(CompleteCallback callback){
+//        StorageReference listRef = storage.getReference().child(userID);
+//
+//        listRef.listAll()
+//                .addOnSuccessListener(new OnSuccessListener<ListResult>() {
+//                    @Override
+//                    public void onSuccess(ListResult listResult) {
+//                        List<Bitmap> iconList = new ArrayList<>();
+//
+//                        // Recursivamente listar directorios, si necesitas explorar directorios anidados
+//                        for (StorageReference prefix : listResult.getPrefixes()) {
+//                            findAllInPrefix(prefix, iconList);  // Este método debería ser similar a findAll, pero operando sobre el prefijo
+//                        }
+//
+//                        // Iterar sobre cada ítem directo bajo el directorio
+//                        for (StorageReference item : listResult.getItems()) {
+//                            item.getBytes(Long.MAX_VALUE).addOnSuccessListener(bytes -> {
+//                                // Convertir bytes a Bitmap
+//                                Bitmap icon = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+//                                iconList.add(icon);
+//                                Log.d("IconStorageDAOImpl", "Icono agregado a la lista: " + item.getName());
+//                            }).addOnFailureListener(e -> {
+//                                Log.e("IconStorageDAOImpl", "Error al descargar el icono: " + item.getName(), e);
+//                            });
+//                        }
+//
+//                        callback.onComplete(iconList);
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Log.e("IconStorageDAOImpl", "Error al listar ítems", e);
+//                    }
+//                });
+//    }
 
     private void findAllInPrefix(StorageReference prefix, List<Bitmap> iconList) {
         prefix.listAll().addOnSuccessListener(listResult -> {
@@ -197,8 +198,8 @@ public class IconStorageDAOImpl {
         });
     }
 
-    public interface CompleteCallback{
-        void onComplete(List<Bitmap> list);
+    public interface CompleteCallbackWithBookElement{
+        void onIconFounded(BookAdapterElement element, Bitmap bitmap);
     }
 
 }

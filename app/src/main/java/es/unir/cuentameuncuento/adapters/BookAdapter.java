@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -53,6 +52,11 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
 
     public void setItems(List<BookAdapterElement> items){mData = items;}
 
+    public void addItem(BookAdapterElement element) {
+        mData.add(element);
+        notifyItemInserted(mData.size() - 1);
+    }
+
     public class  ViewHolder extends RecyclerView.ViewHolder{
         ImageView iconImage;
         TextView title;
@@ -76,11 +80,16 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         void bindData(final BookAdapterElement item){
 
             iconImage.setImageResource(R.drawable.icono_loading);
-            IconStorageDAOImpl.read(UserDAOImpl.getIdUser(), item.book.getIconID(), this::setImage);
+//            IconStorageDAOImpl.read(UserDAOImpl.getIdUser(), item.book.getIconID(), new BookDAOImpl.CompleteCallbackWithBitmap() {
+//                @Override
+//                public void onComplete(Bitmap bitmap) {
+//
+//                }
+//            });
 
 
             title.setText(item.getTextTitle());
-
+            iconImage.setImageBitmap(item.getIcon());
             bSelect.setOnClickListener(null);
             bSelect.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -107,7 +116,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
             });
         }
 
-        private void setImage(Bitmap bitmap){
+        private void downloadedIcon(Bitmap bitmap){
             if(bitmap != null){
                 Log.d("BookAdapterJava","Bitmap loaded success load!!");
                 iconImage.setImageBitmap(bitmap);

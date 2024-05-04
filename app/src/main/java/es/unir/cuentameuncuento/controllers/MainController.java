@@ -37,6 +37,8 @@ public class MainController extends ActivityController {
 
     MainActivity activity;
     BookDAOImpl bookImpl;
+    BookAdapter storyAdapter;
+
 
     public MainController(MainActivity activity){
         this.activity = activity;
@@ -71,22 +73,45 @@ public class MainController extends ActivityController {
 
         IconStorageDAOImpl deleteme = new IconStorageDAOImpl();
     }
-
+//    private void showBookList(List<Book> bookList){
+//
+//        bookViewList = new ArrayList<>();
+//
+//        for(int i = 0; i < bookList.size(); i++){
+//
+//            BookAdapterElement book = new BookAdapterElement(this, bookList.get(i), null, bookList.get(i).getTitle());
+//            bookViewList.add(book);
+//        }
+//
+//        BookAdapter bookAdapter = new BookAdapter(bookViewList, activity);
+//
+//        //Config Recycler
+//        activity.recyclerView.setHasFixedSize(true);
+//        activity.recyclerView.setLayoutManager(new LinearLayoutManager(activity)); // De arriba abajo
+//        activity.recyclerView.setAdapter(bookAdapter);
+//    }
     private void showBookList(List<Book> bookList){
 
-        bookViewList = new ArrayList<>();
+        storyAdapter = new BookAdapter(new ArrayList<>(), activity);
 
         for(int i = 0; i < bookList.size(); i++){
-            BookAdapterElement book = new BookAdapterElement(this, bookList.get(i), R.drawable.book_placeholder, bookList.get(i).getId());
-            bookViewList.add(book);
+
+            BookAdapterElement element = new BookAdapterElement(this,bookList.get(i), null, bookList.get(i).getTitle());
+            IconStorageDAOImpl.read(element, bookList.get(i).getIconID(), this::setIconToStoryElement);
+
         }
-
-        BookAdapter bookAdapter = new BookAdapter(bookViewList, activity);
-
         //Config Recycler
         activity.recyclerView.setHasFixedSize(true);
         activity.recyclerView.setLayoutManager(new LinearLayoutManager(activity)); // De arriba abajo
-        activity.recyclerView.setAdapter(bookAdapter);
+        activity.recyclerView.setAdapter(storyAdapter);
+    }
+
+    private void setIconToStoryElement(BookAdapterElement element, Bitmap bitmap){
+        element.setIcon(bitmap);
+        addElementToAdapter(element);
+    }
+    private void addElementToAdapter(BookAdapterElement element){
+        storyAdapter.addItem(element);
     }
 
     public void readBook(Book book){
@@ -137,7 +162,7 @@ public class MainController extends ActivityController {
     }
 
     public void returnToCurrentBook(){
-        if(SessionManager.currentBook != null){
+        if(SessionManager.currentStory != null){
 
         }
     }
@@ -147,7 +172,7 @@ public class MainController extends ActivityController {
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         activity.startActivity(intent);
 
-        Book test_story = new Book();
+//        Book test_story = new Book();
 
 //        // Cargar el bitmap desde el recurso drawable
 //        Bitmap bitmap = decodeBitmapFromResource(activity.getResources(), R.drawable.icono_animales, 256, 256);
@@ -192,6 +217,10 @@ public class MainController extends ActivityController {
         }
 
         return inSampleSize;
+    }
+
+    private void onCompleteIconFound(){
+
     }
 
     public void changeActivityToProfile() {

@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import es.unir.cuentameuncuento.managers.SessionManager;
 import es.unir.cuentameuncuento.models.Book;
 import es.unir.cuentameuncuento.utils.BitmapEncoder;
 
@@ -74,7 +75,7 @@ public class BookDAOImpl  {
                             if(task.isSuccessful()){
                                 Log.d("BookDAOImpl", "Callback valid Story=" + book.toString());
 
-                                storageImpl.create(book.getBitmap(), uniqueStoryImageUUID);
+                                storageImpl.create(SessionManager.currentStory.getIcon(), uniqueStoryImageUUID);
 
                                 callback.onComplete(true, "Libro creado");
                             } else{
@@ -176,8 +177,6 @@ public class BookDAOImpl  {
         story.setNarrative(document.getString(FIELD_NARRATIVE));
         story.setFk_user(document.getString(FIELD_FK_USER));
         story.setIconID(document.getString(FIELD_ICON));
-        //Bitmap bitmapDecode = BitmapEncoder.decodeBase64(document.getString(FIELD_ICON));
-        story.setBitmap(null);
 
         return story;
     }
