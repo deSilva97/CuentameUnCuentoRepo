@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -18,6 +17,7 @@ import java.util.List;
 import es.unir.cuentameuncuento.R;
 import es.unir.cuentameuncuento.abstracts.ActivityController;
 import es.unir.cuentameuncuento.activities.CategoriasActivity;
+import es.unir.cuentameuncuento.activities.ProfileActivity;
 import es.unir.cuentameuncuento.activities.StoryActivity;
 import es.unir.cuentameuncuento.activities.MainActivity;
 import es.unir.cuentameuncuento.adapters.BookAdapter;
@@ -194,4 +194,17 @@ public class MainController extends ActivityController {
         return inSampleSize;
     }
 
+    public void changeActivityToProfile() {
+        Intent intent = new Intent(activity, ProfileActivity.class);
+        activity.startActivity(intent);
+    }
+
+    public void changeActivityToCurrentStory(){
+//        Intent intent = new Intent(activity, StoryActivity.class);
+//        activity.startActivity(intent);
+    }
+
+    public void changeActivityToMain() {
+        refresh();
+    }
 }
