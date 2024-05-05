@@ -72,7 +72,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
             iconImage = itemView.findViewById(R.id.book_icon_container);
             title = itemView.findViewById(R.id.book_title_container);
 
-            bFavorite = itemView.findViewById(R.id.btn_favorite_book_container);
             bDelete = itemView.findViewById(R.id.btn_delete_book_container);
             bSelect = itemView.findViewById(R.id.btn_select_book_container);
         }
@@ -98,14 +97,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
                 }
             });
 
-            bFavorite.setOnClickListener(null);
-            bFavorite.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-//                    Toast.makeText(itemView.getContext(), "Accion favorite", Toast.LENGTH_SHORT).show();
-                    item.actionFavorite();
-                }
-            });
             bDelete.setOnClickListener(null);
             bDelete.setOnClickListener(new View.OnClickListener() {
                 @Override

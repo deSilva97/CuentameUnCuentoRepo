@@ -66,16 +66,6 @@
         android:backgroundTint="#00FFFFFF" />
 
     <ImageButton
-        android:id="@+id/btn_favorite_book_container"
-        android:src="@mipmap/icono_star_fill_white_50"
-        android:backgroundTint="#00FF0000"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        />
-
-    <ImageButton
         android:id="@+id/btn_delete_book_container"
         android:src="@mipmap/delete_fill"
         android:backgroundTint="@color/white"
