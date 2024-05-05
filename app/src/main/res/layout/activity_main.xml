@@ -18,28 +18,15 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/createStory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_gravity="center_horizontal"
-        android:elevation="10dp"
-        android:paddingStart="24dp"
-        android:paddingTop="16dp"
-        android:paddingEnd="24dp"
-        android:paddingBottom="16dp"
         android:text="Crea un nuevo cuento"
-        android:textColor="@android:color/white"
-        app:cornerRadius="15dp"
-        app:iconGravity="start"
-        app:iconPadding="8dp"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bookContainerRecyclerView"
-        app:layout_constraintVertical_bias="0.484" />
+        app:layout_constraintTop_toBottomOf="@+id/bookContainerRecyclerView" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/bookContainerRecyclerView"
