@@ -30,27 +30,13 @@ public class CategoriasActivity extends AppCompatActivity {
         setContentView(R.layout.activity_categorias);
 
         init();
-        setListeners();
         crearCategorias();
 
     }
 
     private void init(){
     gridLayout = findViewById(R.id.gridLayout);
-    btnAtras = findViewById(R.id.btnAtrasCategoria);
 
-    }
-
-    private void setListeners(){
-
-        btnAtras.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(CategoriasActivity.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                startActivity(intent);
-            }
-        });
     }
 
     private void crearCategorias() {
