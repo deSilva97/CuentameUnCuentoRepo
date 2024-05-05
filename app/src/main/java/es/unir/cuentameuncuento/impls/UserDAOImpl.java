@@ -104,6 +104,7 @@ public class UserDAOImpl {
                             callback.onComplete(true);
                         } else {
                             //user = null;
+                            Log.e("UserDAOImpl", "Error: " + task.getException());
                             callback.onComplete(false);
                         }
                     }
