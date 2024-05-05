@@ -2,12 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/home"
-        android:icon="@mipmap/home"
-        android:title="Inicio" />
-    <item
-        android:id="@+id/favorites"
-        android:icon="@mipmap/star"
-        android:title="Favoritos" />
+        android:icon="@mipmap/library"
+        android:title="Biblioteca" />
     <item
         android:id="@+id/profile"
         android:icon="@mipmap/profile"
