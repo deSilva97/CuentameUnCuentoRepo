@@ -1,9 +1,11 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayoutCategorias"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:background="@drawable/background_gradient">
+    android:background="@android:color/white"
+    tools:context=".activities.CategoriasActivity">
 
         <TextView
             android:id="@+id/categories_title"
@@ -12,31 +14,23 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="32dp"
             android:text="Categorías"
-            android:textSize="32sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textSize="32sp" />
 
-        <ScrollView
+        <TextView
+            android:id="@+id/descriptionCategories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/categories_title"
+            android:layout_alignStart="@+id/categories_title"
+            android:layout_marginTop="16dp"
+            android:text="Selecciona una de las categorías para crear tu cuento" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewCategorias"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_below="@+id/descriptionCategories"
+            android:layout_marginTop="32dp"
+            android:padding="8dp" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                        <GridLayout
-                            android:id="@+id/gridLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:alignmentMode="alignBounds"
-                            android:columnCount="1"
-                            android:columnOrderPreserved="true"
-                            android:padding="5dp">
-
-                        </GridLayout>
-
-                </LinearLayout>
-
-        </ScrollView>
-</LinearLayout>
+</RelativeLayout>
