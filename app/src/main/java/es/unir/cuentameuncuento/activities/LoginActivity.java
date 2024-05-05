@@ -113,6 +113,8 @@ public class LoginActivity extends AppCompatActivity {
             if(resultCode == RESULT_OK){
                 Log.d("Login", "Provider Google=" + resultCode);
                 controller.signInWithGoogle(data);
+            } else {
+                Log.e("Login", "result code=" + resultCode + " es distinto de " + LoginController.PROVIDER_GOOGLE);
             }
         } else if(requestCode == LoginController.PROVIDER_FACEBOOK){
             if(resultCode == RESULT_OK){
@@ -123,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
                 controller.signInWithTwitter(data);
             }
         } else {
-            controller.onLoginComplete(false);
+            controller.onLoginComplete(false, "Error desconocido");
             Log.e("Login", "fail to result activity");
         }
 
