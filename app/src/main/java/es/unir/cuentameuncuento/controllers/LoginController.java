@@ -36,12 +36,14 @@ public class LoginController extends ActivityController {
 
     public void authWithGoogle(){
         loading = true;
+        Log.d("Login", "Start Auth with GOOGLE");
         GoogleSignInOptions googleConfig = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(activity.getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
         GoogleSignInClient googleClient = GoogleSignIn.getClient(activity, googleConfig);
+        Log.d("Login", "Start activity google");
         activity.startActivityForResult(googleClient.getSignInIntent(), PROVIDER_GOOGLE);
     }
 
