@@ -125,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
                 controller.signInWithTwitter(data);
             }
         } else {
-            controller.onLoginComplete(false, "Error desconocido");
+            controller.onLoginComplete(false);
             Log.e("Login", "fail to result activity");
         }
 

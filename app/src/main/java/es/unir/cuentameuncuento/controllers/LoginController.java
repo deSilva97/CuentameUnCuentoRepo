@@ -103,13 +103,11 @@ public class LoginController extends ActivityController {
 
     }
 
-    public void onLoginComplete(boolean result, String msg){
+    public void onLoginComplete(boolean result){
         if(result){
-            Log.d("Login", msg);
             Toast.makeText(activity, "Sign in success", Toast.LENGTH_SHORT).show();
             ActivityHelper.ChangeActivity(activity, MainActivity.class, true);
         } else {
-            Log.e("Login", msg);
             Toast.makeText(activity, "Sign in failed", Toast.LENGTH_SHORT).show();
         }
         loading = false;
