@@ -27,17 +27,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-
+                android:layout_marginTop="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginBottom="12dp"
                 android:elevation="10dp"
-                app:cardCornerRadius="150sp">
+                app:cardCornerRadius="10dp">
 
                 <ImageView
                     android:id="@+id/book_icon_container"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:layout_marginStart="6dp"
-                    android:paddingLeft="14dp"
-                    android:paddingRight="14dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/book_placeholder" />
             </androidx.cardview.widget.CardView>
@@ -46,15 +47,11 @@
                 android:id="@+id/book_title_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginStart="24dp"
+                android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/roundedContent"
-                android:orientation="vertical"
-                android:text="Titulo del libro amplio, pero que muy amplio"
-                android:textColor="@color/black"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+                android:text="Titulo del libro"
+                android:textSize="20sp" />
         </RelativeLayout>
 
     </LinearLayout>
@@ -66,24 +63,14 @@
         android:backgroundTint="#00FFFFFF" />
 
     <ImageButton
-        android:id="@+id/btn_favorite_book_container"
-        android:src="@mipmap/icono_star_fill_white_50"
-        android:backgroundTint="#00FF0000"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        />
-
-    <ImageButton
         android:id="@+id/btn_delete_book_container"
         android:src="@mipmap/delete_fill"
+        android:tint="@color/backgroundColor"
         android:backgroundTint="@color/white"
         android:layout_width="36dp"
         android:layout_height="36dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:layout_gravity="end|bottom"/>
+        android:layout_marginEnd="24dp"
+        android:layout_gravity="end|center"/>
 
     <!-- Agrega más vistas según necesites -->
 </androidx.cardview.widget.CardView>

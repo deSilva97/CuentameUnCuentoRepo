@@ -5,31 +5,16 @@
     android:orientation="vertical"
     android:background="@drawable/background_gradient">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/categories_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="20sp">
-                <ImageButton
-                    android:id="@+id/btnAtrasCategoria"
-                    android:layout_width="70sp"
-                    android:layout_height="70sp"
-                    android:backgroundTint="@android:color/transparent"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/icono_atras"
-                    app:showAsAction="always"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="70sp"
-                    android:layout_marginLeft="60sp"
-                    android:textSize="35sp"
-                    android:gravity="center_vertical"
-                    android:textColor="@android:color/black"
-                    android:text="Categorias" />
-
-        </LinearLayout>
-
-
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:text="Categorías"
+            android:textSize="32sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ScrollView
             android:layout_width="match_parent"
