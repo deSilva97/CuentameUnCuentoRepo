@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.CuentameUnCuento"
-        tools:targetApi="tiramisu"
+        tools:targetApi="34"
         tools:ignore="ExtraText"
         android:enableOnBackInvokedCallback="true">
         <activity
