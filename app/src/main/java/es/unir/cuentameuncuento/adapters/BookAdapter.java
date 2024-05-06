@@ -8,10 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -64,7 +67,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         ImageButton bDelete;
         ImageButton bFavorite;
 
-        Button bSelect;
+        LinearLayout bSelect;
 
         @SuppressLint("WrongViewCast")
         ViewHolder(View itemView){
@@ -72,9 +75,8 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
             iconImage = itemView.findViewById(R.id.book_icon_container);
             title = itemView.findViewById(R.id.book_title_container);
 
-            bFavorite = itemView.findViewById(R.id.btn_favorite_book_container);
             bDelete = itemView.findViewById(R.id.btn_delete_book_container);
-            bSelect = itemView.findViewById(R.id.btn_select_book_container);
+            bSelect = itemView.findViewById(R.id.cardViewBook);
         }
 
         void bindData(final BookAdapterElement item){
@@ -98,14 +100,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
                 }
             });
 
-            bFavorite.setOnClickListener(null);
-            bFavorite.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-//                    Toast.makeText(itemView.getContext(), "Accion favorite", Toast.LENGTH_SHORT).show();
-                    item.actionFavorite();
-                }
-            });
             bDelete.setOnClickListener(null);
             bDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
