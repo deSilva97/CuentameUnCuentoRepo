@@ -14,7 +14,6 @@ import es.unir.cuentameuncuento.R;
 import es.unir.cuentameuncuento.abstracts.ActivityController;
 import es.unir.cuentameuncuento.activities.LoginActivity;
 import es.unir.cuentameuncuento.activities.MainActivity;
-import es.unir.cuentameuncuento.helpers.ActivityHelper;
 import es.unir.cuentameuncuento.helpers.CredentialsHelper;
 import es.unir.cuentameuncuento.impls.UserDAOImpl;
 import es.unir.cuentameuncuento.managers.SessionManager;
@@ -106,7 +105,8 @@ public class LoginController extends ActivityController {
     public void onLoginComplete(boolean result){
         if(result){
             Toast.makeText(activity, "Sign in success", Toast.LENGTH_SHORT).show();
-            ActivityHelper.ChangeActivity(activity, MainActivity.class, true);
+            Intent intent = new Intent(activity, MainActivity.class);
+            activity.startActivity(intent);
         } else {
             Toast.makeText(activity, "Sign in failed", Toast.LENGTH_SHORT).show();
         }

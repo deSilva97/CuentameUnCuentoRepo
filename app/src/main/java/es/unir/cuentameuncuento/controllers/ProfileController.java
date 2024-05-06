@@ -10,7 +10,6 @@ import android.widget.Toast;
 import es.unir.cuentameuncuento.activities.LoginActivity;
 import es.unir.cuentameuncuento.activities.MainActivity;
 import es.unir.cuentameuncuento.activities.ProfileActivity;
-import es.unir.cuentameuncuento.helpers.ActivityHelper;
 import es.unir.cuentameuncuento.helpers.CredentialsHelper;
 import es.unir.cuentameuncuento.impls.UserDAOImpl;
 
@@ -94,11 +93,16 @@ public class ProfileController {
 
     private void onDeleteAccountComplete(boolean result, String message){
         Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
-        ActivityHelper.ChangeActivity(activity, LoginActivity.class, false);
+
+        Intent intent = new Intent(activity, LoginActivity.class);
+        activity.startActivity(intent);
+        activity.finish();
     }
 
     public void goToHome(){
-        ActivityHelper.ChangeActivity(activity, MainActivity.class, false);
+        Intent intent = new Intent(activity, MainActivity.class);
+        activity.startActivity(intent);
+        activity.finish();
     }
 
     public void onCompleteEmailUpdate(String email){
