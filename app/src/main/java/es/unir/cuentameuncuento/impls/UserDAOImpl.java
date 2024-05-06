@@ -94,7 +94,11 @@ public class UserDAOImpl {
     }
 
     public  void signInWithGoogle(String idToken, CompleteCallback callback){
+        Log.d("Login", "idToken=" + idToken);
+
         AuthCredential firebaseCredential = GoogleAuthProvider.getCredential(idToken, null);
+        Log.d("Login", "credentials=" + firebaseCredential.toString());
+
         mAuth.signInWithCredential(firebaseCredential)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -104,7 +108,7 @@ public class UserDAOImpl {
                             callback.onComplete(true);
                         } else {
                             //user = null;
-                            Log.e("UserDAOImpl", "Error: " + task.getException());
+                            Log.e("Login", "Error: " + task.getException());
                             callback.onComplete(false);
                         }
                     }

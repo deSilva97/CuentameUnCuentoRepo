@@ -36,12 +36,14 @@ public class LoginController extends ActivityController {
 
     public void authWithGoogle(){
         loading = true;
+        Log.d("Login", "Start Auth with GOOGLE");
         GoogleSignInOptions googleConfig = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(activity.getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
         GoogleSignInClient googleClient = GoogleSignIn.getClient(activity, googleConfig);
+        Log.d("Login", "Start activity google");
         activity.startActivityForResult(googleClient.getSignInIntent(), PROVIDER_GOOGLE);
     }
 
@@ -71,16 +73,25 @@ public class LoginController extends ActivityController {
 
     public void signInWithGoogle(Intent data){
         Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+        Log.d("Login", task.toString());
 
         if(task.isSuccessful()){
             GoogleSignInAccount account = task.getResult();
+            Log.d("Login", "account=" + account.toString());
+
             String idToken = account.getIdToken();
+            Log.d("Login", "idToken=" + task.toString());
+
             if (idToken != null) {
                 userImpl.signInWithGoogle(idToken, this::onLoginComplete);
+                Log.d("Login", "sign in account idToken != null");
+
             } else {
                 Toast.makeText(activity, "Can not found google id token", Toast.LENGTH_SHORT).show();
                 loading = false;
             }
+        } else {
+            Log.e("Login",  "Error: " + task.getException());
         }
     }
 

@@ -3,6 +3,7 @@ package es.unir.cuentameuncuento.activities;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -105,9 +106,15 @@ public class LoginActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        Log.d("Login", "Request Code=" + requestCode);
+        Log.d("Login", "Result Code=" + resultCode);
+
         if(requestCode == LoginController.PROVIDER_GOOGLE){
             if(resultCode == RESULT_OK){
+                Log.d("Login", "Provider Google=" + resultCode);
                 controller.signInWithGoogle(data);
+            } else {
+                Log.e("Login", "result code=" + resultCode + " es distinto de " + LoginController.PROVIDER_GOOGLE);
             }
         } else if(requestCode == LoginController.PROVIDER_FACEBOOK){
             if(resultCode == RESULT_OK){
@@ -119,6 +126,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         } else {
             controller.onLoginComplete(false);
+            Log.e("Login", "fail to result activity");
         }
 
     }
