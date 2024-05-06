@@ -55,7 +55,7 @@ public class MainController extends ActivityController {
     }
 
     public void findBooks(){
-        bookImpl.findAll(this::setBookList);
+        bookImpl.findAll(10, this::setBookList);
     }
 
     public void setBookList(List<Book> bookList){
@@ -157,7 +157,7 @@ public class MainController extends ActivityController {
     private void onCompleteOperation(boolean value, String description){
         if (value){
             Toast.makeText(activity, description, Toast.LENGTH_SHORT).show();
-            bookImpl.findAll(this::setBookList);
+            bookImpl.findAll(10, this::setBookList);
         }
         else
             Toast.makeText(activity, description, Toast.LENGTH_SHORT).show();

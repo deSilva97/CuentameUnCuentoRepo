@@ -56,7 +56,6 @@ public class BookDAOImpl  {
         return db.collection(UserDAOImpl.getIdUser());
     }
 
-
     public void createBook(Book book, CompleteCallbackWithDescription callback) {
         Map<String, Object> dbBook = new HashMap<>();
         String uniqueStoryImageUUID = UUID.randomUUID().toString();
@@ -141,23 +140,20 @@ public class BookDAOImpl  {
             }
         });
     }
-    public void findAll(CompleteCallbackWithBookList callback) {
+    public void findAll(long count, CompleteCallbackWithBookList callback) {
 
-        getUserCollection().get()
+        if(count <= 0)
+            count = 1;
+
+        getUserCollection()
+                .limit(count)
+                .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             List<Book> list = new ArrayList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                               /*
-                                Book b = new Book();
-                                b.setId(document.getId());
-                                b.setTitle(document.getString(FIELD_TITLE));
-                                b.setNarrative(document.getString(FIELD_NARRATIVE));
-                                b.setFk_user(document.getString(FIELD_FK_USER));
-
-                                */
                                 Book b = buildStoryByDocument(document);
                                 list.add(b);
                             }
