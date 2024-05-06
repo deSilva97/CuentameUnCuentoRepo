@@ -26,8 +26,6 @@ public class NombreActivity extends AppCompatActivity {
         TextView textoCategoria = findViewById(R.id.textoCategoria);
         EditText textoNombre = findViewById(R.id.editTextPersonaje);
         Button btnGenerar = findViewById(R.id.btnGenerar);
-        ImageButton btnAtras = findViewById(R.id.btnAtrasNombre);
-
 
         Intent intent = getIntent();
         if (intent != null) {
@@ -56,21 +54,7 @@ public class NombreActivity extends AppCompatActivity {
                     Toast.makeText(NombreActivity.this, "Por favor, ingresa un nombre válido (solo letras).", Toast.LENGTH_SHORT).show();
                 }
             }
-
         });
-
-        btnAtras.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(NombreActivity.this, CategoriasActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                startActivity(intent);
-
-            }
-        });
-
-
     }
 
     }

@@ -33,10 +33,6 @@ public class MainActivity extends AppCompatActivity {
                     //click on profile
                     controller.changeActivityToProfile();
                     return true;
-                } else if (item.getItemId()== R.id.favorites) {
-                    //click on favorites
-                    controller.changeActivityToCurrentStory();
-                    return true;
                 } else if (item.getItemId()== R.id.home){
                     controller.changeActivityToMain();
                     return true;
