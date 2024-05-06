@@ -7,7 +7,6 @@ import es.unir.cuentameuncuento.abstracts.ActivityController;
 import es.unir.cuentameuncuento.activities.LoginActivity;
 import es.unir.cuentameuncuento.activities.MainActivity;
 import es.unir.cuentameuncuento.activities.NewAccountActivity;
-import es.unir.cuentameuncuento.helpers.ActivityHelper;
 import es.unir.cuentameuncuento.helpers.CredentialsHelper;
 import es.unir.cuentameuncuento.impls.UserDAOImpl;
 
@@ -48,7 +47,9 @@ public class NewAccountController extends ActivityController {
     }
 
     public void changeActivityToMain(){
-        ActivityHelper.ChangeActivity(activity, MainActivity.class, false);
+        Intent intent = new Intent(activity, MainActivity.class);
+        activity.startActivity(intent);
+        activity.finish();
     }
 
     public void changeActivityToLogin() {

@@ -7,7 +7,6 @@ import androidx.core.splashscreen.SplashScreen;
 
 import es.unir.cuentameuncuento.R;
 import es.unir.cuentameuncuento.controllers.SplashController;
-import es.unir.cuentameuncuento.helpers.ActivityHelper;
 
 public class SplashActivity extends AppCompatActivity {
 

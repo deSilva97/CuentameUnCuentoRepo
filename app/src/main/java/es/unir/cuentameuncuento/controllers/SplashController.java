@@ -6,7 +6,6 @@ import es.unir.cuentameuncuento.abstracts.ActivityController;
 import es.unir.cuentameuncuento.activities.LoginActivity;
 import es.unir.cuentameuncuento.activities.MainActivity;
 import es.unir.cuentameuncuento.activities.SplashActivity;
-import es.unir.cuentameuncuento.helpers.ActivityHelper;
 import es.unir.cuentameuncuento.impls.UserDAOImpl;
 
 public class SplashController extends ActivityController {
