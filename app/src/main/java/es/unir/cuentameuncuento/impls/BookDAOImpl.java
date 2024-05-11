@@ -2,27 +2,20 @@ package es.unir.cuentameuncuento.impls;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.LoadBundleTask;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageException;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +25,6 @@ import java.util.UUID;
 
 import es.unir.cuentameuncuento.managers.SessionManager;
 import es.unir.cuentameuncuento.models.Book;
-import es.unir.cuentameuncuento.utils.BitmapEncoder;
 
 public class BookDAOImpl  {
 
@@ -140,32 +132,70 @@ public class BookDAOImpl  {
             }
         });
     }
-    public void findAll(long count, CompleteCallbackWithBookList callback) {
 
-        if(count <= 0)
-            count = 1;
+    private DocumentSnapshot lastVisible;
+    long limitCount;
 
-        getUserCollection()
-                .limit(count)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            List<Book> list = new ArrayList<>();
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Book b = buildStoryByDocument(document);
-                                list.add(b);
-                            }
-                            //controller.setBookList(list);
-                            callback.onComplete(list);
-                        } else {
-                            callback.onComplete(null);
-                        }
+    public void loadData(long count, CompleteCallbackWithBookList callback) {
 
-                    }
-                });
+        limitCount = count;
+        if(limitCount <= 0)
+            limitCount = 1;
+
+        Log.d("Story db", "Load data");
+
+        Query startQuery =  getUserCollection()
+//                .orderBy(FIELD_TITLE)
+                .limit(limitCount);
+
+        findAll(startQuery, callback);
     }
+
+    public void loadMoreData(CompleteCallbackWithBookList callback){
+        Log.d("Diego", "Load more data start");
+        if(lastVisible != null){
+            Log.d("Diego", "more - if check");
+            Query nextQuery = getUserCollection()
+//                    .orderBy(FIELD_TITLE)
+                    .startAfter(lastVisible)
+                    .limit(limitCount);
+            Log.d("Diego", "query - ok");
+            findAll(nextQuery, callback);
+
+            Log.d("Diego", "find all complete");
+
+        } else{
+            callback.onComplete(null);
+        }
+    }
+
+    private void findAll(Query query, CompleteCallbackWithBookList callback){
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    List<Book> list = new ArrayList<>();
+                    DocumentSnapshot lastDocument = null;
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+
+                        Book b = buildStoryByDocument(document);
+                        list.add(b);
+
+                         lastDocument = document;
+                    }
+
+                    lastVisible = lastDocument;
+
+                    //controller.setBookList(list);
+                    callback.onComplete(list);
+                } else {
+                    callback.onComplete(null);
+                }
+
+            }
+        });
+    }
+
     private Book buildStoryByDocument(QueryDocumentSnapshot document){
         Book story = new Book();
         story.setId(document.getId());
