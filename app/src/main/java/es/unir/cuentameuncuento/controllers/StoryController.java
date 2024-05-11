@@ -43,13 +43,14 @@ public class StoryController extends ActivityController {
 
             @Override
             public void onStoryGenerated(Book story) {
-                Log.d("Debug","story=" + story);
                 activity.currentStory = story;
+
                 SessionManager.currentStory = new BookAdapterElement();
-
-
                 SessionManager.currentStory.setBook(story);
+
                 activity.txtStory.setText(activity.currentStory.getNarrative());
+                newImage(activity.currentStory);
+
                 Log.d("Debug", "End story");
             }
 
@@ -59,9 +60,6 @@ public class StoryController extends ActivityController {
                 backToHome();
             }
         });
-
-
-
     }
 
     public void newSpeech(Book story){
@@ -105,8 +103,8 @@ public class StoryController extends ActivityController {
 
     }
 
-    public void newImage(String categoria, String personaje){
-        apiManager.generateImage(categoria,personaje, new ApiManager.ImageCallback() {
+    public void newImage(Book story){
+        apiManager.generateImage(story, new ApiManager.ImageCallback() {
             @Override
             public void onStartCreation() {
 
@@ -173,8 +171,9 @@ public class StoryController extends ActivityController {
 
     public void backToHome(){
         Intent intent = new Intent(activity, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
+        activity.finish();
     }
 
     public void startAutoScroll() {
@@ -211,6 +210,8 @@ public class StoryController extends ActivityController {
         Animation scaleUp = AnimationUtils.loadAnimation(activity, R.anim.anim_scaleup);
         activity.layoutStory.startAnimation(scaleUp);
     }
+
+
 }
 
 

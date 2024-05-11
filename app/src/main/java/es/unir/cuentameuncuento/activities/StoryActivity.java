@@ -49,7 +49,6 @@ public class StoryActivity extends AppCompatActivity {
 
             case "NombreActivity":
                 controller.newStory(intentCategoryName, intentCharactername);
-                controller.newImage(intentCategoryName,intentCharactername);
                 controller.setLoadingLayout();
 
             break;
@@ -144,5 +143,15 @@ public class StoryActivity extends AppCompatActivity {
         }
 
     }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (speechMediaPlayer.isPlaying()) {
+            speechMediaPlayer.pause(); // Pause playback
+            controller.stopAutoScroll();
+            btnPlay.setImageResource(R.drawable.icono_play);
+        }
+    }
+
 
 }
