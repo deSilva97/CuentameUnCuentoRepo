@@ -162,10 +162,10 @@ public class ApiManager {
         void onSpeechGenerated( File audioFile) throws IOException;
         void onError(String mensajeError);
     }
-    public void generateImage(String category, String character,ImageCallback imageCallback) {
+    public void generateImage(Book story,ImageCallback imageCallback) {
         ImageRequestBody requestBody = new ImageRequestBody();
         requestBody.setModel("dall-e-3");
-        requestBody.setPrompt("Genera una imagen de la categoria y personaje: " + category + character);
+        requestBody.setPrompt("Genera una imagen para el siguiente cuento: " + story.getNarrative());
         requestBody.setN(1);
         requestBody.setSize("1024x1024");
 
