@@ -157,7 +157,8 @@ public class MainController extends ActivityController {
     private void onCompleteOperation(boolean value, String description){
         if (value){
             Toast.makeText(activity, description, Toast.LENGTH_SHORT).show();
-            bookImpl.loadData(storiesPerLaod, this::setBookList);
+//            bookImpl.loadData(storiesPerLaod, this::setBookList);
+            findBooks();
         }
         else
             Toast.makeText(activity, description, Toast.LENGTH_SHORT).show();
