@@ -52,6 +52,6 @@
             android:layout_marginStart="12dp"
             android:backgroundTint="@color/white"
             android:src="@mipmap/delete_fill"
-            android:tint="@color/backgroundColor" />
+            app:tint="@color/backgroundColor" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>
