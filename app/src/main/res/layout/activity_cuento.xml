@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@drawable/background_gradient_cuento">
+    >
 
     <LinearLayout
         android:id="@+id/layoutStory"
@@ -29,7 +29,8 @@
                     android:layout_height="70sp"
                     android:scaleType="fitCenter"
                     android:backgroundTint="@android:color/transparent"
-                    android:src="@drawable/icono_play"
+                    android:src="@mipmap/play"
+                    app:tint="@color/backgroundColor"
                     app:showAsAction="always"/>
 
                 <ProgressBar
@@ -48,16 +49,8 @@
                 android:layout_height="70sp"
                 android:scaleType="fitCenter"
                 android:backgroundTint="@android:color/transparent"
-                android:src="@drawable/icono_guardar"
-                app:showAsAction="always"/>
-
-            <ImageButton
-                android:id="@+id/btnAtras"
-                android:layout_width="70sp"
-                android:layout_height="70sp"
-                android:scaleType="fitCenter"
-                android:backgroundTint="@android:color/transparent"
-                android:src="@drawable/icono_atras"
+                android:src="@mipmap/save"
+                app:tint="@color/backgroundColor"
                 app:showAsAction="always"/>
 
 
@@ -99,8 +92,9 @@
                     android:id="@+id/txtCuentoGenerado"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
                     android:layout_marginBottom="20dp"
                     android:scrollbars="vertical"
                     android:gravity="top"

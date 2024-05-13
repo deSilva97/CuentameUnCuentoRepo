@@ -77,7 +77,7 @@ public class StoryController extends ActivityController {
                     activity.speechMediaPlayer.setDataSource(audioFile.getAbsolutePath());
                     activity.speechMediaPlayer.prepare();
                     activity.speechMediaPlayer.start();
-                    activity.btnPlay.setImageResource(R.drawable.icono_pausa);
+                    activity.btnPlay.setImageResource(R.mipmap.pause);
                     startAutoScroll();
                     activity.speechMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                         @Override

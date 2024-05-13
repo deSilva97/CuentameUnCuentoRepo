@@ -26,7 +26,7 @@ public class StoryActivity extends AppCompatActivity {
     public Book currentStory;
     public String intentCategoryName, intentCharactername, intentContext;
     Book intentBook;
-    public ImageButton btnPlay, btnSave,btnBack;
+    public ImageButton btnPlay, btnSave;
     public ProgressBar progressBarPlay;
     public TextView txtStory;
     public MediaPlayer backgroundMediaPlayer, speechMediaPlayer;
@@ -64,7 +64,6 @@ public class StoryActivity extends AppCompatActivity {
         controller = new StoryController(this);
         btnPlay = findViewById(R.id.btnReproducir);
         btnSave = findViewById(R.id.btnGuardar);
-        btnBack = findViewById(R.id.btnAtras);
         progressBarPlay = findViewById(R.id.progressBarReproducir);
         txtStory = findViewById(R.id.txtCuentoGenerado);
         speechMediaPlayer = new MediaPlayer();
@@ -91,11 +90,11 @@ public class StoryActivity extends AppCompatActivity {
                         if (speechMediaPlayer.isPlaying()) {
                             speechMediaPlayer.pause(); // Pause playback
                             controller.stopAutoScroll();
-                            btnPlay.setImageResource(R.drawable.icono_play);
+                            btnPlay.setImageResource(R.mipmap.play);
                         } else {
                             speechMediaPlayer.start(); // Resume playback
                             controller.startAutoScroll();
-                            btnPlay.setImageResource(R.drawable.icono_pausa);
+                            btnPlay.setImageResource(R.mipmap.pause);
                         }
                     }
                 }
@@ -110,12 +109,6 @@ public class StoryActivity extends AppCompatActivity {
             }
         });
 
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                controller.backToHome();
-            }
-        });
     }
     private void getExtras(){
         Intent intent = getIntent();
@@ -149,7 +142,7 @@ public class StoryActivity extends AppCompatActivity {
         if (speechMediaPlayer.isPlaying()) {
             speechMediaPlayer.pause(); // Pause playback
             controller.stopAutoScroll();
-            btnPlay.setImageResource(R.drawable.icono_play);
+            btnPlay.setImageResource(R.mipmap.play);
         }
     }
 
