@@ -37,7 +37,7 @@ public class IconStorageDAOImpl {
         return UserDAOImpl.getIdUser() + "/" + endpoint;
     }
 
-    public void create(Bitmap image, String imageID){
+    public void create(Bitmap image, String imageID, BookDAOImpl.CompleteCallbackWithDescription callback){
         StorageReference storageRef = storage.getReference();
         // Create a reference to "mountains.jpg"
         StorageReference mountainsRef = storageRef.child(pathIcon(imageID));
@@ -53,6 +53,7 @@ public class IconStorageDAOImpl {
             public void onFailure(@NonNull Exception exception) {
                 // Handle unsuccessful uploads
                 Log.d("BookDAOImpl", "Picture can not uploaded");
+                callback.onComplete(false, "failure on image generate");
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -60,6 +61,7 @@ public class IconStorageDAOImpl {
                 // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
                 // ...
                 Log.d("BookDAOImpl", "Picture  uploaded");
+                callback.onComplete(true, "success on image generate");
             }
         });
     }

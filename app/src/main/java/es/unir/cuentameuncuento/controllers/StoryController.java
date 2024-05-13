@@ -164,6 +164,12 @@ public class StoryController extends ActivityController {
                     backToHome();
                 } else {
                     activity.btnSave.setEnabled(true);
+                    bookDaoImpl.deleteBook(currentStory, new BookDAOImpl.CompleteCallbackWithDescription() {
+                        @Override
+                        public void onComplete(boolean value, String description) {
+                            Toast.makeText(activity, description, Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
         });

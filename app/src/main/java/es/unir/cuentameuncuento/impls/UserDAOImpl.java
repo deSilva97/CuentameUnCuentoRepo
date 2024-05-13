@@ -50,7 +50,7 @@ public class UserDAOImpl {
         return mUser.getEmail();
     }
     public String getPassword(){
-        return getIdUser();
+        return "******";
     }
 
 
