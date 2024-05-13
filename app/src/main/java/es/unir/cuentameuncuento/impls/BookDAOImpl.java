@@ -66,9 +66,9 @@ public class BookDAOImpl  {
                             if(task.isSuccessful()){
                                 Log.d("BookDAOImpl", "Callback valid Story=" + book.toString());
 
-                                storageImpl.create(SessionManager.currentStory.getIcon(), uniqueStoryImageUUID);
+                                storageImpl.create(SessionManager.currentStory.getIcon(), uniqueStoryImageUUID, callback);
 
-                                callback.onComplete(true, "Libro creado");
+//                                callback.onComplete(true, "Libro creado");
                             } else{
                                 Log.d("BookDAOImpl", task.getResult().toString());
                                 Log.d("BookDAOImpl", "Callback null Story=" + book.toString());
