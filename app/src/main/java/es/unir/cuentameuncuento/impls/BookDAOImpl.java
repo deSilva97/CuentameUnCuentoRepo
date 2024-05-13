@@ -72,6 +72,7 @@ public class BookDAOImpl  {
                             } else{
                                 Log.d("BookDAOImpl", task.getResult().toString());
                                 Log.d("BookDAOImpl", "Callback null Story=" + book.toString());
+
                                 callback.onComplete(false, "Operación fallida");
                             }
                         }
@@ -118,7 +119,8 @@ public class BookDAOImpl  {
                 if (task.isSuccessful()) {
                     //controller.refresh();
 
-                    storageImpl.delete(story.getIconID());
+                    if(!story.getIconID().isEmpty())
+                        storageImpl.delete(story.getIconID());
 
                     callback.onComplete(true, "Libro borrado");
                 } else {
