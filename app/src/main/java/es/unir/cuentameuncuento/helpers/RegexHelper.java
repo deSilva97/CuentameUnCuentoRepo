@@ -26,7 +26,8 @@ public class RegexHelper {
 
     public static String getNameRegex(){
         String spanish = "áéíóúÁÉÍÓÚñÑüÜ";
-        String regex = "^[a-zA-Z"+ spanish + "\\s-]{2,}$";
+        String languages = spanish;
+        String regex = "^[a-zA-Z"+ languages + "\\s-]{2,}$";
         return  regex;
     }
 }
