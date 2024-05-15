@@ -10,7 +10,7 @@ import android.widget.Toast;
 import es.unir.cuentameuncuento.activities.LoginActivity;
 import es.unir.cuentameuncuento.activities.MainActivity;
 import es.unir.cuentameuncuento.activities.ProfileActivity;
-import es.unir.cuentameuncuento.helpers.CredentialsHelper;
+import es.unir.cuentameuncuento.helpers.RegexHelper;
 import es.unir.cuentameuncuento.impls.UserDAOImpl;
 
 public class ProfileController {
@@ -38,7 +38,7 @@ public class ProfileController {
     }
 
     public void updateEmail(String email, TextView ref){
-        if(CredentialsHelper.verifyEmail(email)){
+        if(RegexHelper.verifyEmail(email)){
             userImpl.updateEmail(email, this::onCompleteEmailUpdate);
         } else{
             ref.setError("Not valid email");
@@ -46,7 +46,7 @@ public class ProfileController {
     }
 
     public void updatePassword(String password, TextView ref){
-        if(CredentialsHelper.verifyPassword(password)){
+        if(RegexHelper.verifyPassword(password)){
             userImpl.updatePassword(password, this::onCompletePasswordUpdate);
         } else{
             ref.setError("Not valid passoword. May contain at least 6 chars");

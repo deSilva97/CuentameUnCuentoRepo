@@ -3,7 +3,9 @@ package es.unir.cuentameuncuento.adapters;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Icon;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.Serializable;
@@ -15,10 +17,15 @@ import es.unir.cuentameuncuento.models.Book;
 public class BookAdapterElement implements Serializable {
 
     MainController controller;
+
     Book book;
     Bitmap icon;
 
     private String textTitle;
+
+    private View itemView;
+
+    private ImageView iconImage;
 
     public BookAdapterElement(){
 
@@ -62,5 +69,20 @@ public class BookAdapterElement implements Serializable {
 
     public void actionFavorite() {
         Log.w("BookAdapterElement", "Not implemented method: actionFavorite");
+    }
+    public View getItemView(){
+        return itemView;
+    }
+
+    public void setItemView(View itemView) {
+        this.itemView = itemView;
+    }
+
+    public ImageView getIconImage() {
+        return iconImage;
+    }
+
+    public void setIconImage(ImageView iconImage) {
+        this.iconImage = iconImage;
     }
 }

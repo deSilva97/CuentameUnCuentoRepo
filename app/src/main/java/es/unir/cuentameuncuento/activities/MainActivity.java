@@ -1,5 +1,7 @@
 package es.unir.cuentameuncuento.activities;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -17,9 +19,10 @@ public class MainActivity extends AppCompatActivity {
 
     MainController controller;
 
-    TextView title;
     Button bCreateStory;
     public RecyclerView recyclerView;
+
+    View emptyState;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,16 +55,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+        setVisibleEmptyState();
         controller.findBooks();
     }
 
     void init(){
-        controller = new MainController(this);
         bCreateStory = findViewById(R.id.createStory);
 
         recyclerView = findViewById(R.id.bookContainerRecyclerView);
 
-        title = findViewById(R.id.main_title);
+        emptyState = findViewById(R.id.emptystate_layout);
+
+
+        controller = new MainController(this);
+
     }
     void setListeners(){
         bCreateStory.setOnClickListener(new View.OnClickListener() {
@@ -72,20 +79,13 @@ public class MainActivity extends AppCompatActivity {
                 //controller.generateBook();
             }
         });
-
-        title.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                controller.returnToCurrentBook();
-            }
-        });
-
-        findViewById(R.id.dev_load_data).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                controller.loadMoreData();
-            }
-        });
-
     }
+
+    public void setInvisibleVEmptyState(){
+        emptyState.setVisibility(View.INVISIBLE);
+    }
+    public void setVisibleEmptyState(){
+        emptyState.setVisibility(View.VISIBLE);
+    }
+
 }

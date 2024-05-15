@@ -21,7 +21,7 @@ public class LoginActivity extends AppCompatActivity {
 
     TextView txtRegister;
     Button bLogin;
-    Button bGoogle, bFacebook, bTwitter;
+    Button bGoogle;
 
     EditText editTxtEmail;
     EditText editTxtPassword;
@@ -50,8 +50,6 @@ public class LoginActivity extends AppCompatActivity {
         bLogin = findViewById(R.id.button_login);
 
         bGoogle = findViewById(R.id.button_signin_google);
-        bFacebook = findViewById(R.id.button_signin_facebook);
-        bTwitter = findViewById(R.id.button_signin_twitter);
 
         txtForgotPassword = findViewById(R.id.txtForgotPassword);
 
@@ -80,18 +78,6 @@ public class LoginActivity extends AppCompatActivity {
                 controller.authWithGoogle();
             }
         });
-        bFacebook.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                controller.authWithFacebook();
-            }
-        });
-        bTwitter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                controller.authWithTwitter();
-            }
-        });
 
         txtForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,14 +101,6 @@ public class LoginActivity extends AppCompatActivity {
                 controller.signInWithGoogle(data);
             } else {
                 Log.e("Login", "result code=" + resultCode + " es distinto de " + LoginController.PROVIDER_GOOGLE);
-            }
-        } else if(requestCode == LoginController.PROVIDER_FACEBOOK){
-            if(resultCode == RESULT_OK){
-                controller.signInWithFacebook(data);
-            }
-        } else if(requestCode == LoginController.PROVIDER_TWITTER){
-            if(resultCode == RESULT_OK){
-                controller.signInWithTwitter(data);
             }
         } else {
             controller.onLoginComplete(false);

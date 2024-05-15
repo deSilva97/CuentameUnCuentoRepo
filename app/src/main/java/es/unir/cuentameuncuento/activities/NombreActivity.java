@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import es.unir.cuentameuncuento.R;
+import es.unir.cuentameuncuento.helpers.RegexHelper;
 import es.unir.cuentameuncuento.models.Book;
 
 public class NombreActivity extends AppCompatActivity {
@@ -39,7 +40,7 @@ public class NombreActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String nombrePersonaje = textoNombre.getText().toString().trim();
 
-                if (nombrePersonaje.matches("[a-zA-Z]+")) {
+                if (RegexHelper.verifyName(nombrePersonaje)) {
 
                     Intent intent = new Intent(NombreActivity.this, StoryActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
