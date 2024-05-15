@@ -48,7 +48,7 @@
             android:name=".activities.StoryActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.NombreActivity"
+            android:name=".activities.CharacterNameActivity"
             android:exported="false" />
     </application>
 

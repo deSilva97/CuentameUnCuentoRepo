@@ -2,6 +2,7 @@ package es.unir.cuentameuncuento.managers;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,6 +36,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiManager {
     private static final String BASE_URL = "https://api.openai.com/v1/";
     private ApiService apiService;
+    private Call<ImageResponseBody> currentImageCall;
+    private Call<StoryResponseBody> currentStoryCall;
+    private Call<ResponseBody> currentSpeechCall;
     private Context context;
 
     public ApiManager(Context context) {
@@ -85,7 +89,9 @@ public class ApiManager {
         requestBody.setModel("gpt-3.5-turbo");
 
         storyCallback.onStartCreation();
-        apiService.generateStory(requestBody).enqueue(new Callback<StoryResponseBody>() {
+
+        currentStoryCall = apiService.generateStory(requestBody);
+        currentStoryCall.enqueue(new Callback<StoryResponseBody>() {
             @Override
             public void onResponse(Call<StoryResponseBody> call, Response<StoryResponseBody> response) {
                 if (response.isSuccessful()) {
@@ -108,7 +114,7 @@ public class ApiManager {
 
             @Override
             public void onFailure(Call<StoryResponseBody> call, Throwable t) {
-                    storyCallback.onError("Error de red. Verifica tu conexión a Internet.");
+                    storyCallback.onError("Story: " + t.getMessage());
             }
         });
     }
@@ -127,9 +133,10 @@ public class ApiManager {
             requestBody.setInput(story.getNarrative());
             requestBody.setVoice("nova");
 
-        speechCallback.onStartCreation();
+             speechCallback.onStartCreation();
 
-            apiService.generateSpeech(requestBody).enqueue(new Callback<ResponseBody>() {
+            currentSpeechCall = apiService.generateSpeech(requestBody);
+            currentSpeechCall.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if (response.isSuccessful()) {
@@ -162,14 +169,18 @@ public class ApiManager {
         void onSpeechGenerated( File audioFile) throws IOException;
         void onError(String mensajeError);
     }
-    public void generateImage(Book story,ImageCallback imageCallback) {
+    public void generateImage(String category, String character,ImageCallback imageCallback) {
         ImageRequestBody requestBody = new ImageRequestBody();
         requestBody.setModel("dall-e-3");
-        requestBody.setPrompt("Genera una imagen para el siguiente cuento: " + story.getNarrative());
+        requestBody.setPrompt("Ilustra un solo cuerpo de un/a protagonista llamado/a ["+ character +"] en estilo de dibujos animados, asociado a la categoría [" + category +"]." +
+                "La ilustración es para una historia corta para niños de entre 2 y 8 años." +
+                "Debe tener un fondo completamente blanco y no debe incluir texto, rótulos, armas ni otros elementos adicionales." +
+                "Solo debe aparecer un personaje en la imagen." );
         requestBody.setN(1);
         requestBody.setSize("1024x1024");
 
-        apiService.generateImage(requestBody).enqueue(new Callback<ImageResponseBody>() {
+        currentImageCall = apiService.generateImage(requestBody);
+        currentImageCall.enqueue(new Callback<ImageResponseBody>() {
             @Override
             public void onResponse(Call<ImageResponseBody> call, Response<ImageResponseBody> response) {
                 if (response.isSuccessful()) {
@@ -187,7 +198,7 @@ public class ApiManager {
 
                         @Override
                         public void onError(String errorMessage) {
-                            imageCallback.onError(errorMessage);
+                            imageCallback.onError("ImageConverter: " + errorMessage);
                         }
                     });
 
@@ -200,7 +211,7 @@ public class ApiManager {
 
             @Override
             public void onFailure(Call<ImageResponseBody> call, Throwable t) {
-                imageCallback.onError(t.getMessage());
+                imageCallback.onError("Image:" + t.getMessage());
             }
         });
     }
@@ -208,6 +219,21 @@ public class ApiManager {
         void onStartCreation();
         void onImageGenerated(Bitmap imageBitmap) ;
         void onError(String mensajeError);
+    }
+
+    public void cancelCalls() {
+        if (currentImageCall != null && !currentImageCall.isCanceled()) {
+            currentImageCall.cancel();
+            Log.d("DESTROY:", "SE DESTRUYE imagecall" );
+        }
+        if (currentSpeechCall != null && !currentSpeechCall.isCanceled()) {
+            currentSpeechCall.cancel();
+            Log.d("DESTROY:", "SE DESTRUYE speechcall" );
+        }
+        if (currentStoryCall != null && !currentStoryCall.isCanceled()) {
+            currentStoryCall.cancel();
+            Log.d("DESTROY:", "SE DESTRUYE storycall" );
+        }
     }
 
 }

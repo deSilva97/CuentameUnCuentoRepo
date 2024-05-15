@@ -27,7 +27,8 @@ public class ImageConverter {
                 connection.connect();
                 InputStream input = connection.getInputStream();
                 Bitmap bitmap = BitmapFactory.decodeStream(input);
-                callback.onBitmapLoaded(bitmap);
+                Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, 512, 512, true);
+                callback.onBitmapLoaded(resizedBitmap);
             } catch (IOException e) {
                 e.printStackTrace();
                 callback.onError("Error al cargar la imagen desde la URL.");
