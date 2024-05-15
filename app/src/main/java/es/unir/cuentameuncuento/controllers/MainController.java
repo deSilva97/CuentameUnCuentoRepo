@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Icon;
 import android.os.Debug;
 import android.util.Log;
 import android.view.View;
@@ -91,15 +92,16 @@ public class MainController extends ActivityController {
         Log.d("MainController", "Libros de " + userID);
         for (Book b: bookList){
             Log.d("MainController", "Libro " + b.getId());
-//            Toast.makeText(activity, b.getId(), Toast.LENGTH_SHORT).show();
         }
         showBookList(bookList);
     }
 
     private void showBookList(List<Book> bookList){
+        activity.setInvisibleVEmptyState();
 
         for(int i = indexLoad; i < bookList.size(); i++){
             BookAdapterElement element = new BookAdapterElement(this,bookList.get(i), null, bookList.get(i).getTitle());
+            addElementToAdapter(element);
             IconStorageDAOImpl.read(element, bookList.get(i).getIconID(), this::setIconToStoryElement);
             Log.d("Diego", "Adapter: " + bookList.get(i).getTitle());
         }
@@ -113,10 +115,10 @@ public class MainController extends ActivityController {
     }
 
     private void setIconToStoryElement(BookAdapterElement element, Bitmap bitmap){
-        activity.setInvisibleVEmptyState();
-
         element.setIcon(bitmap);
-        addElementToAdapter(element);
+        element.getIconImage().setImageBitmap(bitmap);
+        element.getItemView().setVisibility(View.VISIBLE);
+//        addElementToAdapter(element);
     }
     private void addElementToAdapter(BookAdapterElement element){
         storyAdapter.addItem(element);

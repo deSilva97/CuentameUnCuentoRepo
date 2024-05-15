@@ -69,19 +69,26 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
 
         LinearLayout bSelect;
 
+        View itemView;
+
         @SuppressLint("WrongViewCast")
         ViewHolder(View itemView){
             super(itemView);
+            this.itemView = itemView;
+
             iconImage = itemView.findViewById(R.id.book_icon_container);
             title = itemView.findViewById(R.id.book_title_container);
 
             bDelete = itemView.findViewById(R.id.btn_delete_book_container);
             bSelect = itemView.findViewById(R.id.cardViewBook);
+
+            itemView.setVisibility(View.GONE);
+
         }
 
         void bindData(final BookAdapterElement item){
-
-            iconImage.setImageResource(R.drawable.icono_loading);
+            item.setItemView(itemView);
+            item.setIconImage(iconImage);
 
             title.setText(item.getTextTitle());
             iconImage.setImageBitmap(item.getIcon());
@@ -101,19 +108,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
                     item.actionDelete();
                 }
             });
-        }
-
-        private void downloadedIcon(Bitmap bitmap){
-            if(bitmap != null){
-                Log.d("BookAdapterJava","Bitmap loaded success load!!");
-                iconImage.setImageBitmap(bitmap);
-            }
-
-            else{
-                Log.d("BookAdapterJava","Bitmap loaded is null");
-                iconImage.setImageResource(R.drawable.icono_story_98);
-            }
-
         }
     }
 }

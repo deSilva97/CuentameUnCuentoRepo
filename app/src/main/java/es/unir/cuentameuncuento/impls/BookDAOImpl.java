@@ -120,6 +120,13 @@ public class BookDAOImpl  {
     }
 
 
+    private Query getQuery() {
+        return getUserCollection()
+                .orderBy(FIELD_DATE, Query.Direction.DESCENDING)
+//                .startAfter(lastVisible)
+                .limit(limitCount);
+    }
+
     public void loadData(long count, CompleteCallbackWithBookList callback) {
 
         limitCount = count;
@@ -128,20 +135,13 @@ public class BookDAOImpl  {
 
         Log.d("Story db", "Load data");
 
-        Query startQuery =  getUserCollection()
-                .orderBy(FIELD_DATE, Query.Direction.ASCENDING)
-                .limit(limitCount);
-
-        findAll(startQuery, callback);
+        findAll(getQuery(), callback);
     }
 
     public void loadMoreData(CompleteCallbackWithBookList callback){
         if(lastVisible != null){
-            Query nextQuery = getUserCollection()
-                    .orderBy(FIELD_DATE, Query.Direction.ASCENDING)
-                    .startAfter(lastVisible)
-                    .limit(limitCount);
-            findAll(nextQuery, callback);
+
+            findAll(getQuery().startAfter(lastVisible), callback);
 
         } else{
             callback.onComplete(null);
