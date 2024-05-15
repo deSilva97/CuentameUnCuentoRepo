@@ -57,7 +57,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/emptystate_title"
                 app:layout_constraintEnd_toEndOf="@+id/emptystate_title"
                 app:layout_constraintStart_toStartOf="@+id/emptystate_title"
-                app:srcCompat="@drawable/book_placeholder"
+                app:srcCompat="@mipmap/library"
                 app:tint="@android:color/darker_gray" />
 
             <TextView
@@ -104,6 +104,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/menu" />
+        app:menu="@menu/menu"
+        tools:layout_editor_absoluteX="0dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
