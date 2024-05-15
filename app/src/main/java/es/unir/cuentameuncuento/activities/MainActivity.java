@@ -1,5 +1,7 @@
 package es.unir.cuentameuncuento.activities;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
     TextView title;
     Button bCreateStory;
     public RecyclerView recyclerView;
+
+    View emptyState;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.bookContainerRecyclerView);
 
         title = findViewById(R.id.main_title);
+
+        emptyState = findViewById(R.id.emptystate_layout);
     }
     void setListeners(){
         bCreateStory.setOnClickListener(new View.OnClickListener() {
@@ -79,13 +85,13 @@ public class MainActivity extends AppCompatActivity {
                 controller.returnToCurrentBook();
             }
         });
-
-        findViewById(R.id.dev_load_data).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                controller.loadMoreData();
-            }
-        });
-
     }
+
+    public void setInvisibleVEmptyState(){
+        emptyState.setVisibility(View.INVISIBLE);
+    }
+    public void setVisibleEmptyState(){
+        emptyState.setVisibility(View.VISIBLE);
+    }
+
 }

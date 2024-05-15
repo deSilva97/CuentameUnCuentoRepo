@@ -6,4 +6,6 @@
     <string name="perfil">Perfil</string>
     <string name="title_activity_splash">Splash</string>
     <string name="imagen_de_la_categoria">Imagen de la categoria</string>
+    <string name="emptystate_text">Tap on button below to create new one</string>
+    <string name="emptystate_title">Looking for a story?</string>
 </resources>

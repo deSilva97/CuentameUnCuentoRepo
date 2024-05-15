@@ -73,8 +73,10 @@ public class MainController extends ActivityController {
     }
 
     public void setBookList(List<Book> bookList){
-        this.bookList = bookList;
-        refresh();
+        if(bookList != null ){
+            this.bookList = bookList;
+            refresh();
+        }
     }
 
     public void addBookList(List<Book> bookList){
@@ -110,6 +112,8 @@ public class MainController extends ActivityController {
     }
 
     private void setIconToStoryElement(BookAdapterElement element, Bitmap bitmap){
+        activity.setInvisibleVEmptyState();
+
         element.setIcon(bitmap);
         addElementToAdapter(element);
     }
