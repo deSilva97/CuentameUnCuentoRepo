@@ -56,11 +56,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+        setVisibleEmptyState();
         controller.findBooks();
     }
 
     void init(){
-        controller = new MainController(this);
         bCreateStory = findViewById(R.id.createStory);
 
         recyclerView = findViewById(R.id.bookContainerRecyclerView);
@@ -68,6 +68,10 @@ public class MainActivity extends AppCompatActivity {
         title = findViewById(R.id.main_title);
 
         emptyState = findViewById(R.id.emptystate_layout);
+
+
+        controller = new MainController(this);
+
     }
     void setListeners(){
         bCreateStory.setOnClickListener(new View.OnClickListener() {
