@@ -94,14 +94,6 @@ public class LoginController extends ActivityController {
         }
     }
 
-    public void signInWithFacebook(Intent data){
-
-    }
-
-    public void signInWithTwitter(Intent data){
-
-    }
-
     public void onLoginComplete(boolean result){
         if(result){
             Toast.makeText(activity, "Sign in success", Toast.LENGTH_SHORT).show();
