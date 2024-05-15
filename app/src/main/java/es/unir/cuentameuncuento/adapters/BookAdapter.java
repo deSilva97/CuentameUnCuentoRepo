@@ -82,13 +82,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         void bindData(final BookAdapterElement item){
 
             iconImage.setImageResource(R.drawable.icono_loading);
-//            IconStorageDAOImpl.read(UserDAOImpl.getIdUser(), item.book.getIconID(), new BookDAOImpl.CompleteCallbackWithBitmap() {
-//                @Override
-//                public void onComplete(Bitmap bitmap) {
-//
-//                }
-//            });
-
 
             title.setText(item.getTextTitle());
             iconImage.setImageBitmap(item.getIcon());

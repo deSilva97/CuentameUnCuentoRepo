@@ -19,7 +19,6 @@ public class MainActivity extends AppCompatActivity {
 
     MainController controller;
 
-    TextView title;
     Button bCreateStory;
     public RecyclerView recyclerView;
 
@@ -65,8 +64,6 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.bookContainerRecyclerView);
 
-        title = findViewById(R.id.main_title);
-
         emptyState = findViewById(R.id.emptystate_layout);
 
 
@@ -80,13 +77,6 @@ public class MainActivity extends AppCompatActivity {
                 controller.generateStory();
 
                 //controller.generateBook();
-            }
-        });
-
-        title.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                controller.returnToCurrentBook();
             }
         });
     }

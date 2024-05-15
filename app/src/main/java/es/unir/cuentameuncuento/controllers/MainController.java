@@ -101,6 +101,7 @@ public class MainController extends ActivityController {
         for(int i = indexLoad; i < bookList.size(); i++){
             BookAdapterElement element = new BookAdapterElement(this,bookList.get(i), null, bookList.get(i).getTitle());
             IconStorageDAOImpl.read(element, bookList.get(i).getIconID(), this::setIconToStoryElement);
+            Log.d("Diego", "Adapter: " + bookList.get(i).getTitle());
         }
 
         if(indexLoad < bookList.size()){
@@ -168,76 +169,15 @@ public class MainController extends ActivityController {
             Toast.makeText(activity, description, Toast.LENGTH_SHORT).show();
     }
 
-    public void returnToCurrentBook(){
-        if(SessionManager.currentStory != null){
-
-        }
-    }
-
     public void generateStory(){
         Intent intent = new Intent(activity, CategoriasActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         activity.startActivity(intent);
-
-//        Book test_story = new Book();
-
-//        // Cargar el bitmap desde el recurso drawable
-//        Bitmap bitmap = decodeBitmapFromResource(activity.getResources(), R.drawable.icono_animales, 256, 256);
-//
-//        test_story.setTitle("Test Title");
-//        test_story.setNarrative("Test Narrative");
-//        test_story.setBitmap(bitmap);
-//
-//
-//        bookImpl.createBook(test_story, this::onCompleteOperation);
-    }
-
-    public static Bitmap decodeBitmapFromResource(Resources res, int resId, int reqWidth, int reqHeight) {
-        // Primero decodifica con inJustDecodeBounds=true para revisar las dimensiones
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeResource(res, resId, options);
-
-        // Calcular el inSampleSize
-        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-
-        // Decodificar el bitmap con el inSampleSize seteado
-        options.inJustDecodeBounds = false;
-        return BitmapFactory.decodeResource(res, resId, options);
-    }
-
-    // Método para calcular un inSampleSize para escalar las imágenes de manera eficiente
-    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
-
-        if (height > reqHeight || width > reqWidth) {
-            final int halfHeight = height / 2;
-            final int halfWidth = width / 2;
-
-            // Calcular el mayor inSampleSize que es una potencia de 2 y mantiene tanto
-            // la altura como el ancho mayores que los requeridos
-            while ((halfHeight / inSampleSize) >= reqHeight && (halfWidth / inSampleSize) >= reqWidth) {
-                inSampleSize *= 2;
-            }
-        }
-
-        return inSampleSize;
-    }
-
-    private void onCompleteIconFound(){
-
     }
 
     public void changeActivityToProfile() {
         Intent intent = new Intent(activity, ProfileActivity.class);
         activity.startActivity(intent);
-    }
-
-    public void changeActivityToCurrentStory(){
-//        Intent intent = new Intent(activity, StoryActivity.class);
-//        activity.startActivity(intent);
     }
 
     public void changeActivityToMain() {
