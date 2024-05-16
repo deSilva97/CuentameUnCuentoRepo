@@ -66,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/emptystate_title"
                 android:textAlignment="center"
-                android:textSize="48sp"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -79,7 +79,7 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/emptystate_text"
                 android:textAlignment="center"
-                android:textSize="24sp"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/emptystate_title"
                 app:layout_constraintTop_toBottomOf="@+id/emptystate_title" />
