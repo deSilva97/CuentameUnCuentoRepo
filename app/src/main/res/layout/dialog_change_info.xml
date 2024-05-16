@@ -9,6 +9,6 @@
         android:id="@+id/editTextNewInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Introduce tu nuevo dato de acceso"/>
+        android:hint="@string/new_data"/>
 
 </LinearLayout>
