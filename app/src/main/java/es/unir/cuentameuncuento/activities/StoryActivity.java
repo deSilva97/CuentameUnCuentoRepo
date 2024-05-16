@@ -6,6 +6,7 @@ import androidx.cardview.widget.CardView;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -18,11 +19,13 @@ import android.widget.Toast;
 
 import es.unir.cuentameuncuento.R;
 import es.unir.cuentameuncuento.controllers.StoryController;
+import es.unir.cuentameuncuento.managers.ApiManager;
 import es.unir.cuentameuncuento.models.Book;
 
 
 public class StoryActivity extends AppCompatActivity {
     StoryController controller;
+    ApiManager apiManager;
     public Book currentStory;
     public String intentCategoryName, intentCharactername, intentContext;
     Book intentBook;
@@ -45,10 +48,11 @@ public class StoryActivity extends AppCompatActivity {
         setListeners();
         getExtras();
 
-        switch (intentContext.toString()){
+        switch (intentContext){
 
             case "NombreActivity":
                 controller.newStory(intentCategoryName, intentCharactername);
+                controller.newImage(intentCategoryName,intentCharactername);
                 controller.setLoadingLayout();
 
             break;
@@ -135,16 +139,22 @@ public class StoryActivity extends AppCompatActivity {
             backgroundMediaPlayer = null;
         }
 
+        if (controller != null) {
+            controller.cancelCalls();
+        }
+
     }
     @Override
     protected void onPause() {
         super.onPause();
         if (speechMediaPlayer.isPlaying()) {
-            speechMediaPlayer.pause(); // Pause playback
+            speechMediaPlayer.pause();
             controller.stopAutoScroll();
             btnPlay.setImageResource(R.mipmap.play);
         }
     }
+
+
 
 
 }

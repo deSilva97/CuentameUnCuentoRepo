@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -92,11 +91,12 @@ public class CategoriasActivity extends AppCompatActivity {
         public void onClick(View v) {
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
+
                 Categoria categoria = categorias.get(position);
-                // Aquí puedes hacer lo que desees con la categoría seleccionada, como abrir una nueva actividad
-                Intent intent = new Intent(CategoriasActivity.this, NombreActivity.class);
+                Intent intent = new Intent(CategoriasActivity.this, CharacterNameActivity.class);
                 intent.putExtra("nombreCategoria", categoria.getNombre());
                 startActivity(intent);
+                finish();
             }
         }
     }

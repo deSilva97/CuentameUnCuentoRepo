@@ -44,19 +44,13 @@ public class StoryController extends ActivityController {
             @Override
             public void onStoryGenerated(Book story) {
                 activity.currentStory = story;
-
                 SessionManager.currentStory = new BookAdapterElement();
                 SessionManager.currentStory.setBook(story);
-
                 activity.txtStory.setText(activity.currentStory.getNarrative());
-                newImage(activity.currentStory);
-
-                Log.d("Debug", "End story");
             }
 
             @Override
             public void onError(String mensajeError) {
-                Toast.makeText(activity, "Error en la generacion del cuento :" + mensajeError, Toast.LENGTH_SHORT).show();
                 backToHome();
             }
         });
@@ -95,7 +89,6 @@ public class StoryController extends ActivityController {
 
             @Override
             public void onError(String mensajeError) {
-                Toast.makeText(activity, "Error en la generacion de audio :" + mensajeError, Toast.LENGTH_SHORT).show();
                 backToHome();
             }
         });
@@ -103,8 +96,8 @@ public class StoryController extends ActivityController {
 
     }
 
-    public void newImage(Book story){
-        apiManager.generateImage(story, new ApiManager.ImageCallback() {
+    public void newImage(String category, String character){
+        apiManager.generateImage(category,character, new ApiManager.ImageCallback() {
             @Override
             public void onStartCreation() {
 
@@ -122,7 +115,6 @@ public class StoryController extends ActivityController {
                             activity.imageView.setImageBitmap(imageBitmap);
                         }
 
-
                         setStoryLayout();
                     }
                 });
@@ -132,10 +124,7 @@ public class StoryController extends ActivityController {
 
             @Override
             public void onError(String mensajeError) {
-
-                Toast.makeText(activity, "Error en la generacion de imagen :" + mensajeError, Toast.LENGTH_SHORT).show();
                 backToHome();
-
             }
         });
 
@@ -160,14 +149,13 @@ public class StoryController extends ActivityController {
             public void onComplete(boolean value, String description) {
 
                 if (value) {
-                    Toast.makeText(activity, description, Toast.LENGTH_SHORT).show();
                     backToHome();
                 } else {
                     activity.btnSave.setEnabled(true);
                     bookDaoImpl.deleteBook(currentStory, new BookDAOImpl.CompleteCallbackWithDescription() {
                         @Override
                         public void onComplete(boolean value, String description) {
-                            Toast.makeText(activity, description, Toast.LENGTH_SHORT).show();
+
                         }
                     });
                 }
@@ -176,9 +164,6 @@ public class StoryController extends ActivityController {
     }
 
     public void backToHome(){
-        Intent intent = new Intent(activity, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        activity.startActivity(intent);
         activity.finish();
     }
 
@@ -188,19 +173,14 @@ public class StoryController extends ActivityController {
             @Override
             public void run() {
                 // Realizar el autoscroll
-                activity.scrollView.scrollTo(0, activity.scrollView.getScrollY() + 1); // Ajusta el valor según la velocidad deseada
-
-                // Programar el siguiente autoscroll después de un intervalo
-                handler.postDelayed(this, 100); // Ajusta el valor según la velocidad deseada
+                activity.scrollView.scrollTo(0, activity.scrollView.getScrollY() + 1);
+                handler.postDelayed(this, 100);
             }
         };
-
-        // Iniciar el autoscroll
         handler.post(runnable);
     }
 
     public void stopAutoScroll() {
-        // Detener el autoscroll eliminando las llamadas a postDelayed
         handler.removeCallbacks(runnable);
     }
 
@@ -215,6 +195,10 @@ public class StoryController extends ActivityController {
         activity.layoutLoading.setVisibility(View.GONE);
         Animation scaleUp = AnimationUtils.loadAnimation(activity, R.anim.anim_scaleup);
         activity.layoutStory.startAnimation(scaleUp);
+    }
+
+    public void cancelCalls(){
+        apiManager.cancelCalls();
     }
 
 
