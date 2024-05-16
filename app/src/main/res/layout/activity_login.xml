@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Accede a tu cuenta"
+        android:text="@string/login_title"
         android:textSize="32sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Or connect with"
+        android:text="@string/social_login_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
@@ -45,7 +45,7 @@
             android:backgroundTint="@color/white"
             android:drawableLeft="@drawable/common_google_signin_btn_icon_light_normal"
             android:elevation="4dp"
-            android:text="Google"
+            android:text="@string/google"
             android:textAlignment="viewStart"
             android:textColor="#000000"
             app:cornerRadius="0dp" />
@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_weight="1"
-        android:text="Login"
+        android:text="@string/login"
         app:layout_constraintEnd_toEndOf="@+id/register_field_password"
         app:layout_constraintStart_toStartOf="@+id/register_field_password"
         app:layout_constraintTop_toBottomOf="@+id/txtForgotPassword" />
@@ -69,7 +69,7 @@
         android:layout_height="42dp"
         android:layout_marginTop="24dp"
         android:ems="10"
-        android:hint="Email"
+        android:hint="@string/email"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -81,7 +81,7 @@
         android:layout_height="41dp"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="Password"
+        android:hint="@string/password"
         android:inputType="textPassword"
         app:layout_constraintStart_toStartOf="@+id/register_field_email"
         app:layout_constraintTop_toBottomOf="@+id/register_field_email" />
@@ -91,7 +91,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Introduce tu email y contraseña"
+        android:text="@string/login_description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -102,7 +102,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="70dp"
         android:layout_marginTop="16dp"
-        android:text="Todavía no tienes una cuenta?"
+        android:text="@string/signup_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_login" />
 
@@ -113,7 +113,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:clickable="true"
-        android:text="Regístrate ahora"
+        android:text="@string/signup_action"
         android:textAlignment="viewEnd"
         android:textColor="@color/backgroundColor"
         android:textStyle="bold"
@@ -135,7 +135,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Has olvidado tu contraseña?"
+        android:text="@string/forgot_pssword"
         android:textColor="@color/backgroundColor"
         app:layout_constraintEnd_toEndOf="@+id/register_field_password"
         app:layout_constraintTop_toBottomOf="@+id/register_field_password" />

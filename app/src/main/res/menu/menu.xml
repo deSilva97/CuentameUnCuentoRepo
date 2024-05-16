@@ -3,9 +3,9 @@
     <item
         android:id="@+id/home"
         android:icon="@mipmap/library"
-        android:title="Biblioteca" />
+        android:title="@string/library_title" />
     <item
         android:id="@+id/profile"
         android:icon="@mipmap/profile"
-        android:title="Perfil" />
+        android:title="@string/profile_title" />
 </menu>

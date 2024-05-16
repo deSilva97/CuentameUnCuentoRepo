@@ -41,7 +41,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="12dp"
             android:layout_weight="1"
-            android:text="Titulo del libro muuuuuuuuuy largo"
+            android:text=""
             android:textSize="20sp" />
 
         <ImageButton

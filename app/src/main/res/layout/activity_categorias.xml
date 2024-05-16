@@ -12,7 +12,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="32dp"
-            android:text="Categorías"
+            android:text="@string/categories"
             android:textSize="32sp" />
 
         <TextView
@@ -22,7 +22,7 @@
             android:layout_below="@+id/categories_title"
             android:layout_alignStart="@+id/categories_title"
             android:layout_marginTop="16dp"
-            android:text="Selecciona una de las categorías para crear tu cuento" />
+            android:text="@string/description_categories" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewCategorias"

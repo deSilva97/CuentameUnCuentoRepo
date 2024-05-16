@@ -140,10 +140,10 @@ public class MainController extends ActivityController {
     public void confirmDeleteBook(Book story){
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
-        builder.setMessage("ESTAS SEGURO DE QUE QUIERES REALIZAR ESTA ACCIÓN")
-                .setTitle("Confirm");
+        builder.setMessage("Estás seguro que quieres realizar esta acción?")
+                .setTitle("Eliminar cuento");
 
-        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Eliminar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 deleteBook(story);
