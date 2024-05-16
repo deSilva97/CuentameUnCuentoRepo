@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -18,6 +19,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +39,12 @@ public class BookDAOImpl  {
 
     private static final String FIELD_ICON = "icon";
 
+    private static final String FIELD_DATE = "date";
+
+
+    private DocumentSnapshot lastVisible;
+    long limitCount;
+
     public BookDAOImpl(Context context){
         FirebaseApp.initializeApp(context);
         //this.userID = userID;
@@ -48,15 +56,18 @@ public class BookDAOImpl  {
         return db.collection(UserDAOImpl.getIdUser());
     }
 
-    public void createBook(Book book, CompleteCallbackWithDescription callback) {
+    public void createBook(String title, String narrative, CompleteCallbackWithDescription callback) {
         Map<String, Object> dbBook = new HashMap<>();
         String uniqueStoryImageUUID = UUID.randomUUID().toString();
+        Date date = new Date();
+        Timestamp now = new Timestamp(date);
 
         try{
-            dbBook.put(FIELD_TITLE, book.getTitle());
-            dbBook.put(FIELD_NARRATIVE, book.getNarrative());
+            dbBook.put(FIELD_TITLE, title);
+            dbBook.put(FIELD_NARRATIVE, narrative);
             dbBook.put(FIELD_FK_USER, UserDAOImpl.getIdUser());
             dbBook.put(FIELD_ICON, uniqueStoryImageUUID);
+            dbBook.put(FIELD_DATE, now);
 
             getUserCollection()
                     .add(dbBook)
@@ -64,14 +75,14 @@ public class BookDAOImpl  {
                         @Override
                         public void onComplete(@NonNull Task<DocumentReference> task) {
                             if(task.isSuccessful()){
-                                Log.d("BookDAOImpl", "Callback valid Story=" + book.toString());
+                                Log.d("BookDAOImpl", "Callback valid Story");
 
                                 storageImpl.create(SessionManager.currentStory.getIcon(), uniqueStoryImageUUID, callback);
 
 //                                callback.onComplete(true, "Libro creado");
                             } else{
                                 Log.d("BookDAOImpl", task.getResult().toString());
-                                Log.d("BookDAOImpl", "Callback null Story=" + book.toString());
+                                Log.d("BookDAOImpl", "Callback null Story");
 
                                 callback.onComplete(false, "Operación fallida");
                             }
@@ -82,34 +93,7 @@ public class BookDAOImpl  {
             callback.onComplete(false, "Operación fallida");
         }
     }
-    public void findBook(String idBook, CompleteCallbackWithBook callback) {
-        getUserCollection().get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
 
-                    QuerySnapshot querySnapshot = task.getResult();
-                    if (querySnapshot != null) {
-                        for (QueryDocumentSnapshot document : querySnapshot) {
-                            //controller.setFindedBook(getBook(document));
-                            callback.onComplete(buildStoryByDocument(document));
-                        }
-                    }
-                    else {
-                        callback.onComplete(null);
-                        //controller.setFindedBook(null);
-                    }
-                }
-                else {
-                    callback.onComplete(null);
-                    //controller.setFindedBook(null);
-                }
-            }
-        });
-    }
-    public void updateBook(Book idBook, CompleteCallback callback) {
-
-    }
     public void deleteBook(Book story, CompleteCallbackWithDescription callback) {
         DocumentReference doc = getUserCollection().document(story.getId());
 
@@ -135,8 +119,13 @@ public class BookDAOImpl  {
         });
     }
 
-    private DocumentSnapshot lastVisible;
-    long limitCount;
+
+    private Query getQuery() {
+        return getUserCollection()
+                .orderBy(FIELD_DATE, Query.Direction.DESCENDING)
+//                .startAfter(lastVisible)
+                .limit(limitCount);
+    }
 
     public void loadData(long count, CompleteCallbackWithBookList callback) {
 
@@ -146,25 +135,13 @@ public class BookDAOImpl  {
 
         Log.d("Story db", "Load data");
 
-        Query startQuery =  getUserCollection()
-//                .orderBy(FIELD_TITLE)
-                .limit(limitCount);
-
-        findAll(startQuery, callback);
+        findAll(getQuery(), callback);
     }
 
     public void loadMoreData(CompleteCallbackWithBookList callback){
-        Log.d("Diego", "Load more data start");
         if(lastVisible != null){
-            Log.d("Diego", "more - if check");
-            Query nextQuery = getUserCollection()
-//                    .orderBy(FIELD_TITLE)
-                    .startAfter(lastVisible)
-                    .limit(limitCount);
-            Log.d("Diego", "query - ok");
-            findAll(nextQuery, callback);
 
-            Log.d("Diego", "find all complete");
+            findAll(getQuery().startAfter(lastVisible), callback);
 
         } else{
             callback.onComplete(null);
@@ -179,8 +156,8 @@ public class BookDAOImpl  {
                     List<Book> list = new ArrayList<>();
                     DocumentSnapshot lastDocument = null;
                     for (QueryDocumentSnapshot document : task.getResult()) {
-
                         Book b = buildStoryByDocument(document);
+                        Log.d("Diego", "Historia: " + b.getTitle().toString() + " && "+ b.getDate());
                         list.add(b);
 
                          lastDocument = document;
@@ -205,6 +182,7 @@ public class BookDAOImpl  {
         story.setNarrative(document.getString(FIELD_NARRATIVE));
         story.setFk_user(document.getString(FIELD_FK_USER));
         story.setIconID(document.getString(FIELD_ICON));
+        story.setDate(document.getDate(FIELD_DATE));
 
         return story;
     }

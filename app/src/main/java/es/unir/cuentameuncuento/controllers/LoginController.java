@@ -14,9 +14,8 @@ import es.unir.cuentameuncuento.R;
 import es.unir.cuentameuncuento.abstracts.ActivityController;
 import es.unir.cuentameuncuento.activities.LoginActivity;
 import es.unir.cuentameuncuento.activities.MainActivity;
-import es.unir.cuentameuncuento.helpers.CredentialsHelper;
+import es.unir.cuentameuncuento.helpers.RegexHelper;
 import es.unir.cuentameuncuento.impls.UserDAOImpl;
-import es.unir.cuentameuncuento.managers.SessionManager;
 
 public class LoginController extends ActivityController {
 
@@ -58,8 +57,8 @@ public class LoginController extends ActivityController {
     public  void signInWithEmailPassword(String email, String password){
         loading = true;
 
-        boolean correctEmail = CredentialsHelper.verifyEmail(email);
-        boolean correctPassword = CredentialsHelper.verifyPassword(password);
+        boolean correctEmail = RegexHelper.verifyEmail(email);
+        boolean correctPassword = RegexHelper.verifyPassword(password);
 
         if(correctEmail && correctPassword){
             userImpl.signInWithEmailPassword(email, password, this::onLoginComplete);
@@ -94,14 +93,6 @@ public class LoginController extends ActivityController {
         }
     }
 
-    public void signInWithFacebook(Intent data){
-
-    }
-
-    public void signInWithTwitter(Intent data){
-
-    }
-
     public void onLoginComplete(boolean result){
         if(result){
             Toast.makeText(activity, "Sign in success", Toast.LENGTH_SHORT).show();
@@ -117,7 +108,7 @@ public class LoginController extends ActivityController {
 
     public void recoverPassword(String email){
 
-        if(CredentialsHelper.verifyEmail(email)){
+        if(RegexHelper.verifyEmail(email)){
             userImpl.recoverPassword(email, this::onRecoverPasswordComplete);
         }
     }

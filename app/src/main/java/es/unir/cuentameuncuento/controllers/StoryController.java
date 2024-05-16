@@ -144,7 +144,7 @@ public class StoryController extends ActivityController {
 
         activity.btnSave.setEnabled(false);
 
-        bookDaoImpl.createBook(currentStory, new BookDAOImpl.CompleteCallbackWithDescription() {
+        bookDaoImpl.createBook(currentStory.getTitle(), currentStory.getNarrative(), new BookDAOImpl.CompleteCallbackWithDescription() {
             @Override
             public void onComplete(boolean value, String description) {
 

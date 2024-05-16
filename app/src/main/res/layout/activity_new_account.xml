@@ -11,7 +11,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Crea tu cuenta"
+            android:text="@string/new_account_title"
             android:textSize="32sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -23,7 +23,7 @@
             android:layout_height="42dp"
             android:layout_marginTop="24dp"
             android:ems="10"
-            android:hint="Email"
+            android:hint="@string/email"
             android:inputType="textEmailAddress"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -35,7 +35,7 @@
             android:layout_height="41dp"
             android:layout_marginTop="16dp"
             android:ems="10"
-            android:hint="Password"
+            android:hint="@string/password"
             android:inputType="textPassword"
             app:layout_constraintStart_toStartOf="@+id/register_field_email"
             app:layout_constraintTop_toBottomOf="@+id/register_field_email" />
@@ -45,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Introduce tu email y contraseña"
+            android:text="@string/login_description"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -56,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="110dp"
             android:layout_marginTop="16dp"
-            android:text="Ya tienes una cuenta?"
+            android:text="@string/already_account"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/register_button_register" />
 
@@ -67,7 +67,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:clickable="true"
-            android:text="Iniciar sesión"
+            android:text="@string/start_login"
             android:textAlignment="viewEnd"
             android:textColor="@color/backgroundColor"
             android:textStyle="bold"
@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_weight="0"
-            android:text="Registrar"
+            android:text="@string/signup"
             app:layout_constraintEnd_toEndOf="@+id/register_field_password"
             app:layout_constraintStart_toStartOf="@+id/register_field_password"
             app:layout_constraintTop_toBottomOf="@+id/register_field_password" />

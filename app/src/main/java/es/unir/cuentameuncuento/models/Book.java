@@ -1,8 +1,7 @@
 package es.unir.cuentameuncuento.models;
 
-import android.graphics.Bitmap;
-
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 
 public class Book implements Serializable {
@@ -15,7 +14,10 @@ public class Book implements Serializable {
 //    private Bitmap bitmap;
     private String iconID;
 
-    public Book(String id, String title, String narrative, boolean favorite, String fk_user, String iconID) {
+    private Date date;
+
+
+    public Book(String id, String title, String narrative, boolean favorite, String fk_user, String iconID, Date date) {
         this.id = id;
         this.title = title;
         this.narrative = narrative;
@@ -23,11 +25,20 @@ public class Book implements Serializable {
         this.fk_user = fk_user;
 //        this.bitmap = bitmap;
         this.iconID = iconID;
+        this.date = date;
     }
 
     public Book() {
     }
 
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
     public String getId() {
         return id;
@@ -90,7 +101,6 @@ public class Book implements Serializable {
         return Objects.hash(id);
     }
 
-
     @Override
     public String toString() {
         return "Book{" +
@@ -100,6 +110,7 @@ public class Book implements Serializable {
                 ", favorite=" + favorite +
                 ", fk_user='" + fk_user + '\'' +
                 ", iconID='" + iconID + '\'' +
+                ", date=" + date +
                 '}';
     }
 }

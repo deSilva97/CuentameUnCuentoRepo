@@ -7,7 +7,7 @@ import es.unir.cuentameuncuento.abstracts.ActivityController;
 import es.unir.cuentameuncuento.activities.LoginActivity;
 import es.unir.cuentameuncuento.activities.MainActivity;
 import es.unir.cuentameuncuento.activities.NewAccountActivity;
-import es.unir.cuentameuncuento.helpers.CredentialsHelper;
+import es.unir.cuentameuncuento.helpers.RegexHelper;
 import es.unir.cuentameuncuento.impls.UserDAOImpl;
 
 public class NewAccountController extends ActivityController {
@@ -25,8 +25,8 @@ public class NewAccountController extends ActivityController {
     public void signUpWithEmailPassword(String email, String password){
         loading = true;
 
-        boolean correctEmail = CredentialsHelper.verifyEmail(email);
-        boolean correctPassword = CredentialsHelper.verifyPassword(password);
+        boolean correctEmail = RegexHelper.verifyEmail(email);
+        boolean correctPassword = RegexHelper.verifyPassword(password);
 
         if(correctEmail && correctPassword){
             userImpl.signUpWithEmailPassword(email, password, this::onCompleteSignUp);

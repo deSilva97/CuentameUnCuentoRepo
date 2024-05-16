@@ -11,6 +11,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import es.unir.cuentameuncuento.R;
+<<<<<<< HEAD:app/src/main/java/es/unir/cuentameuncuento/activities/CharacterNameActivity.java
+=======
+import es.unir.cuentameuncuento.helpers.RegexHelper;
+import es.unir.cuentameuncuento.models.Book;
+>>>>>>> main:app/src/main/java/es/unir/cuentameuncuento/activities/NombreActivity.java
 
 public class CharacterNameActivity extends AppCompatActivity {
 
@@ -35,8 +40,7 @@ public class CharacterNameActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String nombrePersonaje = textoNombre.getText().toString().trim();
 
-                  if(nombrePersonaje.matches("[a-zA-Z\\s]+")){
-
+                if (RegexHelper.verifyName(nombrePersonaje)) {
                     Intent intent = new Intent(CharacterNameActivity.this, StoryActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                     intent.putExtra("nombreCategoria", textoCategoria.getText().toString());
