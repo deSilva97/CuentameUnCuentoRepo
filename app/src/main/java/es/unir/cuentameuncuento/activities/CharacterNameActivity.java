@@ -11,11 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import es.unir.cuentameuncuento.R;
-<<<<<<< HEAD:app/src/main/java/es/unir/cuentameuncuento/activities/CharacterNameActivity.java
-=======
 import es.unir.cuentameuncuento.helpers.RegexHelper;
-import es.unir.cuentameuncuento.models.Book;
->>>>>>> main:app/src/main/java/es/unir/cuentameuncuento/activities/NombreActivity.java
+
 
 public class CharacterNameActivity extends AppCompatActivity {
 
