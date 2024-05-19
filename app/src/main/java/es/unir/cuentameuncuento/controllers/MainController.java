@@ -125,8 +125,6 @@ public class MainController extends ActivityController {
     }
 
     public void readBook(Book book){
-        Toast.makeText(activity, "Leer: " + book.getId(), Toast.LENGTH_SHORT).show();
-
         Intent intent = new Intent(activity, StoryActivity.class);
         intent.putExtra("book", book);
         intent.putExtra("origen", "MainActivity");

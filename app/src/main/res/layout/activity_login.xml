@@ -21,7 +21,7 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="128dp"
         android:text="@string/social_login_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,6 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
+        android:gravity="center_horizontal"
         android:orientation="horizontal"
         android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,15 +41,12 @@
 
         <Button
             android:id="@+id/button_signin_google"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="64dp"
-            android:backgroundTint="@color/white"
+            android:backgroundTint="@android:color/transparent"
             android:drawableLeft="@drawable/common_google_signin_btn_icon_light_normal"
             android:elevation="4dp"
-            android:text="@string/google"
-            android:textAlignment="viewStart"
-            android:textColor="#000000"
-            app:cornerRadius="0dp" />
+            android:textAlignment="viewStart" />
 
     </LinearLayout>
 
