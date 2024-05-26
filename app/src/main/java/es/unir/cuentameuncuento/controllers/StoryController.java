@@ -28,8 +28,7 @@ public class StoryController extends ActivityController {
     ApiManager apiManager;
     private Handler handler;
     private Runnable runnable;
-
-    private int caracteres;
+    private int chars;
 
     public StoryController(StoryActivity activity) {
         this.activity = activity;
@@ -37,19 +36,19 @@ public class StoryController extends ActivityController {
         apiManager = new ApiManager(activity);
     }
 
-    public void newStory(String category, String character, int duracion) {
-        switch (duracion) {
+    public void newStory(String category, String character, int duration) {
+        switch (duration) {
             case 0:
-                caracteres = 200;
+                chars = 200;
                 break;
             case 1:
-                caracteres = 500;
+                chars = 500;
                 break;
             case 2:
-                caracteres = 700;
+                chars = 700;
                 break;
         }
-                apiManager.generateStory(category, character, caracteres, new ApiManager.StoryCallback() {
+                apiManager.generateStory(category, character, chars, new ApiManager.StoryCallback() {
 
                     @Override
                     public void onStartCreation() {
