@@ -46,4 +46,8 @@
     <string name="recover_password_action">Recuperar contraseña</string>
     <string name="new_data">Introduce tu nuevo dato de acceso</string>
     <string name="category_name">Nombre de la categoría</string>
+    <string name="storyDuration">Duracion del cuento:</string>
+    <string name="shortStory">Corto</string>
+    <string name="mediumStory">Medio</string>
+    <string name="largeStory">Largo</string>
 </resources>

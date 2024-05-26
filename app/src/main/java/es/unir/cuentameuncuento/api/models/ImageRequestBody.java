@@ -17,11 +17,15 @@ public class ImageRequestBody {
     @SerializedName("size")
     private String size;
 
-    public ImageRequestBody(String model, String prompt, int n, String size) {
+    @SerializedName("quality")
+    private String quality;
+
+    public ImageRequestBody(String model, String prompt, int n, String size, String quality) {
         this.model = model;
         this.prompt = prompt;
         this.n = n;
         this.size = size;
+        this.quality = quality;
     }
 
     public ImageRequestBody() {
@@ -59,6 +63,12 @@ public class ImageRequestBody {
         this.size = size;
     }
 
+    public String getQuality() {
+        return quality;
+    }
+    public void setQuality(String quality) {
+        this.quality = quality;
+    }
 
     @Override
     public String toString() {
@@ -67,6 +77,7 @@ public class ImageRequestBody {
                 ", prompt='" + prompt + '\'' +
                 ", n=" + n +
                 ", size='" + size + '\'' +
+                ", quality='" + quality + '\'' +
                 '}';
     }
 
@@ -75,11 +86,11 @@ public class ImageRequestBody {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ImageRequestBody that = (ImageRequestBody) o;
-        return n == that.n && Objects.equals(model, that.model) && Objects.equals(prompt, that.prompt) && Objects.equals(size, that.size);
+        return n == that.n && Objects.equals(model, that.model) && Objects.equals(prompt, that.prompt) && Objects.equals(size, that.size) && Objects.equals(quality, that.quality);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(model, prompt, n, size);
+        return Objects.hash(model, prompt, n, size, quality);
     }
 }

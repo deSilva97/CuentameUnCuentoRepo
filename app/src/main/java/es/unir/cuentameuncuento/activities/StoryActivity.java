@@ -31,6 +31,7 @@ public class StoryActivity extends AppCompatActivity {
     ApiManager apiManager;
     public Book currentStory;
     public String intentCategoryName, intentCharactername, intentContext;
+    public int intentDuration;
     Book intentBook;
     public ImageButton btnPlay, btnSave;
     public ProgressBar progressBarPlay;
@@ -54,7 +55,7 @@ public class StoryActivity extends AppCompatActivity {
         switch (intentContext){
 
             case "NombreActivity":
-                controller.newStory(intentCategoryName, intentCharactername);
+                controller.newStory(intentCategoryName, intentCharactername,intentDuration);
                 controller.newImage(intentCategoryName,intentCharactername);
                 controller.setLoadingLayout();
 
@@ -123,6 +124,7 @@ public class StoryActivity extends AppCompatActivity {
         if (intent != null) {
             intentCategoryName = intent.getStringExtra("nombreCategoria");
             intentCharactername = intent.getStringExtra("nombrePersonaje");
+            intentDuration = intent.getIntExtra("duracion",1);
             intentBook = (Book) intent.getSerializableExtra("book");
             intentContext = intent.getStringExtra("origen");
         }else{
