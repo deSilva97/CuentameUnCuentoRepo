@@ -78,12 +78,12 @@ public class ApiManager {
         return apiService;
     }
 
-    public void generateStory(String category, String character, StoryCallback storyCallback) {
+    public void generateStory(String category, String character, int duration ,StoryCallback storyCallback) {
 
         List<Message> messages = new ArrayList<Message>();
         StoryRequestBody requestBody = new StoryRequestBody();
         messages.add(new Message("system","Eres un generador de cuentos infantiles que generaras cuentos personalizados segun categoria y personaje. Ten en cuenta de no utilizar lenguaje soez y se creativo."));
-        messages.add(new Message("user","Generame un cuento de la siguiente categoria y personaje"+ category + character));
+        messages.add(new Message("user","Generame un cuento de la siguiente categoria, personaje y numero de caracteres: "+ category + ", "+character +" y "+ duration +" caracteres"));
 
         requestBody.setMessages(messages);
         requestBody.setModel("gpt-3.5-turbo");
@@ -175,9 +175,11 @@ public class ApiManager {
         requestBody.setPrompt("Ilustra un solo cuerpo de un/a protagonista llamado/a ["+ character +"] en estilo de dibujos animados, asociado a la categoría [" + category +"]." +
                 "La ilustración es para una historia corta para niños de entre 2 y 8 años." +
                 "Debe tener un fondo completamente blanco y no debe incluir texto, rótulos, armas ni otros elementos adicionales." +
-                "Solo debe aparecer un personaje en la imagen." );
+                "Solo debe aparecer un personaje en la imagen." +
+                "Completamente PROHIBIDO la inclusión de ARMAS DE FUEGO en la ilustración.");
         requestBody.setN(1);
         requestBody.setSize("1024x1024");
+        requestBody.setQuality("hd");
 
         currentImageCall = apiService.generateImage(requestBody);
         currentImageCall.enqueue(new Callback<ImageResponseBody>() {

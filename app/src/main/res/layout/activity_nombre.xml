@@ -53,7 +53,7 @@
         android:id="@+id/editTextPersonaje"
         android:layout_width="293dp"
         android:layout_height="41dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="45dp"
         android:ems="10"
         android:hint="@string/main_character"
         android:inputType="text"
@@ -65,9 +65,65 @@
         android:id="@+id/btnGenerar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="120dp"
         android:text="@string/create_story_short"
         app:layout_constraintEnd_toEndOf="@+id/editTextPersonaje"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/editTextPersonaje"
+        app:layout_constraintTop_toBottomOf="@+id/seekBar" />
+
+    <TextView
+        android:id="@+id/textDuration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="@string/storyDuration"
+        app:layout_constraintBottom_toTopOf="@+id/seekBar"
+        app:layout_constraintEnd_toEndOf="@+id/seekBar"
+        app:layout_constraintStart_toStartOf="@+id/seekBar" />
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:max="2"
+        android:progress="1"
+        android:progressBackgroundTint="@color/backgroundColor"
+        android:progressTint="@color/backgroundColor"
+        android:thumbTint="@color/backgroundColor"
+        app:layout_constraintEnd_toEndOf="@+id/btnGenerar"
+        app:layout_constraintStart_toStartOf="@+id/btnGenerar"
         app:layout_constraintTop_toBottomOf="@+id/editTextPersonaje" />
+
+    <TextView
+        android:id="@+id/shortDuration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/shortStory"
+        app:layout_constraintStart_toStartOf="@+id/seekBar"
+        app:layout_constraintTop_toBottomOf="@+id/seekBar" />
+
+    <TextView
+        android:id="@+id/mediumDuration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/mediumStory"
+        app:layout_constraintEnd_toStartOf="@+id/largeDuration"
+        app:layout_constraintStart_toEndOf="@+id/shortDuration"
+        app:layout_constraintTop_toBottomOf="@+id/seekBar" />
+
+    <TextView
+        android:id="@+id/largeDuration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="12dp"
+        android:text="@string/largeStory"
+        app:layout_constraintEnd_toEndOf="@+id/seekBar"
+        app:layout_constraintTop_toBottomOf="@+id/seekBar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

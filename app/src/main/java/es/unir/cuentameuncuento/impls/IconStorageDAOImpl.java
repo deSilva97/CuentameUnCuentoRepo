@@ -71,7 +71,7 @@ public class IconStorageDAOImpl {
         StorageReference islandRef = storageRef.child(pathIcon(imageID));
         Log.d("StoryIcon", "image downloaded=" + imageID);
 
-        final long ONE_MEGABYTE = 1024 * 1024;
+        final long ONE_MEGABYTE = 1024  * 1024;
         islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
@@ -91,8 +91,6 @@ public class IconStorageDAOImpl {
                     StorageException storageException = (StorageException) exception;
                     Log.e("StoryIcon", "HTTP Result Code=" + storageException.getHttpResultCode());
                 }
-
-
             }
         });
     }

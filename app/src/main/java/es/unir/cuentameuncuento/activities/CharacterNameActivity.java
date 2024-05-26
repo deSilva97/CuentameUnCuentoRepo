@@ -4,9 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +26,7 @@ public class CharacterNameActivity extends AppCompatActivity {
         TextView textoCategoria = findViewById(R.id.textoCategoria);
         EditText textoNombre = findViewById(R.id.editTextPersonaje);
         Button btnGenerar = findViewById(R.id.btnGenerar);
+        SeekBar seekBar = findViewById(R.id.seekBar);
 
         Intent intent = getIntent();
         if (intent != null) {
@@ -43,6 +46,7 @@ public class CharacterNameActivity extends AppCompatActivity {
                     intent.putExtra("nombreCategoria", textoCategoria.getText().toString());
                     intent.putExtra("nombrePersonaje", nombrePersonaje);
                     intent.putExtra("origen", "NombreActivity");
+                    intent.putExtra("duracion",seekBar.getProgress());
                     startActivity(intent);
                     finish();
 
