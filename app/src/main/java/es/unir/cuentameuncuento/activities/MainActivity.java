@@ -56,14 +56,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setInvisibleVEmptyState(){
-        emptyState.setVisibility(View.INVISIBLE);
+        emptyState.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
     }
     public void setVisibleEmptyState(){
-        if (recyclerView.getAdapter() == null || recyclerView.getAdapter().getItemCount() == 0) {
-            emptyState.setVisibility(View.VISIBLE);
-        } else {
-            emptyState.setVisibility(View.INVISIBLE);
-        }
+        recyclerView.setVisibility(View.GONE);
+        emptyState.setVisibility(View.VISIBLE);
     }
 
 }

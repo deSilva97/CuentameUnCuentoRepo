@@ -97,7 +97,11 @@ public class MainController extends ActivityController {
     }
 
     private void showBookList(List<Book> bookList){
-        activity.setInvisibleVEmptyState();
+        if(bookList != null && !bookList.isEmpty()){
+            activity.setInvisibleVEmptyState();
+        } else{
+            activity.setVisibleEmptyState();
+        }
 
         for(int i = indexLoad; i < bookList.size(); i++){
             BookAdapterElement element = new BookAdapterElement(this,bookList.get(i), null, bookList.get(i).getTitle());
