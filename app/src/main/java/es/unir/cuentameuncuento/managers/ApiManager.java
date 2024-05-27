@@ -172,11 +172,10 @@ public class ApiManager {
     public void generateImage(String category, String character,ImageCallback imageCallback) {
         ImageRequestBody requestBody = new ImageRequestBody();
         requestBody.setModel("dall-e-3");
-        requestBody.setPrompt("Ilustra un solo cuerpo de un/a protagonista llamado/a ["+ character +"] en estilo de dibujos animados, asociado a la categoría [" + category +"]." +
-                "La ilustración es para una historia corta para niños de entre 2 y 8 años." +
-                "Debe tener un fondo completamente blanco y no debe incluir texto, rótulos, armas ni otros elementos adicionales." +
-                "Solo debe aparecer un personaje en la imagen." +
-                "Completamente PROHIBIDO la inclusión de ARMAS DE FUEGO en la ilustración.");
+        requestBody.setPrompt("Ilustra un protagonista esterotipado llamado ["+ character +"] en estilo de dibujos animados" +
+                "La ilustración es para una historia corta para niños de entre 2 y 8 años ambientando en un mundo de ." + category);
+//                "Debe tener un fondo completamente blanco " +
+//                "Solo debe aparecer un personaje en la imagen.");
         requestBody.setN(1);
         requestBody.setSize("1024x1024");
         requestBody.setQuality("hd");
