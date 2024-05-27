@@ -42,7 +42,7 @@ public class MainController extends ActivityController {
     BookDAOImpl bookImpl;
     BookAdapter storyAdapter;
 
-    int storiesPerLaod = 2;
+    int storiesPerLaod = 10;
     int indexLoad = 0;
 
     public MainController(MainActivity activity){
@@ -105,7 +105,7 @@ public class MainController extends ActivityController {
 
         for(int i = indexLoad; i < bookList.size(); i++){
             BookAdapterElement element = new BookAdapterElement(this,bookList.get(i), null, bookList.get(i).getTitle());
-            addElementToAdapter(element);
+
             IconStorageDAOImpl.read(element, bookList.get(i).getIconID(), this::setIconToStoryElement);
             Log.d("Diego", "Adapter: " + bookList.get(i).getTitle());
         }
@@ -113,16 +113,15 @@ public class MainController extends ActivityController {
         if(indexLoad < bookList.size()){
             loadMoreData();
         } else {
-            Log.e("MainController", "No se pueden cargar mas historias");
+            Log.d("MainController", "No se pueden cargar mas historias");
         }
 
     }
 
     private void setIconToStoryElement(BookAdapterElement element, Bitmap bitmap){
+        activity.setInvisibleVEmptyState();
         element.setIcon(bitmap);
-        element.getIconImage().setImageBitmap(bitmap);
-        element.getItemView().setVisibility(View.VISIBLE);
-//        addElementToAdapter(element);
+        addElementToAdapter(element);
     }
     private void addElementToAdapter(BookAdapterElement element){
         storyAdapter.addItem(element);
