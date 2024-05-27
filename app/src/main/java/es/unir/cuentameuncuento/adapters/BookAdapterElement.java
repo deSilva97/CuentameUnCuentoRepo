@@ -23,10 +23,6 @@ public class BookAdapterElement implements Serializable {
 
     private String textTitle;
 
-    private View itemView;
-
-    private ImageView iconImage;
-
     public BookAdapterElement(){
 
     }
@@ -70,19 +66,5 @@ public class BookAdapterElement implements Serializable {
     public void actionFavorite() {
         Log.w("BookAdapterElement", "Not implemented method: actionFavorite");
     }
-    public View getItemView(){
-        return itemView;
-    }
 
-    public void setItemView(View itemView) {
-        this.itemView = itemView;
-    }
-
-    public ImageView getIconImage() {
-        return iconImage;
-    }
-
-    public void setIconImage(ImageView iconImage) {
-        this.iconImage = iconImage;
-    }
 }
