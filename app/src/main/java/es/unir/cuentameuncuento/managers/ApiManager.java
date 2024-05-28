@@ -78,12 +78,18 @@ public class ApiManager {
         return apiService;
     }
 
+    // String rol = "Eres un generador de cuentos infantiles que generaras cuentos personalizados segun categoria y personaje. Ten en cuenta de no utilizar lenguaje soez y se creativo.";
+    // String message = "Generame un cuento de la siguiente categoria, personaje y numero de caracteres: "+ category + ", " + character + " y "+ duration +" caracteres";
     public void generateStory(String category, String character, int duration ,StoryCallback storyCallback) {
 
         List<Message> messages = new ArrayList<Message>();
         StoryRequestBody requestBody = new StoryRequestBody();
-        messages.add(new Message("system","Eres un generador de cuentos infantiles que generaras cuentos personalizados segun categoria y personaje. Ten en cuenta de no utilizar lenguaje soez y se creativo."));
-        messages.add(new Message("user","Generame un cuento de la siguiente categoria, personaje y numero de caracteres: "+ category + ", "+character +" y "+ duration +" caracteres"));
+
+        String rol = "Eres un escritor exitoso de novelas infantiles alabado por las críticas";
+        String message = "Escribe la narrativa de un cuento infantil de " + category + " de unas " + duration + " palabras que tenga como protagonista a " + character;
+
+        messages.add(new Message("system",rol));
+        messages.add(new Message("user", message));
 
         requestBody.setMessages(messages);
         requestBody.setModel("gpt-3.5-turbo");
@@ -172,10 +178,8 @@ public class ApiManager {
     public void generateImage(String category, String character,ImageCallback imageCallback) {
         ImageRequestBody requestBody = new ImageRequestBody();
         requestBody.setModel("dall-e-3");
-        requestBody.setPrompt("Ilustra un protagonista esterotipado llamado ["+ character +"] en estilo de dibujos animados." +
-                "La ilustración es para una historia corta para niños de entre 2 y 8 años ambientando en un mundo de ." + category);
-//                "Debe tener un fondo completamente blanco " +
-//                "Solo debe aparecer un personaje en la imagen.");
+        requestBody.setPrompt("Ilustra a color un protagonista llamado "+ character +
+                " en estilo de dibujos animados para una historia corta de niños de entre 2 y 8 años ambientando en un mundo de " + category);
         requestBody.setN(1);
         requestBody.setSize("1024x1024");
         requestBody.setQuality("hd");
