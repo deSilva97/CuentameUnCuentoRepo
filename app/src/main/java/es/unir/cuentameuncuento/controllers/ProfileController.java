@@ -1,12 +1,12 @@
 package es.unir.cuentameuncuento.controllers;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import es.unir.cuentameuncuento.R;
 import es.unir.cuentameuncuento.activities.LoginActivity;
 import es.unir.cuentameuncuento.activities.MainActivity;
 import es.unir.cuentameuncuento.activities.ProfileActivity;
@@ -41,7 +41,7 @@ public class ProfileController {
         if(RegexHelper.verifyEmail(email)){
             userImpl.updateEmail(email, this::onCompleteEmailUpdate);
         } else{
-            ref.setError("Not valid email");
+            ref.setError(activity.getString(R.string.not_valid_email));
         }
     }
 
@@ -49,39 +49,30 @@ public class ProfileController {
         if(RegexHelper.verifyPassword(password)){
             userImpl.updatePassword(password, this::onCompletePasswordUpdate);
         } else{
-            ref.setError("Not valid passoword. May contain at least 6 chars");
+            String str = activity.getString(R.string.not_valid_password) + ". " + activity.getString(R.string.regex_info_password);
+            ref.setError(str);
         }
     }
 
     public void signOut(){
         userImpl.signOut();
         userImpl.signOutGoogle(activity);
-        //
+
         Intent intent = new Intent(activity, LoginActivity.class);
         activity.startActivity(intent);
         activity.finish();
-        Toast.makeText(activity, "Session expired", Toast.LENGTH_SHORT).show();
+        Toast.makeText(activity, activity.getString(R.string.session_expired), Toast.LENGTH_SHORT).show();
     }
 
     public void confirmDeleteAccount(){
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
-        builder.setMessage("ESTAS SEGURO DE QUE QUIERES REALIZAR ESTA ACCIÓN")
-                .setTitle("Confirm");
+        builder.setMessage(activity.getString(R.string.confirm_action_question))
+                .setTitle(activity.getString(R.string.delete_account));
 
-        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                deleteAccount();
-            }
-        });
+        builder.setPositiveButton(activity.getString(R.string.accept), (dialog, which) -> deleteAccount());
 
-        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        builder.setNegativeButton(activity.getString(R.string.cancel), (dialog, which) -> dialog.dismiss());
 
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -112,21 +103,18 @@ public class ProfileController {
             signOut();
             Toast.makeText(activity, email, Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(activity, "update email fails", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, activity.getString(R.string.update_email_fails), Toast.LENGTH_SHORT).show();
         }
-
-        //Desactivar carga
     }
 
     public void onCompletePasswordUpdate(String password){
         if(!password.isEmpty()){
             signOut();
-            Toast.makeText(activity, "Contraseña actualizada, vuelva a iniciar sesión", Toast.LENGTH_SHORT).show();
+            String str = activity.getString(R.string.update_password) + ". " + activity.getString(R.string.try_to_login);
+            Toast.makeText(activity, str, Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(activity, "update password fails", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, activity.getString(R.string.update_password_fails), Toast.LENGTH_SHORT).show();
         }
-
-        //Desactivar carga
     }
 
 }

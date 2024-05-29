@@ -20,8 +20,6 @@ import es.unir.cuentameuncuento.impls.UserDAOImpl;
 public class LoginController extends ActivityController {
 
     public static final int PROVIDER_GOOGLE = 25;
-    public static final int PROVIDER_FACEBOOK = 101;
-    public static final int PROVIDER_TWITTER = 9;
 
     LoginActivity activity;
 
@@ -45,15 +43,6 @@ public class LoginController extends ActivityController {
         activity.startActivityForResult(googleClient.getSignInIntent(), PROVIDER_GOOGLE);
     }
 
-    public void authWithFacebook(){
-        //https://www.youtube.com/watch?v=M2earjn-XXQ
-//        activity.startActivityForResult(, PROVIDER_FACEBOOK);
-    }
-
-    public void authWithTwitter(){
-//        activity.startActivityForResult(, PROVIDER_TWITTER);
-    }
-
     public  void signInWithEmailPassword(String email, String password){
         loading = true;
 
@@ -63,7 +52,7 @@ public class LoginController extends ActivityController {
         if(correctEmail && correctPassword){
             userImpl.signInWithEmailPassword(email, password, this::onLoginComplete);
         }else {
-            Toast.makeText(activity, "Not valid email or password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, activity.getString(R.string.not_valid_email_or_password), Toast.LENGTH_SHORT).show();
             activity.setErrorFields(!correctEmail, !correctPassword);
 
         }
@@ -78,14 +67,14 @@ public class LoginController extends ActivityController {
             Log.d("Login", "account=" + account.toString());
 
             String idToken = account.getIdToken();
-            Log.d("Login", "idToken=" + task.toString());
+            Log.d("Login", "idToken=" + task);
 
             if (idToken != null) {
                 userImpl.signInWithGoogle(idToken, this::onLoginComplete);
                 Log.d("Login", "sign in account idToken != null");
 
             } else {
-                Toast.makeText(activity, "Can not found google id token", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, activity.getString(R.string.google_token_not_found), Toast.LENGTH_SHORT).show();
                 loading = false;
             }
         } else {
@@ -95,25 +84,13 @@ public class LoginController extends ActivityController {
 
     public void onLoginComplete(boolean result){
         if(result){
-            Toast.makeText(activity, "Sign in success", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, activity.getString(R.string.sign_in_success), Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(activity, MainActivity.class);
             activity.startActivity(intent);
         } else {
-            Toast.makeText(activity, "Sign in failed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, activity.getString(R.string.sign_in_failed), Toast.LENGTH_SHORT).show();
         }
         loading = false;
     }
 
-
-
-    public void recoverPassword(String email){
-
-        if(RegexHelper.verifyEmail(email)){
-            userImpl.recoverPassword(email, this::onRecoverPasswordComplete);
-        }
-    }
-
-    private  void onRecoverPasswordComplete(boolean value, String msj){
-        Toast.makeText(activity, msj, Toast.LENGTH_SHORT).show();
-    }
 }

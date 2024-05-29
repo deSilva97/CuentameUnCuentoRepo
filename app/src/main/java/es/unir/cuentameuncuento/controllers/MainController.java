@@ -1,7 +1,6 @@
 package es.unir.cuentameuncuento.controllers;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.util.Log;
@@ -11,12 +10,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+import es.unir.cuentameuncuento.R;
 import es.unir.cuentameuncuento.abstracts.ActivityController;
 import es.unir.cuentameuncuento.activities.CategoryActivity;
+import es.unir.cuentameuncuento.activities.MainActivity;
 import es.unir.cuentameuncuento.activities.ProfileActivity;
 import es.unir.cuentameuncuento.activities.StoryActivity;
-import es.unir.cuentameuncuento.activities.MainActivity;
 import es.unir.cuentameuncuento.adapters.BookAdapter;
 import es.unir.cuentameuncuento.adapters.BookAdapterElement;
 import es.unir.cuentameuncuento.impls.BookDAOImpl;
@@ -36,7 +37,7 @@ public class MainController extends ActivityController {
     BookDAOImpl bookImpl;
     BookAdapter storyAdapter;
 
-    int storiesPerLaod = 10;
+    int storiesPerLoad = 10;
     int indexLoad = 0;
 
     public MainController(MainActivity activity){
@@ -45,13 +46,13 @@ public class MainController extends ActivityController {
         SessionManager.currentStory = new BookAdapterElement();
 
         bookImpl = new BookDAOImpl(activity);
-        bookList = new ArrayList<Book>();
+        bookList = new ArrayList<>();
 
         userID = UserDAOImpl.getIdUser();
     }
 
     public void loadMoreData(){
-        indexLoad += storiesPerLaod;
+        indexLoad += storiesPerLoad;
         bookImpl.loadMoreData(this::addBookList);
     }
 
@@ -61,10 +62,10 @@ public class MainController extends ActivityController {
         storyAdapter = new BookAdapter(new ArrayList<>(), activity);
         //Config Recycler
         activity.recyclerView.setHasFixedSize(true);
-        activity.recyclerView.setLayoutManager(new LinearLayoutManager(activity)); // De arriba abajo
+        activity.recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         activity.recyclerView.setAdapter(storyAdapter);
 
-        bookImpl.loadData(storiesPerLaod, this::setBookList);
+        bookImpl.loadData(storiesPerLoad, this::setBookList);
     }
 
     public void setBookList(List<Book> bookList){
@@ -80,12 +81,11 @@ public class MainController extends ActivityController {
     }
 
     public void refresh(){
-
         if(bookList == null)
             return;
-        Log.d("MainController", "Libros de " + userID);
+        Log.d("MainController", "stories from: " + userID);
         for (Book b: bookList){
-            Log.d("MainController", "Libro " + b.getId());
+            Log.d("MainController", "story: " + b.getId());
         }
         showBookList(bookList);
     }
@@ -93,11 +93,12 @@ public class MainController extends ActivityController {
     private void showBookList(List<Book> bookList){
         if(bookList != null && !bookList.isEmpty()){
             activity.setInvisibleVEmptyState();
+
         } else{
             activity.setVisibleEmptyState();
         }
 
-        for(int i = indexLoad; i < bookList.size(); i++){
+        for(int i = indexLoad; i < Objects.requireNonNull(bookList).size(); i++){
             BookAdapterElement element = new BookAdapterElement(this,bookList.get(i), null, bookList.get(i).getTitle());
 
             IconStorageDAOImpl.read(element, bookList.get(i).getIconID(), this::setIconToStoryElement);
@@ -107,7 +108,7 @@ public class MainController extends ActivityController {
         if(indexLoad < bookList.size()){
             loadMoreData();
         } else {
-            Log.d("MainController", "No se pueden cargar mas historias");
+            Log.d("MainController", "Can not load more stories");
         }
 
     }
@@ -135,22 +136,12 @@ public class MainController extends ActivityController {
     public void confirmDeleteBook(Book story){
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
-        builder.setMessage("Estás seguro que quieres realizar esta acción?")
-                .setTitle("Eliminar cuento");
+        builder.setMessage(activity.getString(R.string.confirm_action_question))
+                .setTitle(activity.getString(R.string.delete_story));
 
-        builder.setPositiveButton("Eliminar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                deleteBook(story);
-            }
-        });
+        builder.setPositiveButton(activity.getString(R.string.delete), (dialog, which) -> deleteBook(story));
 
-        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        builder.setNegativeButton(activity.getString(R.string.cancel), (dialog, which) -> dialog.dismiss());
 
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -159,7 +150,6 @@ public class MainController extends ActivityController {
     private void onCompleteOperation(boolean value, String description){
         if (value){
             Toast.makeText(activity, description, Toast.LENGTH_SHORT).show();
-//            bookImpl.loadData(storiesPerLaod, this::setBookList);
             findBooks();
         }
         else

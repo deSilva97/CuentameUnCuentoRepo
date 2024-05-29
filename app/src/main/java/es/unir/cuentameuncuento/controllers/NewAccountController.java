@@ -3,6 +3,7 @@ package es.unir.cuentameuncuento.controllers;
 import android.content.Intent;
 import android.widget.Toast;
 
+import es.unir.cuentameuncuento.R;
 import es.unir.cuentameuncuento.abstracts.ActivityController;
 import es.unir.cuentameuncuento.activities.LoginActivity;
 import es.unir.cuentameuncuento.activities.MainActivity;
@@ -31,17 +32,17 @@ public class NewAccountController extends ActivityController {
         if(correctEmail && correctPassword){
             userImpl.signUpWithEmailPassword(email, password, this::onCompleteSignUp);
         }else {
-            Toast.makeText(activity, "Not valid email or password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, activity.getString(R.string.not_valid_email_or_password), Toast.LENGTH_SHORT).show();
             activity.setErrorFields(!correctEmail, !correctPassword);
         }
     }
     private void onCompleteSignUp(boolean resul){
         if(resul){
-            Toast.makeText(activity, "Registro completado", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, activity.getText(R.string.register_success) , Toast.LENGTH_SHORT).show();
             changeActivityToMain();
         }
         else {
-            Toast.makeText(activity, "Registro fallado", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, activity.getString(R.string.register_fail), Toast.LENGTH_SHORT).show();
         }
         loading = false;
     }

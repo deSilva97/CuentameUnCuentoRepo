@@ -72,4 +72,21 @@
     <string name="not_valid_password">Password not valid</string>
     <string name="change">Cambiar</string>
     <string name="cancel">Cancelar</string>
+    <string name="not_valid_email_or_password">Not valid email or password</string>
+    <string name="google_token_not_found">Can not found google id token</string>
+    <string name="sign_in_success">Sign in success</string>
+    <string name="sign_in_failed">Sign in failed</string>
+    <string name="confirm_action_question">Estás seguro que quieres realizar esta acción?</string>
+    <string name="delete_story">Eliminar cuento</string>
+    <string name="delete">Eliminar</string>
+    <string name="register_success">Registro completado</string>
+    <string name="register_fail">Registro fallado</string>
+    <string name="accept">Aceptar</string>
+    <string name="session_expired">Session expired</string>
+    <string name="try_to_login">Vuelve a iniciar sesión</string>
+    <string name="update_password">Contraseña actualizada</string>
+    <string name="update_password_fails">La contraseña no ha podido actualizarse</string>
+    <string name="update_email_fails">El correo no se ha actualizado</string>
+    <string name="regex_info_password">La contraseña debe tener al menos 6 caracteres</string>
+    <string name="speech_ends">Reproducción finalizada</string>
 </resources>
