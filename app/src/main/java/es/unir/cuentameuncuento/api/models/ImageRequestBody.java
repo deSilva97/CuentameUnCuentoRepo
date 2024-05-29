@@ -1,5 +1,7 @@
 package es.unir.cuentameuncuento.api.models;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Objects;
@@ -70,6 +72,7 @@ public class ImageRequestBody {
         this.quality = quality;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "ImageRequestBody{" +

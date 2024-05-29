@@ -4,10 +4,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-import es.unir.cuentameuncuento.api.models.Choice;
-import es.unir.cuentameuncuento.api.models.Usage;
-
-
 public class StoryResponseBody {
     @SerializedName("id")
     private String id;
