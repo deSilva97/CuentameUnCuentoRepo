@@ -1,31 +1,31 @@
 package es.unir.cuentameuncuento.models;
 
 public class Category {
-    private int id;
-    private String nombre;
-    private String descripcion;
-    private int imagenId;
+    private final int id;
+    private final String name;
+    private final String description;
+    private final int image_id;
 
-    public Category(int id, String nombre, String descripcion, int imagenId) {
+    public Category(int id, String name, String description, int image_id) {
         this.id = id;
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-        this.imagenId = imagenId;
+        this.name = name;
+        this.description = description;
+        this.image_id = image_id;
     }
 
     public int getId() {
         return id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    public String getDescription() {
+        return description;
     }
 
-    public int getImagenId() {
-        return imagenId;
+    public int getImage_id() {
+        return image_id;
     }
 }

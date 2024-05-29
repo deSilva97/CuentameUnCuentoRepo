@@ -100,4 +100,7 @@
     <string name="email_send">Correo enviado</string>
     <string name="something_wrong">Algo ha salido mal...</string>
     <string name="email_send_to_complete_operation">"Se ha enviado un correo para completar la operación a: "</string>
+    <string name="prompt_image">Ilustra a color un protagonista llamado %s en estilo de dibujos animados para una historia corta de niños de entre 2 y 8 años ambientando en un mundo de %s</string>
+    <string name="prompt_rol">Eres un escritor exitoso de novelas infantiles alabado por las críticas</string>
+    <string name="prompt_message">Escribe la narrativa de un cuento infantil de %s de unas %d palabras que tenga como protagonista a %s</string>
 </resources>

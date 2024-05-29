@@ -4,12 +4,16 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+import es.unir.cuentameuncuento.R;
 import es.unir.cuentameuncuento.api.ApiService;
 import es.unir.cuentameuncuento.api.models.ImageRequestBody;
 import es.unir.cuentameuncuento.api.models.ImageResponseBody;
@@ -35,22 +39,24 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiManager {
     private static final String BASE_URL = "https://api.openai.com/v1/";
-    private ApiService apiService;
+    private final ApiService apiService;
     private Call<ImageResponseBody> currentImageCall;
     private Call<StoryResponseBody> currentStoryCall;
     private Call<ResponseBody> currentSpeechCall;
-    private Context context;
+
+    Context context;
 
     public ApiManager(Context context) {
 
-        this.context = context;
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        this.context = context;
 
         Interceptor apiKeyInterceptor = chain -> {
             Request originalRequest = chain.request();
             Request newRequest = originalRequest.newBuilder()
-                    .header("Authorization", ApiKeyReader.getApiKeyOpenAi(context))
+                    .header("Authorization", Objects.requireNonNull(ApiKeyReader.getApiKeyOpenAi(context)))
                     .header("Content-Type", "application/json")
                     .build();
             return chain.proceed(newRequest);
@@ -78,15 +84,13 @@ public class ApiManager {
         return apiService;
     }
 
-    // String rol = "Eres un generador de cuentos infantiles que generaras cuentos personalizados segun categoria y personaje. Ten en cuenta de no utilizar lenguaje soez y se creativo.";
-    // String message = "Generame un cuento de la siguiente categoria, personaje y numero de caracteres: "+ category + ", " + character + " y "+ duration +" caracteres";
     public void generateStory(String category, String character, int duration ,StoryCallback storyCallback) {
 
-        List<Message> messages = new ArrayList<Message>();
+        List<Message> messages = new ArrayList<>();
         StoryRequestBody requestBody = new StoryRequestBody();
 
-        String rol = "Eres un escritor exitoso de novelas infantiles alabado por las críticas";
-        String message = "Escribe la narrativa de un cuento infantil de " + category + " de unas " + duration + " palabras que tenga como protagonista a " + character;
+        String rol = String.format(context.getString(R.string.prompt_rol));
+        String message = String.format(context.getString(R.string.prompt_message), category, duration, character);
 
         messages.add(new Message("system",rol));
         messages.add(new Message("user", message));
@@ -99,10 +103,11 @@ public class ApiManager {
         currentStoryCall = apiService.generateStory(requestBody);
         currentStoryCall.enqueue(new Callback<StoryResponseBody>() {
             @Override
-            public void onResponse(Call<StoryResponseBody> call, Response<StoryResponseBody> response) {
+            public void onResponse(@NonNull Call<StoryResponseBody> call, @NonNull Response<StoryResponseBody> response) {
                 if (response.isSuccessful()) {
 
                     StoryResponseBody storyResponseBody = response.body();
+                    assert storyResponseBody != null;
                     List<Choice> choices = storyResponseBody.getChoices();
                     Message message = choices.get(0).getMessage();
 
@@ -119,7 +124,7 @@ public class ApiManager {
             }
 
             @Override
-            public void onFailure(Call<StoryResponseBody> call, Throwable t) {
+            public void onFailure(@NonNull Call<StoryResponseBody> call, @NonNull Throwable t) {
                     storyCallback.onError("Story: " + t.getMessage());
             }
         });
@@ -128,7 +133,7 @@ public class ApiManager {
     public interface StoryCallback {
         void onStartCreation();
         void onStoryGenerated(Book story);
-        void onError(String mensajeError);
+        void onError(String messageError);
     }
 
     public void generateSpeech(Book story, SpeechCallback speechCallback) {
@@ -144,9 +149,10 @@ public class ApiManager {
             currentSpeechCall = apiService.generateSpeech(requestBody);
             currentSpeechCall.enqueue(new Callback<ResponseBody>() {
                 @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                     if (response.isSuccessful()) {
                         try {
+                            assert response.body() != null;
                             byte[] speechBytes = response.body().bytes();
                             File audioFile = AudioFileConverter.convertBytesToAudioFile(speechBytes);
                             speechCallback.onSpeechGenerated(audioFile);
@@ -162,7 +168,7 @@ public class ApiManager {
                 }
 
                 @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                 speechCallback.onError(t.getMessage());
                 }
             });
@@ -173,13 +179,12 @@ public class ApiManager {
     public interface SpeechCallback {
         void onStartCreation();
         void onSpeechGenerated( File audioFile) throws IOException;
-        void onError(String mensajeError);
+        void onError(String messageError);
     }
     public void generateImage(String category, String character,ImageCallback imageCallback) {
         ImageRequestBody requestBody = new ImageRequestBody();
         requestBody.setModel("dall-e-3");
-        requestBody.setPrompt("Ilustra a color un protagonista llamado "+ character +
-                " en estilo de dibujos animados para una historia corta de niños de entre 2 y 8 años ambientando en un mundo de " + category);
+        requestBody.setPrompt(String.format(context.getString(R.string.prompt_image), character, category));
         requestBody.setN(1);
         requestBody.setSize("1024x1024");
         requestBody.setQuality("hd");
@@ -187,11 +192,12 @@ public class ApiManager {
         currentImageCall = apiService.generateImage(requestBody);
         currentImageCall.enqueue(new Callback<ImageResponseBody>() {
             @Override
-            public void onResponse(Call<ImageResponseBody> call, Response<ImageResponseBody> response) {
+            public void onResponse(@NonNull Call<ImageResponseBody> call, @NonNull Response<ImageResponseBody> response) {
                 if (response.isSuccessful()) {
 
                     ImageResponseBody responseBody = response.body();
 
+                    assert responseBody != null;
                     String url = responseBody.getData().get(0).getUrl();
                     ImageConverter imageConverter = new ImageConverter();
 
@@ -215,7 +221,7 @@ public class ApiManager {
             }
 
             @Override
-            public void onFailure(Call<ImageResponseBody> call, Throwable t) {
+            public void onFailure(@NonNull Call<ImageResponseBody> call, @NonNull Throwable t) {
                 imageCallback.onError("Image:" + t.getMessage());
             }
         });
@@ -223,21 +229,21 @@ public class ApiManager {
     public interface ImageCallback {
         void onStartCreation();
         void onImageGenerated(Bitmap imageBitmap) ;
-        void onError(String mensajeError);
+        void onError(String messageError);
     }
 
     public void cancelCalls() {
         if (currentImageCall != null && !currentImageCall.isCanceled()) {
             currentImageCall.cancel();
-            Log.d("DESTROY:", "SE DESTRUYE imagecall" );
+            Log.d("DESTROY:", "DESTROY image call" );
         }
         if (currentSpeechCall != null && !currentSpeechCall.isCanceled()) {
             currentSpeechCall.cancel();
-            Log.d("DESTROY:", "SE DESTRUYE speechcall" );
+            Log.d("DESTROY:", "DESTROY speech-call" );
         }
         if (currentStoryCall != null && !currentStoryCall.isCanceled()) {
             currentStoryCall.cancel();
-            Log.d("DESTROY:", "SE DESTRUYE storycall" );
+            Log.d("DESTROY:", "DESTROY story call" );
         }
     }
 

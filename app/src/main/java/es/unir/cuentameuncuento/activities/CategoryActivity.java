@@ -83,8 +83,8 @@ public class CategoryActivity extends AppCompatActivity {
         }
 
         public void bind(Category category) {
-            nameCategory.setText(category.getNombre());
-            imgCategory.setImageResource(category.getImagenId());
+            nameCategory.setText(category.getName());
+            imgCategory.setImageResource(category.getImage_id());
         }
 
         @Override
@@ -94,7 +94,7 @@ public class CategoryActivity extends AppCompatActivity {
 
                 Category category = categoryList.get(position);
                 Intent intent = new Intent(CategoryActivity.this, CharacterNameActivity.class);
-                intent.putExtra("nameCategory", category.getNombre());
+                intent.putExtra("nameCategory", category.getName());
                 startActivity(intent);
                 finish();
             }
