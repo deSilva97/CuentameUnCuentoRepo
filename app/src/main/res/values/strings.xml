@@ -89,4 +89,15 @@
     <string name="update_email_fails">El correo no se ha actualizado</string>
     <string name="regex_info_password">La contraseña debe tener al menos 6 caracteres</string>
     <string name="speech_ends">Reproducción finalizada</string>
+    <string name="operation_fails">Operación fallida</string>
+    <string name="operation_success">Operación completada</string>
+    <string name="story_delete">Cuento borrado</string>
+    <string name="image_generate_fails">Failure on image generate</string>
+    <string name="image_generate_success">Imagen generada con éxito</string>
+    <string name="delete_fail_user">No se pudo eliminar al usuario</string>
+    <string name="delete_fail_stories">No se pudieron eliminar los libros</string>
+    <string name="rollback_fail_stories">No se pudieron recuperar los libros</string>
+    <string name="email_send">Correo enviado</string>
+    <string name="something_wrong">Algo ha salido mal...</string>
+    <string name="email_send_to_complete_operation">"Se ha enviado un correo para completar la operación a: "</string>
 </resources>
