@@ -42,7 +42,7 @@
             android:name=".activities.LoginActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.CategoriasActivity"
+            android:name=".activities.CategoryActivity"
             android:exported="false" />
         <activity
             android:name=".activities.StoryActivity"

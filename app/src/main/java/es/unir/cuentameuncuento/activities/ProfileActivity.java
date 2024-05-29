@@ -1,13 +1,11 @@
 package es.unir.cuentameuncuento.activities;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,15 +22,6 @@ public class ProfileActivity extends AppCompatActivity {
     TextView bDeleteAccount;
 
     ProfileController controller;
-
-
-    public void setTextEmailContent(String str){
-        txtEmail.setText(str);
-    }
-
-    public void setTextPasswordContent(String str){
-        txtPassword.setText(str);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,33 +51,13 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void setListeners() {
-        bChangeEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showChangeInfoDialog("email");
-            }
-        });
+        bChangeEmail.setOnClickListener(v -> showChangeInfoDialog(String.valueOf(R.string.email)));
 
-        bChangePassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showChangeInfoDialog("password");
-            }
-        });
+        bChangePassword.setOnClickListener(v -> showChangeInfoDialog(String.valueOf(R.string.password)));
 
-        bSignOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                controller.signOut();
-            }
-        });
+        bSignOut.setOnClickListener(v -> controller.signOut());
 
-        bDeleteAccount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                controller.confirmDeleteAccount();
-            }
-        });
+        bDeleteAccount.setOnClickListener(v -> controller.confirmDeleteAccount());
     }
 
     private void showChangeInfoDialog(final String changeType) {
@@ -99,21 +68,17 @@ public class ProfileActivity extends AppCompatActivity {
 
         final EditText editTextNewInfo = dialogView.findViewById(R.id.editTextNewInfo);
 
-        dialogBuilder.setTitle("Cambiar " + (changeType.equals("email") ? "Email" : "Contraseña"));
-        dialogBuilder.setPositiveButton("Cambiar", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                String newInfo = editTextNewInfo.getText().toString().trim();
+        dialogBuilder.setTitle(getString(R.string.change) + " " + changeType);
+        dialogBuilder.setPositiveButton(getString(R.string.change), (dialog, whichButton) -> {
+            String newInfo = editTextNewInfo.getText().toString().trim();
 
-                if(changeType.equals("email")){
-                    controller.updateEmail(newInfo, txtEmail);
-                } else if(changeType.equals("password")){
-                    controller.updatePassword(newInfo, txtPassword);
-                }
+            if(changeType.equals(getString(R.string.email))){
+                controller.updateEmail(newInfo, txtEmail);
+            } else if(changeType.equals(getString(R.string.password))){
+                controller.updatePassword(newInfo, txtPassword);
             }
         });
-        dialogBuilder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-            }
+        dialogBuilder.setNegativeButton(R.string.cancel, (dialog, whichButton) -> {
         });
         AlertDialog b = dialogBuilder.create();
         b.show();

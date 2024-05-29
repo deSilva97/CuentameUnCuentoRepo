@@ -1,12 +1,12 @@
 package es.unir.cuentameuncuento.models;
 
-public class Categoria {
+public class Category {
     private int id;
     private String nombre;
     private String descripcion;
     private int imagenId;
 
-    public Categoria(int id, String nombre, String descripcion, int imagenId) {
+    public Category(int id, String nombre, String descripcion, int imagenId) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;

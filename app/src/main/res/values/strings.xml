@@ -50,4 +50,26 @@
     <string name="shortStory">Corto</string>
     <string name="mediumStory">Medio</string>
     <string name="largeStory">Largo</string>
+    <string name="fantasy_title">Fantasía</string>
+    <string name="adventure_title">Aventuras</string>
+    <string name="super_heroes_title">Super Héroes</string>
+    <string name="princess_title">Princesas</string>
+    <string name="scifi_title">Ciencia Ficción</string>
+    <string name="mistery_title">Misterio</string>
+    <string name="animals_title">Animales</string>
+    <string name="magic_title">Magia</string>
+    <string name="fantasy_desc">Explora mundos mágicos y criaturas fantásticas.</string>
+    <string name="adventure_desc">Embárcate en emocionantes viajes llenos de peligros y descubrimientos.</string>
+    <string name="super_heroes_desc">Únete a valientes héroes en su lucha contra el mal.</string>
+    <string name="princess_desc">Descubre historias de valentía y romance en reinos lejanos.</string>
+    <string name="scifi_desc">Explora mundos futuristas y tecnologías avanzadas.</string>
+    <string name="mistery_desc">Resuelve enigmas y descubre secretos ocultos.</string>
+    <string name="animals_desc">Acompaña a encantadores animales en aventuras asombrosas.</string>
+    <string name="magic_desc">Desentraña los misterios de la magia y los hechizos.</string>
+    <string name="error_intent_no_params">Error: El Intent no lleva parametros</string>
+    <string name="not_valid_name">Por favor, ingresa un nombre válido (solo letras y espacios).</string>
+    <string name="not_valid_email">Email not valid</string>
+    <string name="not_valid_password">Password not valid</string>
+    <string name="change">Cambiar</string>
+    <string name="cancel">Cancelar</string>
 </resources>

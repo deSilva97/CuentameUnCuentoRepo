@@ -3,13 +3,8 @@ package es.unir.cuentameuncuento.controllers;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Icon;
-import android.os.Debug;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,9 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import java.util.ArrayList;
 import java.util.List;
 
-import es.unir.cuentameuncuento.R;
 import es.unir.cuentameuncuento.abstracts.ActivityController;
-import es.unir.cuentameuncuento.activities.CategoriasActivity;
+import es.unir.cuentameuncuento.activities.CategoryActivity;
 import es.unir.cuentameuncuento.activities.ProfileActivity;
 import es.unir.cuentameuncuento.activities.StoryActivity;
 import es.unir.cuentameuncuento.activities.MainActivity;
@@ -173,7 +167,7 @@ public class MainController extends ActivityController {
     }
 
     public void generateStory(){
-        Intent intent = new Intent(activity, CategoriasActivity.class);
+        Intent intent = new Intent(activity, CategoryActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         activity.startActivity(intent);
     }

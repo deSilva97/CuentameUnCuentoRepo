@@ -7,18 +7,13 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import es.unir.cuentameuncuento.R;
 import es.unir.cuentameuncuento.controllers.StoryController;
@@ -30,14 +25,14 @@ public class StoryActivity extends AppCompatActivity {
     StoryController controller;
     ApiManager apiManager;
     public Book currentStory;
-    public String intentCategoryName, intentCharactername, intentContext;
+    public String intentCategoryName, intentCharacterName, intentContext;
     public int intentDuration;
     Book intentBook;
     public ImageButton btnPlay, btnSave;
     public ProgressBar progressBarPlay;
     public TextView txtStory;
     public MediaPlayer backgroundMediaPlayer, speechMediaPlayer;
-    Boolean generatedAudioSuccesfuly;
+    Boolean isAudioGeneratedSuccess;
     public ScrollView scrollView;
     public ImageView imageView;
     public CardView cardViewImage;
@@ -54,9 +49,9 @@ public class StoryActivity extends AppCompatActivity {
 
         switch (intentContext){
 
-            case "NombreActivity":
-                controller.newStory(intentCategoryName, intentCharactername,intentDuration);
-                controller.newImage(intentCategoryName,intentCharactername);
+            case "NameActivity":
+                controller.newStory(intentCategoryName, intentCharacterName,intentDuration);
+                controller.newImage(intentCategoryName, intentCharacterName);
                 controller.setLoadingLayout();
 
 
@@ -78,7 +73,7 @@ public class StoryActivity extends AppCompatActivity {
         speechMediaPlayer = new MediaPlayer();
         backgroundMediaPlayer = new MediaPlayer();
         progressBarPlay.setVisibility(View.INVISIBLE);
-        generatedAudioSuccesfuly = false;
+        isAudioGeneratedSuccess = false;
         scrollView =findViewById(R.id.scrollView);
         imageView =findViewById(R.id.imageView);
         cardViewImage =findViewById(R.id.cardViewImage);
@@ -87,48 +82,40 @@ public class StoryActivity extends AppCompatActivity {
     }
     private void setListeners() {
 
-        btnPlay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!generatedAudioSuccesfuly) {
-                    controller.newSpeech(currentStory);
-                    progressBarPlay.setVisibility(View.VISIBLE);
-                    generatedAudioSuccesfuly = true;
-                } else {
-                    if (speechMediaPlayer != null) {
-                        if (speechMediaPlayer.isPlaying()) {
-                            speechMediaPlayer.pause(); // Pause playback
-                            controller.stopAutoScroll();
-                            btnPlay.setImageResource(R.mipmap.play);
-                        } else {
-                            speechMediaPlayer.start(); // Resume playback
-                            controller.startAutoScroll();
-                            btnPlay.setImageResource(R.mipmap.pause);
-                        }
+        btnPlay.setOnClickListener(v -> {
+            if (!isAudioGeneratedSuccess) {
+                controller.newSpeech(currentStory);
+                progressBarPlay.setVisibility(View.VISIBLE);
+                isAudioGeneratedSuccess = true;
+            } else {
+                if (speechMediaPlayer != null) {
+                    if (speechMediaPlayer.isPlaying()) {
+                        speechMediaPlayer.pause(); // Pause playback
+                        controller.stopAutoScroll();
+                        btnPlay.setImageResource(R.mipmap.play);
+                    } else {
+                        speechMediaPlayer.start(); // Resume playback
+                        controller.startAutoScroll();
+                        btnPlay.setImageResource(R.mipmap.pause);
                     }
                 }
             }
         });
 
 
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                controller.saveBook(currentStory);
-            }
-        });
+        btnSave.setOnClickListener(v -> controller.saveBook(currentStory));
 
     }
     private void getExtras(){
         Intent intent = getIntent();
         if (intent != null) {
-            intentCategoryName = intent.getStringExtra("nombreCategoria");
-            intentCharactername = intent.getStringExtra("nombrePersonaje");
-            intentDuration = intent.getIntExtra("duracion",1);
+            intentCategoryName = intent.getStringExtra("mameCategory");
+            intentCharacterName = intent.getStringExtra("mameCharacter");
+            intentDuration = intent.getIntExtra("duration",1);
             intentBook = (Book) intent.getSerializableExtra("book");
             intentContext = intent.getStringExtra("origen");
         }else{
-            Toast.makeText(this, "Error: Intent Without Parameters", Toast.LENGTH_SHORT).show();
+            Log.e("Navigation", "Error: Intent without parameters");
         }
     }
     @Override
