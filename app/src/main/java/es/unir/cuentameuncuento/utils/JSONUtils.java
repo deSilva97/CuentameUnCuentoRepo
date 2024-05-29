@@ -13,24 +13,17 @@ public class JSONUtils {
         String content = "";
         
         try {
-            // Convertir el StringBuilder a un JSONObject
             JSONObject jsonObject = new JSONObject(json);
 
-            // Obtener el JSONArray de mensajes
             JSONArray choicesArray = jsonObject.getJSONArray("choices");
 
             Log.println(Log.DEBUG, "Array:", String.valueOf(choicesArray));
 
             JSONObject messageObject = choicesArray.getJSONObject(0);
 
-            JSONObject mensaje = messageObject.getJSONObject("message");
+            JSONObject message = messageObject.getJSONObject("message");
 
-            content = mensaje.getString("content");
-
-            Log.println(Log.DEBUG, "Contenido:", String.valueOf(content));
-
-            
-
+            content = message.getString("content");
         } catch (JSONException e) {
             e.printStackTrace();
         }
