@@ -22,6 +22,16 @@ import es.unir.cuentameuncuento.models.Book;
 
 
 public class StoryActivity extends AppCompatActivity {
+
+    public static final String EXTRA_NAMEACTIVITY = "NameActivity";
+    public static final String EXTRA_MAINACTIVITY = "MainActivity";
+
+    public static final String EXTRA_NAME_CATEGORY = "nameCategory";
+    public static final String EXTRA_NAME_CHARACTER = "nameCharacter";
+    public static final String EXTRA_DURATION = "duration";
+    public static final String EXTRA_SERIALIZABLE_BOOK = "book";
+    public static final String EXTRA_ORIGEN = "origen";
+
     StoryController controller;
     ApiManager apiManager;
     public Book currentStory;
@@ -49,14 +59,14 @@ public class StoryActivity extends AppCompatActivity {
 
         switch (intentContext){
 
-            case "NameActivity":
+            case EXTRA_NAMEACTIVITY:
                 controller.newStory(intentCategoryName, intentCharacterName,intentDuration);
                 controller.newImage(intentCategoryName, intentCharacterName);
                 controller.setLoadingLayout();
 
 
             break;
-            case "MainActivity":
+            case EXTRA_MAINACTIVITY:
                 controller.showSavedBook(intentBook);
             break;
 
@@ -109,11 +119,11 @@ public class StoryActivity extends AppCompatActivity {
     private void getExtras(){
         Intent intent = getIntent();
         if (intent != null) {
-            intentCategoryName = intent.getStringExtra("mameCategory");
-            intentCharacterName = intent.getStringExtra("mameCharacter");
-            intentDuration = intent.getIntExtra("duration",1);
-            intentBook = (Book) intent.getSerializableExtra("book");
-            intentContext = intent.getStringExtra("origen");
+            intentCategoryName = intent.getStringExtra(EXTRA_NAME_CATEGORY);
+            intentCharacterName = intent.getStringExtra(EXTRA_NAME_CHARACTER);
+            intentDuration = intent.getIntExtra(EXTRA_DURATION,1);
+            intentBook = (Book) intent.getSerializableExtra(EXTRA_SERIALIZABLE_BOOK);
+            intentContext = intent.getStringExtra(EXTRA_ORIGEN);
         }else{
             Log.e("Navigation", "Error: Intent without parameters");
         }
@@ -146,8 +156,4 @@ public class StoryActivity extends AppCompatActivity {
             btnPlay.setImageResource(R.mipmap.play);
         }
     }
-
-
-
-
 }

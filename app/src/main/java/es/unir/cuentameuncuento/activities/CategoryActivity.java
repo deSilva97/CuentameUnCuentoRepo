@@ -94,7 +94,7 @@ public class CategoryActivity extends AppCompatActivity {
 
                 Category category = categoryList.get(position);
                 Intent intent = new Intent(CategoryActivity.this, CharacterNameActivity.class);
-                intent.putExtra("nameCategory", category.getName());
+                intent.putExtra(StoryActivity.EXTRA_NAME_CATEGORY, category.getName());
                 startActivity(intent);
                 finish();
             }

@@ -124,8 +124,8 @@ public class MainController extends ActivityController {
 
     public void readBook(Book book){
         Intent intent = new Intent(activity, StoryActivity.class);
-        intent.putExtra("book", book);
-        intent.putExtra("origen", "MainActivity");
+        intent.putExtra(StoryActivity.EXTRA_SERIALIZABLE_BOOK, book);
+        intent.putExtra(StoryActivity.EXTRA_ORIGEN, StoryActivity.EXTRA_MAINACTIVITY);
         activity.startActivity(intent);
     }
 

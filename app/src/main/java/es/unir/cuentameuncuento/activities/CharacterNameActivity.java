@@ -27,7 +27,7 @@ public class CharacterNameActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent != null) {
-            txtViewCategory.setText(intent.getStringExtra("nameCategory"));
+            txtViewCategory.setText(intent.getStringExtra(StoryActivity.EXTRA_NAME_CATEGORY));
         }else{
             Toast.makeText(this, R.string.error_intent_no_params, Toast.LENGTH_SHORT).show();
         }
@@ -38,15 +38,14 @@ public class CharacterNameActivity extends AppCompatActivity {
             if (RegexHelper.verifyName(nameCharacter)) {
                 Intent intent1 = new Intent(CharacterNameActivity.this, StoryActivity.class);
                 intent1.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                intent1.putExtra("nameCategory", txtViewCategory.getText().toString());
-                intent1.putExtra("nameCharacter", nameCharacter);
-                intent1.putExtra("origen", "NameActivity");
-                intent1.putExtra("duration",seekBar.getProgress());
+                intent1.putExtra(StoryActivity.EXTRA_NAME_CATEGORY, txtViewCategory.getText().toString());
+                intent1.putExtra(StoryActivity.EXTRA_NAME_CHARACTER, nameCharacter);
+                intent1.putExtra(StoryActivity.EXTRA_ORIGEN, StoryActivity.EXTRA_NAMEACTIVITY);
+                intent1.putExtra(StoryActivity.EXTRA_DURATION,seekBar.getProgress());
                 startActivity(intent1);
                 finish();
 
             } else {
-
                 Toast.makeText(CharacterNameActivity.this,  R.string.not_valid_name, Toast.LENGTH_SHORT).show();
             }
         });
