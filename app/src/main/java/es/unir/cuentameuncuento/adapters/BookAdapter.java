@@ -3,37 +3,29 @@ package es.unir.cuentameuncuento.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.cardview.widget.CardView;
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import es.unir.cuentameuncuento.R;
-import es.unir.cuentameuncuento.impls.BookDAOImpl;
-import es.unir.cuentameuncuento.impls.IconStorageDAOImpl;
-import es.unir.cuentameuncuento.impls.UserDAOImpl;
 
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
     private List<BookAdapterElement> mData;
-    private LayoutInflater mInflater;
-    private Context context;
+    private final LayoutInflater mInflater;
 
     public BookAdapter(List<BookAdapterElement> itemList, Context context) {
         this.mInflater = LayoutInflater.from(context);
-        this.context = context;
-        this.mData = itemList != null ? itemList : new ArrayList<>(); // Asegurar que mData no es null
+        this.mData = itemList != null ? itemList : new ArrayList<>();
     }
 
     @Override
@@ -41,10 +33,11 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         return mData.size();
     }
 
+    @NonNull
     @Override
-    public BookAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.book_container, parent, false); // Cambiar null a parent y false
-        return new BookAdapter.ViewHolder(view);
+    public BookAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = mInflater.inflate(R.layout.book_container, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
@@ -53,7 +46,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
     }
 
     public void setItems(List<BookAdapterElement> items) {
-        mData = items != null ? items : new ArrayList<>(); // Asegurar que mData no es null
+        mData = items != null ? items : new ArrayList<>();
     }
 
     public void addItem(BookAdapterElement element) {
@@ -63,7 +56,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         }
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView iconImage;
         TextView title;
         ImageButton bDelete;
@@ -87,24 +80,14 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
                 if (icon != null) {
                     iconImage.setImageBitmap(icon);
                 } else {
-                    iconImage.setImageResource(R.drawable.book_placeholder); // Colocar un icono por defecto
+                    iconImage.setImageResource(R.drawable.book_placeholder);
                 }
 
                 bSelect.setOnClickListener(null);
-                bSelect.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        item.actionReadBook();
-                    }
-                });
+                bSelect.setOnClickListener(v -> item.actionReadBook());
 
                 bDelete.setOnClickListener(null);
-                bDelete.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        item.actionDelete();
-                    }
-                });
+                bDelete.setOnClickListener(v -> item.actionDelete());
             }
         }
     }

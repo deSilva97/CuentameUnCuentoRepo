@@ -1,12 +1,6 @@
 package es.unir.cuentameuncuento.adapters;
 
 import android.graphics.Bitmap;
-import android.graphics.drawable.Icon;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import java.io.Serializable;
 
@@ -62,9 +56,4 @@ public class BookAdapterElement implements Serializable {
     public void actionDelete(){
         controller.confirmDeleteBook(book);
     }
-
-    public void actionFavorite() {
-        Log.w("BookAdapterElement", "Not implemented method: actionFavorite");
-    }
-
 }
