@@ -51,9 +51,9 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void setListeners() {
-        bChangeEmail.setOnClickListener(v -> showChangeInfoDialog(String.valueOf(R.string.email)));
+        bChangeEmail.setOnClickListener(v -> showChangeInfoDialog(getString(R.string.email)));
 
-        bChangePassword.setOnClickListener(v -> showChangeInfoDialog(String.valueOf(R.string.password)));
+        bChangePassword.setOnClickListener(v -> showChangeInfoDialog(getString(R.string.password)));
 
         bSignOut.setOnClickListener(v -> controller.signOut());
 

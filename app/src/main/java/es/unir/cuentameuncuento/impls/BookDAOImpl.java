@@ -20,10 +20,11 @@ import java.util.Map;
 import java.util.UUID;
 
 import es.unir.cuentameuncuento.R;
+import es.unir.cuentameuncuento.daos.BookDAO;
 import es.unir.cuentameuncuento.managers.SessionManager;
 import es.unir.cuentameuncuento.models.Book;
 
-public class BookDAOImpl  {
+public class BookDAOImpl  implements BookDAO {
 
     FirebaseFirestore db;
     IconStorageDAOImpl storageImpl;
@@ -53,6 +54,7 @@ public class BookDAOImpl  {
         return db.collection(UserDAOImpl.getIdUser());
     }
 
+    @Override
     public void createBook(String title, String narrative, CompleteCallbackWithDescription callback) {
         Map<String, Object> dbBook = new HashMap<>();
         String uniqueStoryImageUUID = UUID.randomUUID().toString();
@@ -86,6 +88,7 @@ public class BookDAOImpl  {
         }
     }
 
+    @Override
     public void deleteBook(Book story, CompleteCallbackWithDescription callback) {
         DocumentReference doc = getUserCollection().document(story.getId());
 
@@ -134,7 +137,8 @@ public class BookDAOImpl  {
         }
     }
 
-    private void findAll(Query query, CompleteCallbackWithBookList callback){
+    @Override
+    public void findAll(Query query, CompleteCallbackWithBookList callback){
         query.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 List<Book> list = new ArrayList<>();
@@ -169,11 +173,4 @@ public class BookDAOImpl  {
         return story;
     }
 
-    public interface CompleteCallbackWithBookList{
-        void onComplete(List<Book> bookList);
-    }
-
-    public interface CompleteCallbackWithDescription{
-        void onComplete(boolean value, String description);
-    }
 }

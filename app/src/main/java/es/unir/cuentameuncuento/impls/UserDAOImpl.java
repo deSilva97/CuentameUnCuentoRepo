@@ -20,9 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import es.unir.cuentameuncuento.R;
+import es.unir.cuentameuncuento.daos.UserDAO;
 import es.unir.cuentameuncuento.models.Book;
 
-public class UserDAOImpl {
+public class UserDAOImpl implements UserDAO {
 
     static FirebaseAuth mAuth;
     static FirebaseUser mUser;
@@ -51,7 +52,7 @@ public class UserDAOImpl {
         return "******";
     }
 
-
+    @Override
     public void signUpWithEmailPassword(String email, String password, CompleteCallback callback){
 
         mAuth.createUserWithEmailAndPassword(email, password)
@@ -66,11 +67,13 @@ public class UserDAOImpl {
                 });
     }
 
+    @Override
     public void signInWithEmailPassword(String email, String password, CompleteCallback callback){
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> callback.onComplete(task.isSuccessful()));
     }
 
+    @Override
     public  void signInWithGoogle(String idToken, CompleteCallback callback){
         Log.d("Login", "idToken=" + idToken);
 
@@ -82,15 +85,18 @@ public class UserDAOImpl {
 
     }
 
+    @Override
     public void signOut(){
         mAuth.signOut();
     }
 
+    @Override
     public void signOutGoogle(Context context){
         GoogleSignIn.getClient(context, GoogleSignInOptions.DEFAULT_SIGN_IN).signOut();
         signOut();
     }
 
+    @Override
     public void deleteAccount(Context context, CompleteCallbackResultMessage callback){
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
@@ -127,11 +133,7 @@ public class UserDAOImpl {
         });
     }
 
-
-    public void signInWithToken(String token, CompleteCallback callback){
-        mAuth.signInWithCustomToken(token).addOnCompleteListener(task -> callback.onComplete(task.isSuccessful()));
-    }
-
+    @Override
     public void updateEmail(String email, CompleteCallbackString callback){
         mUser.verifyBeforeUpdateEmail(email).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -142,6 +144,7 @@ public class UserDAOImpl {
         });
     }
 
+    @Override
     public void updatePassword(String password, CompleteCallbackString callback){
         mUser.updatePassword(password).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
@@ -152,6 +155,7 @@ public class UserDAOImpl {
         });
     }
 
+    @Override
     public void recoverPassword(String email, CompleteCallbackResultMessage callback){
         mAuth.sendPasswordResetEmail(email)
             .addOnCompleteListener(task -> {
@@ -163,15 +167,5 @@ public class UserDAOImpl {
             });
     }
 
-    public interface CompleteCallback {
-        void onComplete(boolean result);
-    }
 
-    public interface CompleteCallbackResultMessage{
-        void onComplete(boolean result, String message);
-    }
-
-    public interface CompleteCallbackString{
-        void onComplete(String result);
-    }
 }
