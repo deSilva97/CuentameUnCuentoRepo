@@ -4,7 +4,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-import es.unir.cuentameuncuento.api.models.ImageData;
 
 public class ImageResponseBody {
     @SerializedName("created")

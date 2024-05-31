@@ -1,13 +1,8 @@
 package es.unir.cuentameuncuento.impls;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
@@ -16,7 +11,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,10 +19,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import es.unir.cuentameuncuento.R;
+import es.unir.cuentameuncuento.daos.BookDAO;
 import es.unir.cuentameuncuento.managers.SessionManager;
 import es.unir.cuentameuncuento.models.Book;
 
-public class BookDAOImpl  {
+public class BookDAOImpl  implements BookDAO {
 
     FirebaseFirestore db;
     IconStorageDAOImpl storageImpl;
@@ -45,17 +41,20 @@ public class BookDAOImpl  {
     private DocumentSnapshot lastVisible;
     long limitCount;
 
+    Context context;
+
     public BookDAOImpl(Context context){
         FirebaseApp.initializeApp(context);
-        //this.userID = userID;
+        this.context = context;
         db = FirebaseFirestore.getInstance();
-        storageImpl = new IconStorageDAOImpl();
+        storageImpl = new IconStorageDAOImpl(context);
     }
 
     private CollectionReference getUserCollection(){
         return db.collection(UserDAOImpl.getIdUser());
     }
 
+    @Override
     public void createBook(String title, String narrative, CompleteCallbackWithDescription callback) {
         Map<String, Object> dbBook = new HashMap<>();
         String uniqueStoryImageUUID = UUID.randomUUID().toString();
@@ -71,50 +70,42 @@ public class BookDAOImpl  {
 
             getUserCollection()
                     .add(dbBook)
-                    .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentReference> task) {
-                            if(task.isSuccessful()){
-                                Log.d("BookDAOImpl", "Callback valid Story");
+                    .addOnCompleteListener(task -> {
+                        if(task.isSuccessful()){
+                            Log.d("BookDAOImpl", "Callback valid Story");
 
-                                storageImpl.create(SessionManager.currentStory.getIcon(), uniqueStoryImageUUID, callback);
+                            storageImpl.create(SessionManager.currentStory.getIcon(), uniqueStoryImageUUID, callback);
+                        } else{
+                            Log.d("BookDAOImpl", task.getResult().toString());
+                            Log.d("BookDAOImpl", "Callback null Story");
 
-//                                callback.onComplete(true, "Libro creado");
-                            } else{
-                                Log.d("BookDAOImpl", task.getResult().toString());
-                                Log.d("BookDAOImpl", "Callback null Story");
-
-                                callback.onComplete(false, "Operación fallida");
-                            }
+                            callback.onComplete(false, context.getString(R.string.operation_success));
                         }
                     });
         } catch (Exception e){
             Log.e("BookDAOImpl", "ERROR: \n" + e);
-            callback.onComplete(false, "Operación fallida");
+            callback.onComplete(false, context.getString(R.string.operation_fails));
         }
     }
 
+    @Override
     public void deleteBook(Book story, CompleteCallbackWithDescription callback) {
         DocumentReference doc = getUserCollection().document(story.getId());
 
-        doc.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(Task<Void> task) {
-                if (task.isSuccessful()) {
-                    //controller.refresh();
+        doc.delete().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
 
-                    if(!story.getIconID().isEmpty())
-                        storageImpl.delete(story.getIconID());
+                if(!story.getIconID().isEmpty())
+                    storageImpl.delete(story.getIconID());
 
-                    callback.onComplete(true, "Libro borrado");
-                } else {
-                    // Ocurrió un error al intentar eliminar el documento
-                    Exception e = task.getException();
-                    if (e != null) {
-                        e.printStackTrace();
-                    }
-                    callback.onComplete(false, "Operación fallida");
+                callback.onComplete(true, context.getString(R.string.story_delete));
+            } else {
+
+                Exception e = task.getException();
+                if (e != null) {
+                    e.printStackTrace();
                 }
+                callback.onComplete(false, context.getString(R.string.operation_fails));
             }
         });
     }
@@ -123,7 +114,6 @@ public class BookDAOImpl  {
     private Query getQuery() {
         return getUserCollection()
                 .orderBy(FIELD_DATE, Query.Direction.DESCENDING)
-//                .startAfter(lastVisible)
                 .limit(limitCount);
     }
 
@@ -140,7 +130,6 @@ public class BookDAOImpl  {
 
     public void loadMoreData(CompleteCallbackWithBookList callback){
         if(lastVisible != null){
-
             findAll(getQuery().startAfter(lastVisible), callback);
 
         } else{
@@ -148,30 +137,27 @@ public class BookDAOImpl  {
         }
     }
 
-    private void findAll(Query query, CompleteCallbackWithBookList callback){
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    List<Book> list = new ArrayList<>();
-                    DocumentSnapshot lastDocument = null;
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        Book b = buildStoryByDocument(document);
-                        Log.d("Diego", "Historia: " + b.getTitle().toString() + " && "+ b.getDate());
-                        list.add(b);
+    @Override
+    public void findAll(Query query, CompleteCallbackWithBookList callback){
+        query.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                List<Book> list = new ArrayList<>();
+                DocumentSnapshot lastDocument = null;
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Book b = buildStoryByDocument(document);
+                    Log.d("Diego", "Story: " + b.getTitle() + " && "+ b.getDate());
+                    list.add(b);
 
-                         lastDocument = document;
-                    }
-
-                    lastVisible = lastDocument;
-
-                    //controller.setBookList(list);
-                    callback.onComplete(list);
-                } else {
-                    callback.onComplete(null);
+                     lastDocument = document;
                 }
 
+                lastVisible = lastDocument;
+
+                callback.onComplete(list);
+            } else {
+                callback.onComplete(null);
             }
+
         });
     }
 
@@ -187,23 +173,4 @@ public class BookDAOImpl  {
         return story;
     }
 
-
-    public interface CompleteCallback {
-        void onComplete(boolean result);
-    }
-
-    public interface CompleteCallbackWithBook{
-        void onComplete(Book book);
-    }
-    public interface CompleteCallbackWithBookList{
-        void onComplete(List<Book> bookList);
-    }
-
-    public interface CompleteCallbackWithDescription{
-        void onComplete(boolean value, String description);
-    }
-
-    public interface CompleteCallbackWithBitmap{
-        void onComplete(Bitmap bitmap);
-    }
 }

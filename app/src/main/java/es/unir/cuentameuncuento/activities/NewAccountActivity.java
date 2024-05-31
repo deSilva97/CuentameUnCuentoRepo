@@ -9,14 +9,13 @@ import android.widget.TextView;
 
 import es.unir.cuentameuncuento.R;
 
-import es.unir.cuentameuncuento.contexts.UserContext;
 import es.unir.cuentameuncuento.controllers.NewAccountController;
 
 public class NewAccountActivity extends AppCompatActivity {
 
     NewAccountController controller;
     Button bRegister;
-    TextView textSignin;
+    TextView textViewSignIn;
 
     EditText fieldEmail, fieldPassword;
 
@@ -27,18 +26,14 @@ public class NewAccountActivity extends AppCompatActivity {
 
 
         init();
-        setListerners();
+        setListeners();
     }
 
-    private void setListerners() {
+    private void setListeners() {
 
-        bRegister.setOnClickListener(v -> {
-            controller.signUpWithEmailPassword(fieldEmail.getText().toString(), fieldPassword.getText().toString());
-        });
+        bRegister.setOnClickListener(v -> controller.signUpWithEmailPassword(fieldEmail.getText().toString(), fieldPassword.getText().toString()));
 
-        textSignin.setOnClickListener(v -> {
-            controller.changeActivityToLogin();
-        });
+        textViewSignIn.setOnClickListener(v -> controller.changeActivityToLogin());
     }
 
     private void init(){
@@ -48,17 +43,17 @@ public class NewAccountActivity extends AppCompatActivity {
         fieldPassword = findViewById(R.id.register_field_password);
 
         bRegister = findViewById(R.id.register_button_register);
-        textSignin = findViewById(R.id.register_button_signin);
+        textViewSignIn = findViewById(R.id.register_button_signin);
 
     }
 
     public void setErrorFields(boolean email, boolean password){
 
         if(email){
-            fieldEmail.setError("Email not valid");
+            fieldEmail.setError(getString(R.string.not_valid_email));
         }
         if(password){
-            fieldPassword.setError("Password not valid");
+            fieldPassword.setError(getString(R.string.not_valid_password));
         }
 
     }

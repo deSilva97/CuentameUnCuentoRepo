@@ -3,8 +3,6 @@ package es.unir.cuentameuncuento.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -32,31 +30,20 @@ public class RecoverPassword extends AppCompatActivity {
         txtRecoverPassword = findViewById(R.id.editTextTextEmailAddressRecoverPassword);
 
 
-        bRecoverPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = txtRecoverPassword.getText().toString();
-                if(RegexHelper.verifyEmail(email)){
-                    userImpl.recoverPassword(email, new UserDAOImpl.CompleteCallbackResultMessage() {
-                        @Override
-                        public void onComplete(boolean result, String message) {
-                            if(result){
-                                Toast.makeText(RecoverPassword.this, message, Toast.LENGTH_SHORT).show();
-                            } else{
-                                Toast.makeText(RecoverPassword.this, message, Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-                } else {
-                    Toast.makeText(RecoverPassword.this, "El email no es valido", Toast.LENGTH_SHORT).show();
-                }
-
+        bRecoverPassword.setOnClickListener(v -> {
+            String email = txtRecoverPassword.getText().toString();
+            if(RegexHelper.verifyEmail(email)){
+                userImpl.recoverPassword(email, (result, message) -> {
+                    if(result){
+                        Toast.makeText(RecoverPassword.this, message, Toast.LENGTH_SHORT).show();
+                    } else{
+                        Toast.makeText(RecoverPassword.this, message, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else {
+                Toast.makeText(RecoverPassword.this, getString(R.string.not_valid_email), Toast.LENGTH_SHORT).show();
             }
         });
-
-    }
-
-    private void onCompleteOperation(boolean b, String s){
 
     }
 }

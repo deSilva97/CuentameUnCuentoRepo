@@ -1,5 +1,7 @@
 package es.unir.cuentameuncuento.models;
 
+import androidx.annotation.NonNull;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -72,6 +74,7 @@ public class User {
         return Objects.hash(id);
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "User{" +

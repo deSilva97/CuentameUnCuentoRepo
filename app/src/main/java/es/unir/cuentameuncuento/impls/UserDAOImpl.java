@@ -3,37 +3,36 @@ package es.unir.cuentameuncuento.impls;
 import android.content.Context;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import es.unir.cuentameuncuento.R;
+import es.unir.cuentameuncuento.daos.UserDAO;
 import es.unir.cuentameuncuento.models.Book;
 
-public class UserDAOImpl {
+public class UserDAOImpl implements UserDAO {
 
     static FirebaseAuth mAuth;
     static FirebaseUser mUser;
 
+    Context context;
+
     public UserDAOImpl(Context context){
         FirebaseApp.initializeApp(context);
-
+        this.context = context;
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
     }
@@ -53,78 +52,51 @@ public class UserDAOImpl {
         return "******";
     }
 
-
+    @Override
     public void signUpWithEmailPassword(String email, String password, CompleteCallback callback){
 
         mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d("PersonalDebugg", "createUserWithEmail:success");
-                            //user = mAuth.getCurrentUser();
-                            callback.onComplete(true);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w("PersonalDebugg", "createUserWithEmail:failure", task.getException());
-                            //user = null;
-                            callback.onComplete(false);
-                        }
-
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d("PersonalDebug", "createUserWithEmail: success");
+                        callback.onComplete(true);
+                    } else {
+                        Log.w("PersonalDebug", "createUserWithEmail:failure", task.getException());
+                        callback.onComplete(false);
                     }
                 });
     }
 
+    @Override
     public void signInWithEmailPassword(String email, String password, CompleteCallback callback){
         mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            //user = mAuth.getCurrentUser();
-                            callback.onComplete(true);
-                        } else{
-                            //user = null;
-                            callback.onComplete(false);
-                        }
-
-                    }
-                });
+                .addOnCompleteListener(task -> callback.onComplete(task.isSuccessful()));
     }
 
+    @Override
     public  void signInWithGoogle(String idToken, CompleteCallback callback){
         Log.d("Login", "idToken=" + idToken);
 
         AuthCredential firebaseCredential = GoogleAuthProvider.getCredential(idToken, null);
-        Log.d("Login", "credentials=" + firebaseCredential.toString());
+        Log.d("Login", "credentials=" + firebaseCredential);
 
         mAuth.signInWithCredential(firebaseCredential)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            //user = mAuth.getCurrentUser();
-                            callback.onComplete(true);
-                        } else {
-                            //user = null;
-                            Log.e("Login", "Error: " + task.getException());
-                            callback.onComplete(false);
-                        }
-                    }
-                });
+                .addOnCompleteListener(task -> callback.onComplete(task.isSuccessful()));
 
     }
 
+    @Override
     public void signOut(){
         mAuth.signOut();
     }
 
+    @Override
     public void signOutGoogle(Context context){
         GoogleSignIn.getClient(context, GoogleSignInOptions.DEFAULT_SIGN_IN).signOut();
         signOut();
     }
 
+    @Override
     public void deleteAccount(Context context, CompleteCallbackResultMessage callback){
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
@@ -134,117 +106,66 @@ public class UserDAOImpl {
 
         List<Book> auxList = new ArrayList<>();
 
-        //Borrar cuenta del usuario
-        //Borrar libros asociados asociados al usuario
-        //Borrar galeria de imágenes asociados al usuario
-
-        IconStorageDAOImpl storageDAO = new IconStorageDAOImpl();
+        IconStorageDAOImpl storageDAO = new IconStorageDAOImpl(context);
         storageDAO.deleteAll();
 
-        // Paso 1: Recopilar y eliminar libros
-        db.collection(userID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    List<Task<Void>> deleteTasks = new ArrayList<>();
-                    for (DocumentSnapshot document : task.getResult()) {
-                        deleteTasks.add(document.getReference().delete());
-                    }
+        db.collection(userID).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                List<Task<Void>> deleteTasks = new ArrayList<>();
+                for (DocumentSnapshot document : task.getResult()) {
+                    deleteTasks.add(document.getReference().delete());
+                }
 
-                    // Paso 2: Verificar eliminación de libros
-                    Tasks.whenAll(deleteTasks).addOnSuccessListener(aVoid -> {
-                        // Paso 3: Eliminar usuario
-                        user.delete().addOnCompleteListener(userDeletionTask -> {
-                            if (userDeletionTask.isSuccessful()) {
-                                callback.onComplete(true, "Operación exitosa");
-                                //Eliminar aqui credenciales guardadas de Google
-                                signOutGoogle(context);
-                            } else {
-                                callback.onComplete(false, "No se pudo eliminar al usuario");
-                            }
-                        });
-                    }).addOnFailureListener(e -> {
-                        callback.onComplete(false, "No se pudieron eliminar los libros");
+                Tasks.whenAll(deleteTasks).addOnSuccessListener(aVoid -> {
+                    assert user != null;
+                    user.delete().addOnCompleteListener(userDeletionTask -> {
+                        if (userDeletionTask.isSuccessful()) {
+                            callback.onComplete(true,  context.getString(R.string.operation_success));
+                            signOutGoogle(context);
+                        } else {
+                            callback.onComplete(false, context.getString(R.string.delete_fail_user));
+                        }
                     });
-                } else {
-                    callback.onComplete(false, "No se pudieron recuperar los libros");
-                }
+                }).addOnFailureListener(e -> callback.onComplete(false, context.getString(R.string.delete_fail_stories)));
+            } else {
+                callback.onComplete(false, context.getString(R.string.rollback_fail_stories));
             }
         });
     }
 
-
-    public void signInWithToken(String token, CompleteCallback callback){
-        mAuth.signInWithCustomToken(token).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    callback.onComplete(true);
-                } else {
-                    callback.onComplete(false);
-                }
-            }
-        });
-    }
-
+    @Override
     public void updateEmail(String email, CompleteCallbackString callback){
-        Log.d("UserDAOImpl", "verify and update email...");
-        mUser.verifyBeforeUpdateEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    callback.onComplete("Se ha enviado un correo para completar la operación a: " + email);
-                } else {
-                    Log.e("UserDAOImpl", "Verify email fails: " + task.getException().toString());
-                    callback.onComplete("");
-                }
-
+        mUser.verifyBeforeUpdateEmail(email).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                callback.onComplete(context.getString(R.string.email_send_to_complete_operation)+ " " + email);
+            } else {
+                callback.onComplete("");
             }
         });
     }
 
+    @Override
     public void updatePassword(String password, CompleteCallbackString callback){
-        mUser.updatePassword(password).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()){
-                    Log.d("UserDAOImpl", "update password sucess=" + password);
-                    callback.onComplete(password);
-                } else{
-                    Log.e("UserDAOImpl", "update password fail");
-                    callback.onComplete("");
-                }
-
-
+        mUser.updatePassword(password).addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                callback.onComplete(password);
+            } else{
+                callback.onComplete("");
             }
         });
     }
 
+    @Override
     public void recoverPassword(String email, CompleteCallbackResultMessage callback){
         mAuth.sendPasswordResetEmail(email)
-            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
-                        callback.onComplete(true, "Email send.");
-
-                    } else {
-                        callback.onComplete(false, "Something wrong...");
-                    }
-
+            .addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    callback.onComplete(true, context.getString(R.string.email_send));
+                } else {
+                    callback.onComplete(false, context.getString(R.string.something_wrong));
                 }
             });
     }
 
-    public interface CompleteCallback {
-        void onComplete(boolean result);
-    }
 
-    public interface CompleteCallbackResultMessage{
-        void onComplete(boolean result, String message);
-    }
-
-    public interface CompleteCallbackString{
-        void onComplete(String result);
-    }
 }

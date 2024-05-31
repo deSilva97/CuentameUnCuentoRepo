@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -14,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import es.unir.cuentameuncuento.R;
 import es.unir.cuentameuncuento.controllers.LoginController;
+
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -57,34 +57,18 @@ public class LoginActivity extends AppCompatActivity {
 
     private void setListeners() {
 
-        txtRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, NewAccountActivity.class);
-                startActivity(intent);
-            }
+        txtRegister.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, NewAccountActivity.class);
+            startActivity(intent);
         });
 
-        bLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                controller.signInWithEmailPassword(editTxtEmail.getText().toString(), editTxtPassword.getText().toString());
-            }
-        });
+        bLogin.setOnClickListener(v -> controller.signInWithEmailPassword(editTxtEmail.getText().toString(), editTxtPassword.getText().toString()));
 
-        bGoogle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                controller.authWithGoogle();
-            }
-        });
+        bGoogle.setOnClickListener(v -> controller.authWithGoogle());
 
-        txtForgotPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, RecoverPassword.class);
-                startActivity(intent);
-            }
+        txtForgotPassword.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, RecoverPassword.class);
+            startActivity(intent);
         });
     }
 
@@ -100,22 +84,21 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d("Login", "Provider Google=" + resultCode);
                 controller.signInWithGoogle(data);
             } else {
-                Log.e("Login", "result code=" + resultCode + " es distinto de " + LoginController.PROVIDER_GOOGLE);
+                Log.e("Login", "result code=" + resultCode + " is different from " + LoginController.PROVIDER_GOOGLE);
             }
         } else {
             controller.onLoginComplete(false);
             Log.e("Login", "fail to result activity");
         }
-
     }
 
     public void setErrorFields(boolean email, boolean password){
 
         if(email){
-            editTxtEmail.setError("Email not valid");
+            editTxtEmail.setError(getString(R.string.not_valid_email));
         }
         if(password){
-            editTxtPassword.setError("Password not valid");
+            editTxtPassword.setError(getString(R.string.not_valid_password));
         }
 
     }

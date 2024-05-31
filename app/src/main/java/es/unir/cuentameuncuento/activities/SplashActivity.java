@@ -1,13 +1,14 @@
 package es.unir.cuentameuncuento.activities;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.splashscreen.SplashScreen;
 
-import es.unir.cuentameuncuento.R;
 import es.unir.cuentameuncuento.controllers.SplashController;
 
+@SuppressLint("CustomSplashScreen")
 public class SplashActivity extends AppCompatActivity {
 
     SplashController controller;
@@ -20,7 +21,6 @@ public class SplashActivity extends AppCompatActivity {
         controller = new SplashController(this);
 
         controller.handleSession();
-//        ActivityHelper.ChangeActivity(SplashActivity.this, LoginActivity.class, false);
     }
 
 }

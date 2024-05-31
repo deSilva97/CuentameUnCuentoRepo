@@ -10,7 +10,7 @@ public class Choice {
     private Message message;
 
     @SerializedName("logprobs")
-    private Object logprobs; // Puedes reemplazar Object con el tipo apropiado si es necesario
+    private Object logprobs;
 
     @SerializedName("finish_reason")
     private String finishReason;

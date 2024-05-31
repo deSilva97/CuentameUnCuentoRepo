@@ -1,4 +1,6 @@
 package es.unir.cuentameuncuento.api.models;
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Objects;
@@ -31,6 +33,7 @@ public class Message {
         this.content = content;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Message{" +

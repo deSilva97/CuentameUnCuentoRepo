@@ -1,5 +1,7 @@
 package es.unir.cuentameuncuento.models;
 
+import androidx.annotation.NonNull;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -11,7 +13,6 @@ public class Book implements Serializable {
     private boolean favorite;
     private String fk_user;
 
-//    private Bitmap bitmap;
     private String iconID;
 
     private Date date;
@@ -23,7 +24,6 @@ public class Book implements Serializable {
         this.narrative = narrative;
         this.favorite = favorite;
         this.fk_user = fk_user;
-//        this.bitmap = bitmap;
         this.iconID = iconID;
         this.date = date;
     }
@@ -93,7 +93,7 @@ public class Book implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Book book = (Book) o;
-        return id == book.id;
+        return Objects.equals(id, book.id);
     }
 
     @Override
@@ -101,6 +101,7 @@ public class Book implements Serializable {
         return Objects.hash(id);
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Book{" +

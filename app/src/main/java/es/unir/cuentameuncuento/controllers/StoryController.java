@@ -1,24 +1,22 @@
 package es.unir.cuentameuncuento.controllers;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.MediaPlayer;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
+
 import java.io.File;
 import java.io.IOException;
 
-import es.unir.cuentameuncuento.adapters.BookAdapterElement;
-import es.unir.cuentameuncuento.managers.ApiManager;
 import es.unir.cuentameuncuento.R;
 import es.unir.cuentameuncuento.abstracts.ActivityController;
-import es.unir.cuentameuncuento.activities.MainActivity;
 import es.unir.cuentameuncuento.activities.StoryActivity;
+import es.unir.cuentameuncuento.adapters.BookAdapterElement;
 import es.unir.cuentameuncuento.impls.BookDAOImpl;
+import es.unir.cuentameuncuento.managers.ApiManager;
 import es.unir.cuentameuncuento.managers.SessionManager;
 import es.unir.cuentameuncuento.models.Book;
 
@@ -63,7 +61,7 @@ public class StoryController extends ActivityController {
                     }
 
                     @Override
-                    public void onError(String mensajeError) {
+                    public void onError(String messageError) {
                         backToHome();
                     }
                 });
@@ -87,22 +85,19 @@ public class StoryController extends ActivityController {
                         activity.speechMediaPlayer.start();
                         activity.btnPlay.setImageResource(R.mipmap.pause);
                         startAutoScroll();
-                        activity.speechMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                            @Override
-                            public void onCompletion(MediaPlayer mp) {
-                                Toast.makeText(activity, "Reproducción finalizada", Toast.LENGTH_SHORT).show();
-                                mp.release();
-                                stopAutoScroll();
-                            }
+                        activity.speechMediaPlayer.setOnCompletionListener(mp -> {
+                            Toast.makeText(activity, activity.getString(R.string.speech_ends), Toast.LENGTH_SHORT).show();
+                            mp.release();
+                            stopAutoScroll();
                         });
                     } catch (IOException e) {
-                        Log.e("generarAudio", "Error al reproducir audio: " + e.getMessage());
+                        Log.e("GenerateAudio", "Error at audio speech: " + e.getMessage());
                         e.printStackTrace();
                     }
                 }
 
                 @Override
-                public void onError(String mensajeError) {
+                public void onError(String messageError) {
                     backToHome();
                 }
             });
@@ -119,24 +114,21 @@ public class StoryController extends ActivityController {
 
                 @Override
                 public void onImageGenerated(final Bitmap imageBitmap) {
-                    activity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            SessionManager.currentStory = new BookAdapterElement();
+                    activity.runOnUiThread(() -> {
+                        SessionManager.currentStory = new BookAdapterElement();
 
-                            if (imageBitmap != null) {
-                                SessionManager.currentStory.setIcon(imageBitmap);
-                                activity.imageView.setImageBitmap(imageBitmap);
-                            }
-
-                            setStoryLayout();
+                        if (imageBitmap != null) {
+                            SessionManager.currentStory.setIcon(imageBitmap);
+                            activity.imageView.setImageBitmap(imageBitmap);
                         }
+
+                        setStoryLayout();
                     });
                 }
 
 
                 @Override
-                public void onError(String mensajeError) {
+                public void onError(String messageError) {
                     backToHome();
                 }
             });
@@ -156,21 +148,15 @@ public class StoryController extends ActivityController {
 
             activity.btnSave.setEnabled(false);
 
-            bookDaoImpl.createBook(currentStory.getTitle(), currentStory.getNarrative(), new BookDAOImpl.CompleteCallbackWithDescription() {
-                @Override
-                public void onComplete(boolean value, String description) {
+            bookDaoImpl.createBook(currentStory.getTitle(), currentStory.getNarrative(), (value, description) -> {
 
-                    if (value) {
-                        backToHome();
-                    } else {
-                        activity.btnSave.setEnabled(true);
-                        bookDaoImpl.deleteBook(currentStory, new BookDAOImpl.CompleteCallbackWithDescription() {
-                            @Override
-                            public void onComplete(boolean value, String description) {
+                if (value) {
+                    backToHome();
+                } else {
+                    activity.btnSave.setEnabled(true);
+                    bookDaoImpl.deleteBook(currentStory, (value1, description1) -> {
 
-                            }
-                        });
-                    }
+                    });
                 }
             });
         }
@@ -184,7 +170,6 @@ public class StoryController extends ActivityController {
             runnable = new Runnable() {
                 @Override
                 public void run() {
-                    // Realizar el autoscroll
                     activity.scrollView.scrollTo(0, activity.scrollView.getScrollY() + 1);
                     handler.postDelayed(this, 100);
                 }

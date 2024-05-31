@@ -1,4 +1,5 @@
 package es.unir.cuentameuncuento.utils;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -8,6 +9,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import es.unir.cuentameuncuento.R;
 
 public class ImageConverter {
 
@@ -31,7 +34,7 @@ public class ImageConverter {
                 callback.onBitmapLoaded(resizedBitmap);
             } catch (IOException e) {
                 e.printStackTrace();
-                callback.onError("Error al cargar la imagen desde la URL.");
+                callback.onError(String.valueOf(R.string.error_at_load_img_url));
             }
         });
     }
